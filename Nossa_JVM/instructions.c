@@ -292,7 +292,7 @@ static void op_iconst_4(Frame *pFrame) {
  */
 static void op_iconst_5(Frame *pFrame) {
     pFrame->push(5);
-    pFrame_frame->pc++;
+    pFrame->pc++;
 }
 
 /*!
@@ -316,8 +316,8 @@ static void op_lconst_1(Frame *pFrame) {
  */
 static void op_fconst_0(Frame *pFrame) {
     float float_number = 0.0;
-    maquina.current_frame->push(*((uint64_t*)&float_number));
-    maquina.current_frame->pc++;
+    pFrame->push(*((uint64_t*)&float_number));
+    pFrame->pc++;
 }
 
 /*!
@@ -325,8 +325,8 @@ static void op_fconst_0(Frame *pFrame) {
  */
 static void op_fconst_1(Frame *pFrame) {
     float float_number = 1.0;
-    maquina.current_frame->push(*((uint64_t*)&float_number));
-    maquina.current_frame->pc++;
+    pFrame->push(*((uint64_t*)&float_number));
+    pFrame->pc++;
 }
 
 /*!
@@ -334,8 +334,8 @@ static void op_fconst_1(Frame *pFrame) {
  */
 static void op_fconst_2(Frame *pFrame) {
     float float_number = 2.0;
-    maquina.current_frame->push(*((uint64_t*)&float_number));
-    maquina.current_frame->pc++;
+    pFrame->push(*((uint64_t*)&float_number));
+    pFrame->pc++;
 }
 
 /*!
@@ -343,11 +343,11 @@ static void op_fconst_2(Frame *pFrame) {
  */
 static void op_dconst_0(Frame *pFrame) {
     double double_number = 0.0;
-    uint64_t *auxiliar_64 = malloc(sizeof(uint64_t));
+    uint64_t *aux_64 = malloc(sizeof(uint64_t));
     
-    memcpy(auxiliar_64, &double_number, sizeof(uint64_t));
-    maquina.current_frame->push2(*auxiliar_64);
-    maquina.current_frame->pc++;
+    memcpy(aux_64, &double_number, sizeof(uint64_t));
+    pFrame->push2(*aux_64);
+    pFrame->pc++;
 }
 
 /*!
@@ -355,11 +355,11 @@ static void op_dconst_0(Frame *pFrame) {
  */
 static void op_dconst_1(Frame *pFrame) {
     double double_number = 1.0;
-    uint64_t *auxiliar_64 = malloc(sizeof(uint64_t));
+    uint64_t *aux_64 = malloc(sizeof(uint64_t));
     
-    memcpy(auxiliar_64, &double_number, sizeof(uint64_t));
-    maquina.current_frame->push2(*auxiliar_64);
-    maquina.current_frame->pc++;
+    memcpy(aux_64, &double_number, sizeof(uint64_t));
+    pFrame->push2(*aux_64);
+    pFrame->pc++;
 }
 
 /*!
@@ -372,33 +372,30 @@ static void op_bipush(Frame *pFrame) {
     int8_t var = 0;
     int64_t aux;
     
-    maquina.current_frame->pc++;
-    var = maquina.current_frame->code_attr->code[maquina.current_frame->pc];
-    
+    pFrame->pc++;
+    var = pFrame->code[pFrame->pc];
     aux = (int64_t) var;
-    maquina.current_frame->push(aux);
+    pFrame->push(aux);
     
-    maquina.current_frame->pc++;
+    pFrame->pc++;
 }
 
 static void op_sipush(Frame *pFrame) {
     uint8_t high,low;
-    int16_t auxiliar_16;
+    int16_t aux_16;
     //int64_t t;
     
-    maquina.current_frame->pc++;
-    high = maquina.current_frame->code_attr->code[maquina.current_frame->pc];
-    maquina.current_frame->pc++;
-    low = maquina.current_frame->code_attr->code[maquina.current_frame->pc];
+    pFrame->pc++;
+    high = pFrame->code[pFrame->pc];
+    pFrame->pc++;
+    low = pFrame->code[pFrame->pc];
     
-    auxiliar_16 = high;
-    auxiliar_16 <<= 8;
-    auxiliar_16 |= low;
+    aux_16 = high;
+    aux_16 <<= 8;
+    aux_16 |= low;
     
-    //t = (int64_t)auxiliar_16;
-    
-    maquina.current_frame->push(auxiliar_16);
-    maquina.current_frame->pc++;
+    pFrame->push(aux_16);
+    pFrame->pc++;
 }
 
 static void op_ldc(Frame *pFrame) {
