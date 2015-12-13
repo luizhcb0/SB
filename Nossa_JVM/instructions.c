@@ -398,22 +398,25 @@ static void op_sipush(Frame *pFrame) {
     pFrame->pc++;
 }
 
+
+
+//TERMINAR DE ARRUMAR
 static void op_ldc(Frame *pFrame) {
-    uint8_t indice, type;
+    uint8_t index, type;
     
-    maquina.current_frame->pc++;
-    indice = maquina.current_frame->code_attr->code[maquina.current_frame->pc];
-    type = maquina.current_frame->runtime_constant_pool->constants[indice-1].tag;
+    pFrame->pc++;
+    index = pFrame->code[pFrame->pc];
+    type = pFrame->runtime_constant_pool->constants[index - 1].tag;
     
     if(type == tInteger){
-        maquina.current_frame->push((int64_t)maquina.current_frame->runtime_constant_pool->constants[indice-1].type.Integer.bytes);
+        pFrame->push((int64_t)pFrame->pClass->constant_pool[index - 1].info.Integer.bytes);
     }else if(type == tFloat){
-        maquina.current_frame->push(maquina.current_frame->runtime_constant_pool->constants[indice-1].type.Float.bytes);
+        pFrame->push(pFrame->pClass->constant_pool[index - 1].info.Float.bytes);
     }else if(type == tString){
-        maquina.current_frame->push(maquina.current_frame->runtime_constant_pool->constants[indice-1].type.String.stringIndex);
+        pFrame->push(pFrame->pClass->constant_pool[index - 1].info.String.stringIndex);
     }
     
-    maquina.current_frame->pc++;
+    pFrame->pc++;
     
 }
 
