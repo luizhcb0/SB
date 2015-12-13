@@ -267,48 +267,48 @@ static void op_iconst_1(Frame *pFrame) {
 	Empilha int 2 na pilha de operandos
  */
 static void op_iconst_2(Frame *pFrame) {
-    maquina.current_frame->push(2);
-    maquina.current_frame->pc++;
+    pFrame->push(2);
+    pFrame->pc++;
 }
 
 /*!
 	Empilha int 3 na pilha de operandos
  */
 static void op_iconst_3(Frame *pFrame) {
-    maquina.current_frame->push(3);
-    maquina.current_frame->pc++;
+    pFrame->push(3);
+    pFrame->pc++;
 }
 
 /*!
 	Empilha int 4 na pilha de operandos
  */
 static void op_iconst_4(Frame *pFrame) {
-    maquina.current_frame->push(4);
-    maquina.current_frame->pc++;
+    pFrame->push(4);
+    pFrame->pc++;
 }
 
 /*!
 	Empilha int 5 na pilha de operandos
  */
 static void op_iconst_5(Frame *pFrame) {
-    maquina.current_frame->push(5);
-    maquina.current_frame->pc++;
+    pFrame->push(5);
+    pFrame_frame->pc++;
 }
 
 /*!
 	Empilha long 0 na pilha de operandos
  */
 static void op_lconst_0(Frame *pFrame) {
-    maquina.current_frame->push2(0);
-    maquina.current_frame->pc++;
+    pFrame->push2(0);
+    pFrame->pc++;
 }
 
 /*!
 	Empilha long 1 na pilha de operandos
  */
 static void op_lconst_1(Frame *pFrame) {
-    maquina.current_frame->push2(1);
-    maquina.current_frame->pc++;
+    pFrame->push2(1);
+    pFrame->pc++;
 }
 
 /*!
