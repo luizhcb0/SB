@@ -607,7 +607,174 @@ u4 Execute (Frame *stackFrame_ptr, ClassFile *pClassHeap, dataMSize_t *dmSize_pt
 }
 
 
-(do_nop) (Frame *stackFrame_ptr, ClassFile *pClassHeap, dataMSize_t *dmSize_ptr
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_aconst_null (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
+void op_nop (Frame *stackFrame_ptr, ClassFile *pClassHeap, Object *pObjectHeap, dataMSize_t *dmSize_ptr ) {
+    
+}
 #define op_aconst_null 1
 #define op_iconst_m1  2
 #define op_iconst_0  3
