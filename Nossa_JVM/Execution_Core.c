@@ -52,6 +52,63 @@ u4 Execute (Frame *stackFrame_ptr, ClassFile *pClassHeap, dataMSize_t *dmSize_pt
                 //Instructions that push a constant onto the stack
      
 
+        }
+    }
+}
+
+u2 getClassIndex(u1 *class_name) {
+    // printf("\n\t\t\tentrou getClassIndex: %s", class_name);
+    if (maquina.method_area->classes == NULL) {printf("\n\t\t\tsaiu getClassIndex: %s; toReturn: %d", class_name, -3); return -3;}
+    if (class_name == NULL || !strcmp(class_name, "")) {printf("\n\t\t\tsaiu getClassIndex: %s; toReturn: %d", class_name, -2);return -2;}
+    
+    for(int i=0; i < maquina.method_area->classes_count; i++){
+        char *aux = maquina.method_area->classes[i]->getName(maquina.method_area->classes[i]);
+        if(!strcmp(class_name,aux)){
+            return i;
+        }
+    }
+    // printf("\n\t\t\tsaiu getClassIndex: %s; toReturn: %d", class_name, -1);
+    return -1;
+}
+
+int loadClass(u1 *name) {
+    
+    if(name == NULL){
+        return -1;
+    }
+
+    if (strchr(name, '$')) {
+        error(E_DOLAR_NOT_SUPPORTED);
+    }
+    
+    int toReturn = -1;
+    if ((toReturn = getClassIndex(name)) <= -1) {
+        
+        toReturn = maquina.method_area->classes_count;
+        expandClassArray();
+        maquina.method_area->classes[maquina.method_area->classes_count++] =_MCLASSL.load(_MUTIL.getClassPath(maquina.basePath, name));
+        
+        link(maquina.method_area->classes_count-1);
+        initialize(maquina.method_area->classes_count-1);
+        
+        loadParentClasses(); // insere em maquina.classes todas as classes pai ainda nao carregadas em maquina.clasess
+        loadInterfaces(maquina.method_area->classes[toReturn]); // insere em maquinas.interfaces todas as interfaces ainda nao carregadas em maquina.interfaces
+        
+    }
+    
+    return toReturn;
+}
+
+u1 *getClassNameUtf8(ClassFile *pClass, u2 classIndexTemp) {
+    u1 *bytes;
+    u2 nameIndex;
+    
+    nameIndex = pFrame->pClass->constant_pool[classIndexTemp - 1].info.CONSTANT_Class_info.name_index;
+    bytes = pCLass->constant_pool[nameIndex - 1].info.CONSTANT_Utf8_info.bytes;
+    
+    return bytes;
+}
+
 
 /**
  *  <#Description#>
@@ -77,6 +134,8 @@ Field_Value *getFieldValue(u1 *name, Field_Value *pField, u2 static_values_size)
     }
     return &pField[count];
 }
+
+
 
 
 u4 *getFieldIndex(u1 *name, Field_Value *pField, u2 static_values_size) {
@@ -168,3 +227,6 @@ u1 *getFieldName(u2 index, cp_info *pool) { //3
     
     return string;
 }
+                
+
+        
