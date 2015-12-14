@@ -21,7 +21,7 @@
 #ifndef HEADER_MACROS
 #define HEADER_MACROS
 #include <stdint.h>
-
+#include "exceptions.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -30,8 +30,10 @@
 typedef uint8_t u1;
 typedef uint16_t u2;
 typedef uint32_t u4;
+typedef uint64_t u8;
 typedef int32_t i4;
 typedef int64_t i8;
+
 typedef float f4;
 typedef short i2;
 
@@ -300,6 +302,7 @@ f4 getf4(char *p);
 #define op_invokespecial  183
 #define op_invokestatic  184
 #define op_invokeinterface  185
+#define op_xyzNotUsedxyz 186
 #define op_new  187
 #define op_newarray  188
 #define op_anewarray  189
@@ -316,6 +319,10 @@ f4 getf4(char *p);
 #define op_goto_w  200
 #define op_jsr_w  201
 #define op_breakpoint  202
+ 
+/** Definição do array com os nomes dos opcodes */
+extern char *opcodes_str_names[];
+ 
 /** Definição dos códigos numéricos para os atributos */
 //#define SOURCEFILE 0x436
 //#define CONSTANTVALUE
@@ -326,6 +333,11 @@ f4 getf4(char *p);
 //#define LINENUMBERTABLE
 //#define LOCALVARIABLETABLE
 //#define DEPRECATED
+
+
+/**Definição dos códigos para o módulo de mensagens de erro  */
+#define NOTACLASS_ERR 0
+#define INCORRECTVERSION_ERR 1
 
 
 typedef struct attribute_info_e attribute_info; //foward declaration
@@ -537,21 +549,21 @@ typedef struct{
 /** Estrutura do arquivo .class */
 typedef struct {
 	u4 magic;
-   	u2 minor_version;
-   	u2 major_version;
-   	u2 constant_pool_count;
-   	cp_info *constant_pool; //Tem o tamanho constant_pool_count -1
-   	u2 access_flags;
-   	u2 this_class;
-   	u2 super_class;
-   	u2 interfaces_count;
-   	u2 *interfaces;
-   	u2 fields_count;
-   	field_info *fields;
-   	u2 methods_count;
-   	method_info *methods;
-   	u2 attributes_count;
-   	attribute_info *attributes;
+	u2 minor_version;
+	u2 major_version;
+	u2 constant_pool_count;
+	cp_info *constant_pool; //Tem o tamanho constant_pool_count -1
+	u2 access_flags;
+	u2 this_class;
+	u2 super_class;
+	u2 interfaces_count;
+	u2 *interfaces;
+	u2 fields_count;
+	field_info *fields;
+	u2 methods_count;
+	method_info *methods;
+	u2 attributes_count;
+	attribute_info *attributes;
     
     //Variable *variable;
     //field_info *static_fields;

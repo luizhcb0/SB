@@ -12,19 +12,41 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Função par imprimir o conteúdo da constante
 void printContent (cp_info pool) {
+    float *aux_flt;
+    void *aux_dbl;
+    //long int *aux_lng;
+    u4 aux_uint_hi;
+    u4 aux_uint_lo;
+    u8 aux_uint_dbl;
 	switch (pool.tag) {
 		case 1: // Utf8
 			printf("\t%s", pool.info.CONSTANT_Utf8_info.bytes);
 			break;
 		case 3: // Integer
+            printf("\t%"PRId32, pool.info.CONSTANT_IntegerFloat_info.bytes);
+            break;
 		case 4: // Float
-			printf("\t%"PRId32, pool.info.CONSTANT_IntegerFloat_info.bytes);
+            aux_flt = 0;
+            aux_flt = (float*)( (void*)&pool.info.CONSTANT_IntegerFloat_info.bytes ); //punning type
+			printf("\t%f", *aux_flt);
 			break;
 		case 5: // Long
 		case 6: // Double
-			printf("\tHigh: 0x%04"PRIx32" / Low: 0x%04"PRIx32, \
-			pool.info.CONSTANT_LongDouble_info.high_bytes, pool.info.\
-			CONSTANT_LongDouble_info.low_bytes);
+            aux_uint_dbl = aux_uint_hi = aux_uint_lo = 0;
+
+            aux_uint_hi = pool.info.CONSTANT_LongDouble_info.high_bytes;
+            aux_uint_lo = pool.info.CONSTANT_LongDouble_info.low_bytes;
+
+            aux_uint_dbl = aux_uint_hi;
+            aux_uint_dbl = aux_uint_dbl << 32;
+            aux_uint_dbl = aux_uint_dbl | aux_uint_lo;
+            aux_dbl = ( (void*)&aux_uint_dbl );
+            if(pool.tag == 5){
+                printf("\t%lli",(long long) aux_uint_dbl);
+            }
+            else{
+			    printf("\t%f", *(double*)aux_dbl);
+            }
 			break;
 		case 7: // Class
 			printf("\t#%"PRId16, pool.info.CONSTANT_Class_info.name_index);
@@ -62,6 +84,7 @@ void printConstantPoolTable (u2 poolElementsNum,  cp_info pool[]) {
 	printf("Index |\tConstant Type\t|\tContent\n");
 	while (counter < poolElementsNum - 1) {
         if (pool[counter].tag) {
+            
             printf("#%"PRId16"\t", counter+1);
             printf("%s\t\t", searchConstantType(pool[counter].tag));
             printContent(pool[counter]);
@@ -327,6 +350,670 @@ void print_attributes (attribute_info *attributes, u2 attr_count, cp_info *pool)
                 printf("\tMaximum stack depth:\t %d\n",attributes[counter].info.Code_attribute.max_stack);
                 printf("\tMaximum local variable:\t %d\n",attributes[counter].info.Code_attribute.max_locals);
                 printf("\tCode length:\t %d\n",attributes[counter].info.Code_attribute.code_length);
+                //opcodes
+                for(int i = 0; i < attributes[counter].info.Code_attribute.code_length; i++){
+                    switch( attributes[counter].info.Code_attribute.code[i] ){
+                        case op_nop: 
+                        	printf("%s\n", opcodes_str_names[op_nop]);
+                        	break;
+                        case op_aconst_null: 
+                        	printf("%s\n", opcodes_str_names[op_aconst_null]);
+                        	break;
+                        case op_iconst_m1: 
+                        	printf("%s\n", opcodes_str_names[op_iconst_m1]);
+                        	break;
+                        case op_iconst_0: 
+                        	printf("%s\n", opcodes_str_names[op_iconst_0]);
+                        	break;
+                        case op_iconst_1: 
+                        	printf("%s\n", opcodes_str_names[op_iconst_1]);
+                        	break;
+                        case op_iconst_2: 
+                        	printf("%s\n", opcodes_str_names[op_iconst_2]);
+                        	break;
+                        case op_iconst_3: 
+                        	printf("%s\n", opcodes_str_names[op_iconst_3]);
+                        	break;
+                        case op_iconst_4: 
+                        	printf("%s\n", opcodes_str_names[op_iconst_4]);
+                        	break;
+                        case op_iconst_5: 
+                        	printf("%s\n", opcodes_str_names[op_iconst_5]);
+                        	break;
+                        case op_lconst_0: 
+                        	printf("%s\n", opcodes_str_names[op_lconst_0]);
+                        	break;
+                        case op_lconst_1: 
+                        	printf("%s\n", opcodes_str_names[op_lconst_1]);
+                        	break;
+                        case op_fconst_0: 
+                        	printf("%s\n", opcodes_str_names[op_fconst_0]);
+                        	break;
+                        case op_fconst_1: 
+                        	printf("%s\n", opcodes_str_names[op_fconst_1]);
+                        	break;
+                        case op_fconst_2: 
+                        	printf("%s\n", opcodes_str_names[op_fconst_2]);
+                        	break;
+                        case op_dconst_0: 
+                        	printf("%s\n", opcodes_str_names[op_dconst_0]);
+                        	break;
+                        case op_dconst_1: 
+                        	printf("%s\n", opcodes_str_names[op_dconst_1]);
+                        	break;
+                        case op_bipush: 
+                            i++;
+                        	printf("%s\n", opcodes_str_names[op_bipush]);
+                        	break;
+                        case op_sipush: 
+                            i+= 2;
+                        	printf("%s\n", opcodes_str_names[op_sipush]);
+                        	break;
+                        case op_ldc: 
+                            i++;
+                        	printf("%s\n", opcodes_str_names[op_ldc]);
+                        	break;
+                        case op_ldc_w: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_ldc_w]);
+                        	break;
+                        case op_ldc2_w: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_ldc2_w]);
+                        	break;
+                        case op_iload: 
+                            i++;
+                        	printf("%s\n", opcodes_str_names[op_iload]);
+                        	break;
+                        case op_lload: 
+                            i++;
+                        	printf("%s\n", opcodes_str_names[op_lload]);
+                        	break;
+                        case op_fload: 
+                            i++;
+                        	printf("%s\n", opcodes_str_names[op_fload]);
+                        	break;
+                        case op_dload: 
+                            i++;
+                        	printf("%s\n", opcodes_str_names[op_dload]);
+                        	break;
+                        case op_aload: 
+                            i++;
+                        	printf("%s\n", opcodes_str_names[op_aload]);
+                        	break;
+                        case op_iload_0: 
+                        	printf("%s\n", opcodes_str_names[op_iload_0]);
+                        	break;
+                        case op_iload_1: 
+                        	printf("%s\n", opcodes_str_names[op_iload_1]);
+                        	break;
+                        case op_iload_2: 
+                        	printf("%s\n", opcodes_str_names[op_iload_2]);
+                        	break;
+                        case op_iload_3: 
+                        	printf("%s\n", opcodes_str_names[op_iload_3]);
+                        	break;
+                        case op_lload_0: 
+                        	printf("%s\n", opcodes_str_names[op_lload_0]);
+                        	break;
+                        case op_lload_1: 
+                        	printf("%s\n", opcodes_str_names[op_lload_1]);
+                        	break;
+                        case op_lload_2: 
+                        	printf("%s\n", opcodes_str_names[op_lload_2]);
+                        	break;
+                        case op_lload_3: 
+                        	printf("%s\n", opcodes_str_names[op_lload_3]);
+                        	break;
+                        case op_fload_0: 
+                        	printf("%s\n", opcodes_str_names[op_fload_0]);
+                        	break;
+                        case op_fload_1: 
+                        	printf("%s\n", opcodes_str_names[op_fload_1]);
+                        	break;
+                        case op_fload_2: 
+                        	printf("%s\n", opcodes_str_names[op_fload_2]);
+                        	break;
+                        case op_fload_3: 
+                        	printf("%s\n", opcodes_str_names[op_fload_3]);
+                        	break;
+                        case op_dload_0: 
+                        	printf("%s\n", opcodes_str_names[op_dload_0]);
+                        	break;
+                        case op_dload_1: 
+                        	printf("%s\n", opcodes_str_names[op_dload_1]);
+                        	break;
+                        case op_dload_2: 
+                        	printf("%s\n", opcodes_str_names[op_dload_2]);
+                        	break;
+                        case op_dload_3: 
+                        	printf("%s\n", opcodes_str_names[op_dload_3]);
+                        	break;
+                        case op_aload_0: 
+                        	printf("%s\n", opcodes_str_names[op_aload_0]);
+                        	break;
+                        case op_aload_1: 
+                        	printf("%s\n", opcodes_str_names[op_aload_1]);
+                        	break;
+                        case op_aload_2: 
+                        	printf("%s\n", opcodes_str_names[op_aload_2]);
+                        	break;
+                        case op_aload_3: 
+                        	printf("%s\n", opcodes_str_names[op_aload_3]);
+                        	break;
+                        case op_iaload: 
+                        	printf("%s\n", opcodes_str_names[op_iaload]);
+                        	break;
+                        case op_laload: 
+                        	printf("%s\n", opcodes_str_names[op_laload]);
+                        	break;
+                        case op_faload: 
+                        	printf("%s\n", opcodes_str_names[op_faload]);
+                        	break;
+                        case op_daload: 
+                        	printf("%s\n", opcodes_str_names[op_daload]);
+                        	break;
+                        case op_aaload: 
+                        	printf("%s\n", opcodes_str_names[op_aaload]);
+                        	break;
+                        case op_baload: 
+                        	printf("%s\n", opcodes_str_names[op_baload]);
+                        	break;
+                        case op_caload: 
+                        	printf("%s\n", opcodes_str_names[op_caload]);
+                        	break;
+                        case op_saload: 
+                        	printf("%s\n", opcodes_str_names[op_saload]);
+                        	break;
+                        case op_istore: 
+                            i++;
+                        	printf("%s\n", opcodes_str_names[op_istore]);
+                        	break;
+                        case op_lstore: 
+                            i++;
+                        	printf("%s\n", opcodes_str_names[op_lstore]);
+                        	break;
+                        case op_fstore: 
+                            i++;
+                        	printf("%s\n", opcodes_str_names[op_fstore]);
+                        	break;
+                        case op_dstore: 
+                            i++;
+                        	printf("%s\n", opcodes_str_names[op_dstore]);
+                        	break;
+                        case op_astore: 
+                            i++;
+                        	printf("%s\n", opcodes_str_names[op_astore]);
+                        	break;
+                        case op_istore_0: 
+                        	printf("%s\n", opcodes_str_names[op_istore_0]);
+                        	break;
+                        case op_istore_1: 
+                        	printf("%s\n", opcodes_str_names[op_istore_1]);
+                        	break;
+                        case op_istore_2: 
+                        	printf("%s\n", opcodes_str_names[op_istore_2]);
+                        	break;
+                        case op_istore_3: 
+                        	printf("%s\n", opcodes_str_names[op_istore_3]);
+                        	break;
+                        case op_lstore_0: 
+                        	printf("%s\n", opcodes_str_names[op_lstore_0]);
+                        	break;
+                        case op_lstore_1: 
+                        	printf("%s\n", opcodes_str_names[op_lstore_1]);
+                        	break;
+                        case op_lstore_2: 
+                        	printf("%s\n", opcodes_str_names[op_lstore_2]);
+                        	break;
+                        case op_lstore_3: 
+                        	printf("%s\n", opcodes_str_names[op_lstore_3]);
+                        	break;
+                        case op_fstore_0: 
+                        	printf("%s\n", opcodes_str_names[op_fstore_0]);
+                        	break;
+                        case op_fstore_1: 
+                        	printf("%s\n", opcodes_str_names[op_fstore_1]);
+                        	break;
+                        case op_fstore_2: 
+                        	printf("%s\n", opcodes_str_names[op_fstore_2]);
+                        	break;
+                        case op_fstore_3: 
+                        	printf("%s\n", opcodes_str_names[op_fstore_3]);
+                        	break;
+                        case op_dstore_0: 
+                        	printf("%s\n", opcodes_str_names[op_dstore_0]);
+                        	break;
+                        case op_dstore_1: 
+                        	printf("%s\n", opcodes_str_names[op_dstore_1]);
+                        	break;
+                        case op_dstore_2: 
+                        	printf("%s\n", opcodes_str_names[op_dstore_2]);
+                        	break;
+                        case op_dstore_3: 
+                        	printf("%s\n", opcodes_str_names[op_dstore_3]);
+                        	break;
+                        case op_astore_0: 
+                        	printf("%s\n", opcodes_str_names[op_astore_0]);
+                        	break;
+                        case op_astore_1: 
+                        	printf("%s\n", opcodes_str_names[op_astore_1]);
+                        	break;
+                        case op_astore_2: 
+                        	printf("%s\n", opcodes_str_names[op_astore_2]);
+                        	break;
+                        case op_astore_3: 
+                        	printf("%s\n", opcodes_str_names[op_astore_3]);
+                        	break;
+                        case op_iastore: 
+                        	printf("%s\n", opcodes_str_names[op_iastore]);
+                        	break;
+                        case op_lastore: 
+                        	printf("%s\n", opcodes_str_names[op_lastore]);
+                        	break;
+                        case op_fastore: 
+                        	printf("%s\n", opcodes_str_names[op_fastore]);
+                        	break;
+                        case op_dastore: 
+                        	printf("%s\n", opcodes_str_names[op_dastore]);
+                        	break;
+                        case op_aastore: 
+                        	printf("%s\n", opcodes_str_names[op_aastore]);
+                        	break;
+                        case op_bastore: 
+                        	printf("%s\n", opcodes_str_names[op_bastore]);
+                        	break;
+                        case op_castore: 
+                        	printf("%s\n", opcodes_str_names[op_castore]);
+                        	break;
+                        case op_sastore: 
+                        	printf("%s\n", opcodes_str_names[op_sastore]);
+                        	break;
+                        case op_pop: 
+                        	printf("%s\n", opcodes_str_names[op_pop]);
+                        	break;
+                        case op_pop2: 
+                        	printf("%s\n", opcodes_str_names[op_pop2]);
+                        	break;
+                        case op_dup: 
+                        	printf("%s\n", opcodes_str_names[op_dup]);
+                        	break;
+                        case op_dup_x1: 
+                        	printf("%s\n", opcodes_str_names[op_dup_x1]);
+                        	break;
+                        case op_dup_x2: 
+                        	printf("%s\n", opcodes_str_names[op_dup_x2]);
+                        	break;
+                        case op_dup2: 
+                        	printf("%s\n", opcodes_str_names[op_dup2]);
+                        	break;
+                        case op_dup2_x1: 
+                        	printf("%s\n", opcodes_str_names[op_dup2_x1]);
+                        	break;
+                        case op_dup2_x2: 
+                        	printf("%s\n", opcodes_str_names[op_dup2_x2]);
+                        	break;
+                        case op_swap: 
+                        	printf("%s\n", opcodes_str_names[op_swap]);
+                        	break;
+                        case op_iadd: 
+                        	printf("%s\n", opcodes_str_names[op_iadd]);
+                        	break;
+                        case op_ladd: 
+                        	printf("%s\n", opcodes_str_names[op_ladd]);
+                        	break;
+                        case op_fadd: 
+                        	printf("%s\n", opcodes_str_names[op_fadd]);
+                        	break;
+                        case op_dadd: 
+                        	printf("%s\n", opcodes_str_names[op_dadd]);
+                        	break;
+                        case op_isub: 
+                        	printf("%s\n", opcodes_str_names[op_isub]);
+                        	break;
+                        case op_lsub: 
+                        	printf("%s\n", opcodes_str_names[op_lsub]);
+                        	break;
+                        case op_fsub: 
+                        	printf("%s\n", opcodes_str_names[op_fsub]);
+                        	break;
+                        case op_dsub: 
+                        	printf("%s\n", opcodes_str_names[op_dsub]);
+                        	break;
+                        case op_imul: 
+                        	printf("%s\n", opcodes_str_names[op_imul]);
+                        	break;
+                        case op_lmul: 
+                        	printf("%s\n", opcodes_str_names[op_lmul]);
+                        	break;
+                        case op_fmul: 
+                        	printf("%s\n", opcodes_str_names[op_fmul]);
+                        	break;
+                        case op_dmul: 
+                        	printf("%s\n", opcodes_str_names[op_dmul]);
+                        	break;
+                        case op_idiv: 
+                        	printf("%s\n", opcodes_str_names[op_idiv]);
+                        	break;
+                        case op_ldiv: 
+                        	printf("%s\n", opcodes_str_names[op_ldiv]);
+                        	break;
+                        case op_fdiv: 
+                        	printf("%s\n", opcodes_str_names[op_fdiv]);
+                        	break;
+                        case op_ddiv: 
+                        	printf("%s\n", opcodes_str_names[op_ddiv]);
+                        	break;
+                        case op_irem: 
+                        	printf("%s\n", opcodes_str_names[op_irem]);
+                        	break;
+                        case op_lrem: 
+                        	printf("%s\n", opcodes_str_names[op_lrem]);
+                        	break;
+                        case op_frem: 
+                        	printf("%s\n", opcodes_str_names[op_frem]);
+                        	break;
+                        case op_drem: 
+                        	printf("%s\n", opcodes_str_names[op_drem]);
+                        	break;
+                        case op_ineg: 
+                        	printf("%s\n", opcodes_str_names[op_ineg]);
+                        	break;
+                        case op_lneg: 
+                        	printf("%s\n", opcodes_str_names[op_lneg]);
+                        	break;
+                        case op_fneg: 
+                        	printf("%s\n", opcodes_str_names[op_fneg]);
+                        	break;
+                        case op_dneg: 
+                        	printf("%s\n", opcodes_str_names[op_dneg]);
+                        	break;
+                        case op_ishl: 
+                        	printf("%s\n", opcodes_str_names[op_ishl]);
+                        	break;
+                        case op_lshl: 
+                        	printf("%s\n", opcodes_str_names[op_lshl]);
+                        	break;
+                        case op_ishr: 
+                        	printf("%s\n", opcodes_str_names[op_ishr]);
+                        	break;
+                        case op_lshr: 
+                        	printf("%s\n", opcodes_str_names[op_lshr]);
+                        	break;
+                        case op_iushr: 
+                        	printf("%s\n", opcodes_str_names[op_iushr]);
+                        	break;
+                        case op_lushr: 
+                        	printf("%s\n", opcodes_str_names[op_lushr]);
+                        	break;
+                        case op_iand: 
+                        	printf("%s\n", opcodes_str_names[op_iand]);
+                        	break;
+                        case op_land: 
+                        	printf("%s\n", opcodes_str_names[op_land]);
+                        	break;
+                        case op_ior: 
+                        	printf("%s\n", opcodes_str_names[op_ior]);
+                        	break;
+                        case op_lor: 
+                        	printf("%s\n", opcodes_str_names[op_lor]);
+                        	break;
+                        case op_ixor: 
+                        	printf("%s\n", opcodes_str_names[op_ixor]);
+                        	break;
+                        case op_lxor: 
+                        	printf("%s\n", opcodes_str_names[op_lxor]);
+                        	break;
+                        case op_iinc: 
+                            i++;
+                        	printf("%s\n", opcodes_str_names[op_iinc]);
+                        	break;
+                        case op_i2l: 
+                        	printf("%s\n", opcodes_str_names[op_i2l]);
+                        	break;
+                        case op_i2f: 
+                        	printf("%s\n", opcodes_str_names[op_i2f]);
+                        	break;
+                        case op_i2d: 
+                        	printf("%s\n", opcodes_str_names[op_i2d]);
+                        	break;
+                        case op_l2i: 
+                        	printf("%s\n", opcodes_str_names[op_l2i]);
+                        	break;
+                        case op_l2f: 
+                        	printf("%s\n", opcodes_str_names[op_l2f]);
+                        	break;
+                        case op_l2d: 
+                        	printf("%s\n", opcodes_str_names[op_l2d]);
+                        	break;
+                        case op_f2i: 
+                        	printf("%s\n", opcodes_str_names[op_f2i]);
+                        	break;
+                        case op_f2l: 
+                        	printf("%s\n", opcodes_str_names[op_f2l]);
+                        	break;
+                        case op_f2d: 
+                        	printf("%s\n", opcodes_str_names[op_f2d]);
+                        	break;
+                        case op_d2i: 
+                        	printf("%s\n", opcodes_str_names[op_d2i]);
+                        	break;
+                        case op_d2l: 
+                        	printf("%s\n", opcodes_str_names[op_d2l]);
+                        	break;
+                        case op_d2f: 
+                        	printf("%s\n", opcodes_str_names[op_d2f]);
+                        	break;
+                        case op_i2b: 
+                        	printf("%s\n", opcodes_str_names[op_i2b]);
+                        	break;
+                        case op_i2c: 
+                        	printf("%s\n", opcodes_str_names[op_i2c]);
+                        	break;
+                        case op_i2s: 
+                        	printf("%s\n", opcodes_str_names[op_i2s]);
+                        	break;
+                        case op_lcmp: 
+                        	printf("%s\n", opcodes_str_names[op_lcmp]);
+                        	break;
+                        case op_fcmpl: 
+                        	printf("%s\n", opcodes_str_names[op_fcmpl]);
+                        	break;
+                        case op_fcmpg: 
+                        	printf("%s\n", opcodes_str_names[op_fcmpg]);
+                        	break;
+                        case op_dcmpl: 
+                        	printf("%s\n", opcodes_str_names[op_dcmpl]);
+                        	break;
+                        case op_dcmpg: 
+                        	printf("%s\n", opcodes_str_names[op_dcmpg]);
+                        	break;
+                        case op_ifeq: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_ifeq]);
+                        	break;
+                        case op_ifne: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_ifne]);
+                        	break;
+                        case op_iflt: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_iflt]);
+                        	break;
+                        case op_ifge: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_ifge]);
+                        	break;
+                        case op_ifgt: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_ifgt]);
+                        	break;
+                        case op_ifle: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_ifle]);
+                        	break;
+                        case op_if_icmpeq: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_if_icmpeq]);
+                        	break;
+                        case op_if_icmpne: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_if_icmpne]);
+                        	break;
+                        case op_if_icmplt: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_if_icmplt]);
+                        	break;
+                        case op_if_icmpge: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_if_icmpge]);
+                        	break;
+                        case op_if_icmpgt: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_if_icmpgt]);
+                        	break;
+                        case op_if_icmple: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_if_icmple]);
+                        	break;
+                        case op_if_acmpeq: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_if_acmpeq]);
+                        	break;
+                        case op_if_acmpne: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_if_acmpne]);
+                        	break;
+                        case op_goto: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_goto]);
+                        	break;
+                        case op_jsr: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_jsr]);
+                        	break;
+                        case op_ret: 
+                            i++;
+                        	printf("%s\n", opcodes_str_names[op_ret]);
+                        	break;
+                        case op_tableswitch: 
+                        	printf("%s\n", opcodes_str_names[op_tableswitch]);
+                        	break;
+                        case op_lookupswitch: 
+                        	printf("%s\n", opcodes_str_names[op_lookupswitch]);
+                        	break;
+                        case op_ireturn: 
+                        	printf("%s\n", opcodes_str_names[op_ireturn]);
+                        	break;
+                        case op_lreturn: 
+                        	printf("%s\n", opcodes_str_names[op_lreturn]);
+                        	break;
+                        case op_freturn: 
+                        	printf("%s\n", opcodes_str_names[op_freturn]);
+                        	break;
+                        case op_dreturn: 
+                        	printf("%s\n", opcodes_str_names[op_dreturn]);
+                        	break;
+                        case op_areturn: 
+                        	printf("%s\n", opcodes_str_names[op_areturn]);
+                        	break;
+                        case op_return: 
+                        	printf("%s\n", opcodes_str_names[op_return]);
+                        	break;
+                        case op_getstatic: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_getstatic]);
+                        	break;
+                        case op_putstatic: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_putstatic]);
+                        	break;
+                        case op_getfield: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_getfield]);
+                        	break;
+                        case op_putfield: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_putfield]);
+                        	break;
+                        case op_invokevirtual: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_invokevirtual]);
+                        	break;
+                        case op_invokespecial: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_invokespecial]);
+                        	break;
+                        case op_invokestatic: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_invokestatic]);
+                        	break;
+                        case op_invokeinterface: 
+                            i+=4;
+                        	printf("%s\n", opcodes_str_names[op_invokeinterface]);
+                        	break;
+                        case op_new: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_new]);
+                        	break;
+                        case op_newarray: 
+                            i++;
+                        	printf("%s\n", opcodes_str_names[op_newarray]);
+                        	break;
+                        case op_anewarray: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_anewarray]);
+                        	break;
+                        case op_arraylength: 
+                        	printf("%s\n", opcodes_str_names[op_arraylength]);
+                        	break;
+                        case op_athrow: 
+                        	printf("%s\n", opcodes_str_names[op_athrow]);
+                        	break;
+                        case op_checkcast: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_checkcast]);
+                        	break;
+                        case op_instanceof: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_instanceof]);
+                        	break;
+                        case op_monitorenter: 
+                        	printf("%s\n", opcodes_str_names[op_monitorenter]);
+                        	break;
+                        case op_monitorexit: 
+                        	printf("%s\n", opcodes_str_names[op_monitorexit]);
+                        	break;
+                        case op_wide: 
+                        	printf("%s\n", opcodes_str_names[op_wide]);
+                        	break;
+                        case op_multianewarray: 
+                            i+=3;
+                        	printf("%s\n", opcodes_str_names[op_multianewarray]);
+                        	break;
+                        case op_ifnull: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_ifnull]);
+                        	break;
+                        case op_ifnonnull: 
+                            i+=2;
+                        	printf("%s\n", opcodes_str_names[op_ifnonnull]);
+                        	break;
+                        case op_goto_w: 
+                            i+=4;
+                        	printf("%s\n", opcodes_str_names[op_goto_w]);
+                        	break;
+                        case op_jsr_w: 
+                            i+=4;
+                        	printf("%s\n", opcodes_str_names[op_jsr_w]);
+                        	break;
+                        case op_breakpoint: 
+                        	printf("%s\n", opcodes_str_names[op_breakpoint]);
+                        	break;
+                        default:
+                            printf("opcode desconhecido\n");
+                    }
+                } 
                 print_attributes(attributes[counter].info.Code_attribute.attribute, attributes[counter].info.Code_attribute.attribute_count, pool);
 
                 break;
