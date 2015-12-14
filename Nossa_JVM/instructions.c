@@ -3157,7 +3157,7 @@ static void op_invokeinterface(Frame *pFrame) {
     i8 classIndex, classIndexTemp, i;
     uint16_t nameTypeIndex;
     char *className;
-    CLASS *class;
+    ClassFile *class;
     struct _method_info *method;
     
     high = pFrame->code[++(pFrame->pc)];
@@ -3167,20 +3167,23 @@ static void op_invokeinterface(Frame *pFrame) {
     index <<= 8;
     index = index | low;
     
-    if (!index) error(E_NOTVALID_CP_INDEX);
+    if (!index) {
+        error(E_NOTVALID_CP_INDEX);
+    }
     
     args_count = pFrame->code[++(pFrame->pc)];
     pFrame->pc++;
     
     fieldsTemp = calloc(sizeof(u8),args_count+1);
     
+    
     for(i = args_count; i > 0; i--) {
         fieldsTemp[i] = pop(pFrame);
     }
     
-    classIndexTemp = pFrame->runtime_constant_pool->constants[index-1].type.MethodRef.classIndex;
-    className = maquina.getNameConstants(pFrame->current_class, pFrame->runtime_constant_pool->constants[classIndexTemp-1].type.Class.nameIndex);
-    nameTypeIndex = pFrame->runtime_constant_pool->constants[index-1].type.MethodRef.nameTypeIndex;
+    classIndexTemp = pFrame->pClass->constant_pool[index - 1].info.CONSTANT_FieldMethodIMethod_info.class_index;
+    className = getClassNameUtf8(pFrame->pClass, classIndexTemp);
+    nameTypeIndex = pFrame->pClass->constant_pool[index - 1].info.CONSTANT_FieldMethodIMethod_info.name_and_type_index;
     
     classIndex = maquina.loadClass(className);
     class = maquina.method_area->classes[classIndex];
