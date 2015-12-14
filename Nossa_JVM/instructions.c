@@ -408,6 +408,20 @@ static void op_ldc(Frame *pFrame) {
     index = pFrame->code[pFrame->pc];
     type = pFrame->runtime_constant_pool->constants[index - 1].tag;
     
+    switch (type) {
+        case CONSTANT_INTEGER:
+            pFrame->push((int64_t)pFrame->pClass->constant_pool[index - 1].info.Integer.bytes);
+            break;
+        case CONSTANT_FLOAT:
+            
+            break;
+        case CONSTANT_STRING:
+            
+            break;
+            
+        default:
+            break;
+    }
     if(type == tInteger){
         pFrame->push((int64_t)pFrame->pClass->constant_pool[index - 1].info.Integer.bytes);
     }else if(type == tFloat){
