@@ -3124,8 +3124,8 @@ static void op_invokestatic(Frame *pFrame) {
     }
     
     classIndexTemp = pFrame->pClass->constant_pool[index - 1].info.CONSTANT_FieldMethodIMethod_info.class_index;
-    className = maquina.getNameConstants(pFrame->current_class, pFrame->runtime_constant_pool->constants[classIndexTemp-1].type.Class.nameIndex);
-    nameTypeIndex = pFrame->runtime_constant_pool->constants[index-1].type.MethodRef.nameTypeIndex;
+    className = maquina.getClassNameUtf8(pFrame->pClass, classIndexTemp);
+    nameTypeIndex = pFrame->pClass->constant_pool[index - 1].info.CONSTANT_FieldMethodIMethod_info.name_and_type_index;
     
     classIndex = maquina.loadClass(className);
     class = maquina.method_area->classes[classIndex];
