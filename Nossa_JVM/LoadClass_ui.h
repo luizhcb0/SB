@@ -34,4 +34,7 @@ void print_interface (u2 interface[], u2 inter_length, cp_info pool[]);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 void print_ClassFile(ClassFile* class_file_ptr);
 
+void printFMI_str(u2 index);
+void printSTR_str(u2 index);
+
 #endif

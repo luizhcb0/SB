@@ -394,7 +394,7 @@ field_info *field_func(FILE *class_f, unsigned int offset, unsigned int *bytes_p
     field_count_ptr = (u2*) swapEndianess(&buffer_u2, buffer_size);
     //printf("\n%x\n", *field_count_ptr); //TESTE
     *fieldn = *field_count_ptr;
-    printf("\n\nTESTE:%d", *fieldn);
+    //printf("\n\nTESTE:%d", *fieldn);
     
     *bytes_ptr += 2; //Li 2 bytes
     
@@ -897,4 +897,13 @@ void fillStaticFields(ClassFile *clsFile_ptr){
 		}
 	}
 	clsFile_ptr->static_values_size = j;
+}
+
+//DOX
+u2 buildCPindex(u1 byte1, u2 byte2){
+	u2 cpIdx;
+	cpIdx = byte2;
+	cpIdx = cpIdx << 8;
+	cpIdx = cpIdx | byte1;
+	return cpIdx;
 }

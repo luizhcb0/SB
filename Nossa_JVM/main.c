@@ -74,7 +74,7 @@ int main(){
 
     loadClass( classPathF_ptr, classHeap_ptr, dmsize );
 
-    printf("\n\nConteudo do .class");
+    printf("\nConteudo do .class");
     printf("\n--------------------------------");
     print_ClassFile(classHeap_ptr);
  	
@@ -84,8 +84,8 @@ int main(){
 		printf("\nDeu pau");
 	}
 	else{
-		printf("\n%hu",  method_idx);	
-	 	printf("%d\n",classHeap_ptr->methods[method_idx].name_index);
+		//printf("\n%hu",  method_idx);	
+	 	//printf("%d\n",classHeap_ptr->methods[method_idx].name_index);
 
 	}   
        
@@ -111,7 +111,6 @@ u2 seekMethodInClass(ClassFile *class_ptr, char *methName_str, char *methDescrip
 		//methodN = malloc( (str_size + 1)*sizeof(char) );
 		//bytes = class_ptr->constant_pool[class_ptr->methods[i].name_index - 1].info.CONSTANT_Utf8_info_bytes;
 		
-		printf("\n%hu", i);
 			
 		methodN = class_ptr->constant_pool[class_ptr->methods[i].name_index - 1].info.CONSTANT_Utf8_info.bytes;
 		methodD = class_ptr->constant_pool[class_ptr->methods[i].descriptor_index - 1].info.CONSTANT_Utf8_info.bytes;

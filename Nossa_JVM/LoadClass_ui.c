@@ -53,10 +53,12 @@ void printContent (cp_info pool) {
 			break;
 		case 7: // Class
 			printf("\t#%"PRId16, pool.info.CONSTANT_Class_info.name_index);
+			//Printa reindireção
 			printf("\t\t\t // %s", pool_global[pool.info.CONSTANT_Class_info.name_index-1].info.CONSTANT_Utf8_info.bytes);
 			break;
 		case 8: // String
             printf("\t#%"PRId16, pool.info.CONSTANT_String_info.string_index);
+            //Printa reindireção
             printf("\t\t\t // %s", pool_global[pool.info.CONSTANT_String_info.string_index-1].info.CONSTANT_Utf8_info.bytes);
             break;
         case 9: // Fieldref
@@ -66,6 +68,7 @@ void printContent (cp_info pool) {
 			CONSTANT_FieldMethodIMethod_info.class_index, pool.info\
 			.CONSTANT_FieldMethodIMethod_info.name_and_type_index);
 			
+			//Printa reindireção
 			printf("\t\t // %s.", pool_global[pool_global[pool.info.CONSTANT_Class_info.name_index-1].info.CONSTANT_Class_info.name_index-1].info.CONSTANT_Utf8_info.bytes);
 			
 			
@@ -79,6 +82,7 @@ void printContent (cp_info pool) {
 			printf("#%"PRId16", #%"PRId16, pool.info.CONSTANT_NameAndType_info.\
 			name_index, pool.info.CONSTANT_NameAndType_info.\
 			descriptor_index);
+			//Printa reindireção
 			printf("\t\t // %s:%s", pool_global[pool.info.CONSTANT_NameAndType_info.name_index-1].info.CONSTANT_Utf8_info.bytes, pool_global[pool.info.CONSTANT_NameAndType_info.descriptor_index].info.CONSTANT_Utf8_info.bytes);
 			break;
 		default: 
@@ -332,6 +336,7 @@ void print_Methods(ClassFile *classFileVar, cp_info *pool) {
         //getchar();
         //printf("%d\n",classFileVar->methods[i].attribute[0].info.Code_attribute.attribute[0].attribute_name_index);
         //getchar();
+        //printf("\n*****Attributes*****\n\n");
         print_attributes(classFileVar->methods[i].attribute, classFileVar->methods[i].attributes_count, pool);
         printf("------------------------------------------------\n");
     }
@@ -345,21 +350,21 @@ void print_Methods(ClassFile *classFileVar, cp_info *pool) {
 
 void print_attributes (attribute_info *attributes, u2 attr_count, cp_info *pool) {
     u2 counter = 0;
+    u2 pcIdx;
     
-    printf("\n*****Attributes*****\n\n");
     
     while (counter < attr_count) {
         switch (attributes[counter].tag) {
             case 0:
                 printf("------------------------------------------------\n");
-                printf("[%d] ConstantValue\n", counter);
-                printf("\tAttribute name index: cp_info #%d\n",attributes[counter].attribute_name_index);
-                printf("\tAttribute length: %d\n",attributes[counter].attribute_length);
+                printf("ConstantValue\n");
+                //printf("\tAttribute name index: cp_info #%d\n",attributes[counter].attribute_name_index);
+                //printf("\tAttribute length: %d\n",attributes[counter].attribute_length);
 
                 break;
             case 1:
                 printf("------------------------------------------------\n");
-                printf("[%d] Code\n", counter);
+                printf("Code\n");
                 printf("\tAttribute name index: cp_info #%d\n",attributes[counter].attribute_name_index);
                 printf("\tAttribute length: %d\n",attributes[counter].attribute_length);
                 printf("Info:\n");
@@ -421,13 +426,17 @@ void print_attributes (attribute_info *attributes, u2 attr_count, cp_info *pool)
                             i++;
                         	printf("%s\n", opcodes_str_names[op_bipush]);
                         	break;
-                        case op_sipush: 
+                        case op_sipush:                                               	
                             i+= 2;
                         	printf("%s\n", opcodes_str_names[op_sipush]);
                         	break;
                         case op_ldc: 
-                            i++;
-                        	printf("%s\n", opcodes_str_names[op_ldc]);
+                            //i++;
+                        	printf("%s", opcodes_str_names[op_ldc]);
+                        	pcIdx = buildCPindex(attributes[counter].info.Code_attribute.code[++i], \
+                        	0);
+                        	printf("\t\t#%d", pcIdx);
+                        	printSTR_str(pcIdx);
                         	break;
                         case op_ldc_w: 
                             i+=2;
@@ -937,12 +946,20 @@ void print_attributes (attribute_info *attributes, u2 attr_count, cp_info *pool)
                         	printf("%s\n", opcodes_str_names[op_return]);
                         	break;
                         case op_getstatic: 
-                            i+=2;
-                        	printf("%s\n", opcodes_str_names[op_getstatic]);
+                            //i+=2; 
+                        	printf("%s", opcodes_str_names[op_getstatic]);
+                        	pcIdx = buildCPindex(attributes[counter].info.Code_attribute.code[++i], \
+                        	attributes[counter].info.Code_attribute.code[++i]);
+                        	printf("\t#%d", pcIdx);
+                        	printFMI_str(pcIdx);
                         	break;
                         case op_putstatic: 
-                            i+=2;
-                        	printf("%s\n", opcodes_str_names[op_putstatic]);
+                            //i+=2;
+                        	printf("%s", opcodes_str_names[op_putstatic]);
+                        	pcIdx = buildCPindex(attributes[counter].info.Code_attribute.code[++i], \
+                        	attributes[counter].info.Code_attribute.code[++i]);
+                        	printf("\t#%d", pcIdx);
+                        	printFMI_str(pcIdx);
                         	break;
                         case op_getfield: 
                             i+=2;
@@ -953,16 +970,25 @@ void print_attributes (attribute_info *attributes, u2 attr_count, cp_info *pool)
                         	printf("%s\n", opcodes_str_names[op_putfield]);
                         	break;
                         case op_invokevirtual: 
-                            i+=2;
-                        	printf("%s\n", opcodes_str_names[op_invokevirtual]);
+                            //i+=2;
+                        	printf("%s", opcodes_str_names[op_invokevirtual]);
+                        	pcIdx = buildCPindex(attributes[counter].info.Code_attribute.code[++i], \
+                        	attributes[counter].info.Code_attribute.code[++i]);
+                        	printf("\t#%d", pcIdx);
+                        	printFMI_str(pcIdx);
                         	break;
                         case op_invokespecial: 
                             i+=2;
                         	printf("%s\n", opcodes_str_names[op_invokespecial]);
+                        	
                         	break;
                         case op_invokestatic: 
-                            i+=2;
-                        	printf("%s\n", opcodes_str_names[op_invokestatic]);
+                            //i+=2;
+                        	printf("%s", opcodes_str_names[op_invokestatic]);
+                        	pcIdx = buildCPindex(attributes[counter].info.Code_attribute.code[++i], \
+                        	attributes[counter].info.Code_attribute.code[++i]);
+                        	printf("\t#%d", pcIdx);
+                        	printFMI_str(pcIdx);
                         	break;
                         case op_invokeinterface: 
                             i+=4;
@@ -1035,27 +1061,27 @@ void print_attributes (attribute_info *attributes, u2 attr_count, cp_info *pool)
                 break;
             case 2:
                 printf("------------------------------------------------\n");
-                printf("[%d] Exceptions\n", counter);
+                printf("Exceptions\n");
                 printf("\tAttribute name index: cp_info #%d\n",attributes[counter].attribute_name_index);
                 printf("\tAttribute length: %d\n",attributes[counter].attribute_length);
 
                 break;
             case 3:
                 printf("------------------------------------------------\n");
-                printf("[%d] InnerClasses\n", counter);
+                printf("InnerClasses\n");
                 printf("\tAttribute name index: cp_info #%d\n",attributes[counter].attribute_name_index);
                 printf("\tAttribute length: %d\n",attributes[counter].attribute_length);
 
                 break;
             case 4:
                 printf("------------------------------------------------\n");
-                printf("[%d] Synthetic\n", counter);
+                printf("Synthetic\n");
                 printf("\tAttribute name index: cp_info #%d\n",attributes[counter].attribute_name_index);
                 printf("\tAttribute length: %d\n",attributes[counter].attribute_length);
                 break;
             case 5:
                 printf("------------------------------------------------\n");
-                printf("[%d] SourceFile\n",counter);
+                printf("SourceFile\n");
                 printf("\tAttribute name index:\t cp_info #%d\n",attributes[counter].attribute_name_index);
                 printf("\tAttribute length:\t %d\n",attributes[counter].attribute_length);
                 printf("Info:\n");
@@ -1064,21 +1090,24 @@ void print_attributes (attribute_info *attributes, u2 attr_count, cp_info *pool)
                 break;
             case 6:
                 printf("------------------------------------------------\n");
-                printf("[%d] LineNumberTable\n", counter);
+                printf("LineNumberTable\n");
                 printf("\tAttribute name index: cp_info #%d\n",attributes[counter].attribute_name_index);
-                printf("\tAttribute length: %d\n",attributes[counter].attribute_length);
-
+                //printf("\tAttribute length: %d\n",attributes[counter].attribute_length);
+                for(int i = 0; i < attributes[counter].info.LineNumberTable_attribute.line_number_table_length; i++) {
+                	printf("\tLine Number  %d",attributes[counter].info.LineNumberTable_attribute.line_number_table[i].line_number);
+					printf("\t: %d\n",attributes[counter].info.LineNumberTable_attribute.line_number_table[i].start_pc);
+				}
                 break;
             case 7:
                 printf("------------------------------------------------\n");
-                printf("[%d] LocalVariableTable\n", counter);
+                printf("LocalVariableTable\n");
                 printf("\tAttribute name index: cp_info #%d\n",attributes[counter].attribute_name_index);
                 printf("\tAttribute length: %d\n",attributes[counter].attribute_length);
 
                 break;
             case 8:
                 printf("------------------------------------------------\n");
-                printf("[%d] Deprecated\n", counter);
+                printf("Deprecated\n");
                 printf("\tAttribute name index: cp_info #%d\n",attributes[counter].attribute_name_index);
                 printf("\tAttribute length: %d\n",attributes[counter].attribute_length);
 
@@ -1114,8 +1143,13 @@ void print_interface (u2 interface[], u2 inter_length, cp_info pool[]) {
 
 void print_ClassFile(ClassFile* class_file_ptr){
     printf("\n\nMagic: %.8x\n\n", class_file_ptr->magic);
-	printf("Minor Version: %.4x\n", class_file_ptr->minor_version);
-	printf("Major Version: %.4x\n\n", class_file_ptr->major_version);
+	printf("Minor Version: %.1x\n", class_file_ptr->minor_version);
+	if (class_file_ptr->major_version == 0x2e) {
+		printf("Major Version: 1.2\n\n");
+	} else if (class_file_ptr->major_version == 0x2d){
+		printf("Major Version: 1.1\n\n");
+	}
+	
     
     printConstantPoolTable(class_file_ptr->constant_pool_count, class_file_ptr->constant_pool);
 
@@ -1124,9 +1158,30 @@ void print_ClassFile(ClassFile* class_file_ptr){
     printField(class_file_ptr->constant_pool, class_file_ptr->fields, class_file_ptr->fields_count);
 
     print_Methods(class_file_ptr, class_file_ptr->constant_pool);
-
+	printf("\n*****Class Attributes*****\n\n");
     print_attributes(class_file_ptr->attributes, class_file_ptr->attributes_count, class_file_ptr->constant_pool);
 
     
+}
+
+void printFMI_str(u2 index) {
+	printf("\t// %s.", pool_global[pool_global[pool_global[index-1].info.CONSTANT_FieldMethodIMethod_info.class_index-1]\
+	.info.CONSTANT_Class_info.name_index-1].info.CONSTANT_Utf8_info.bytes);
+	
+	printf("%s:", pool_global[pool_global[pool_global[index-1].info.CONSTANT_FieldMethodIMethod_info.name_and_type_index -1].info.CONSTANT_NameAndType_info.name_index -1].info.CONSTANT_Utf8_info.bytes);
+	
+	printf("%s\n", pool_global[pool_global[pool_global[index-1].info.CONSTANT_FieldMethodIMethod_info.name_and_type_index -1].info.CONSTANT_NameAndType_info.descriptor_index -1].info.CONSTANT_Utf8_info.bytes);
+}
+
+
+void printSTR_str(u2 index) {
+	if(pool_global[index-1].tag == 8) {
+		printf("\t// %s\n", pool_global[pool_global[index-1].info.CONSTANT_String_info.string_index -1].info.CONSTANT_Utf8_info.bytes);
+	} else if (pool_global[index-1].tag == 3) {
+		printf("\t// %d\n", pool_global[index-1].info.CONSTANT_IntegerFloat_info.bytes);
+	} else {
+		float *x = (float*)((void*)&pool_global[index-1].info.CONSTANT_IntegerFloat_info.bytes);
+		printf("\t// %f\n", *x);
+	}
 }
 
