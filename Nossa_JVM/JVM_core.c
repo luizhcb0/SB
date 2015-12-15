@@ -12,7 +12,7 @@
  * @param stackFrame
  * @param classPathF_ptr
  */
-void jvmStartup(ClassFile *classHeap_ptr, Object *objectHeap_ptr, Frame *stackFrame_ptr, FILE *classPathF_ptr, dataMSize_t *dmSize_ptr, int flag){
+void jvmStartup(ClassFile *classHeap_ptr, Object *objectHeap_ptr, Frame *stackFrame_ptr, u1 *classPathStr, dataMSize_t *dmSize_ptr, int flag){
     classHeap_ptr = malloc( CLSHEAP_MAX*sizeof( ClassFile ) );
     objectHeap_ptr = malloc( OBJHEAP_MAX*sizeof( Object_t ) );
     stackFrame_ptr = malloc( STKFRAME_MAX*sizeof( Frame ) );
@@ -23,7 +23,7 @@ void jvmStartup(ClassFile *classHeap_ptr, Object *objectHeap_ptr, Frame *stackFr
     
     //Carrega a classe inicial
     //OK! 
-    loadClass(classPathF_ptr, classHeap_ptr, dmSize_ptr);
+    classLoader(classPathStr, classHeap_ptr, dmSize_ptr);
    	printf("\nstatic_values_size %d", classHeap_ptr->static_values_size); 
 	for(int i = 0; i < classHeap_ptr->static_values_size; i++)
 		printf("\nname %s", classHeap_ptr->static_values[i].field_name);

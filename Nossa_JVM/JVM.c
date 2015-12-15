@@ -86,15 +86,15 @@ int main(int argc, char **argv){
 	}
 	
 	printf("\n%s", classPathStr);	
-	classPathF_ptr = fopen(classPathStr, "rb");
-	if( classPathF_ptr == NULL){
-		printf("\nArquivo não encontrado");
-		exit(1);
-	}
+	//classPathF_ptr = fopen(classPathStr, "rb");
+	//if( classPathF_ptr == NULL){
+	//	printf("\nArquivo não encontrado");
+	//	exit(1);
+	//}
 	/** Inicicializa a JVM.
 		Cria espaço para os heaps e para o stackFrame.
 		Carrega a class inicial. */
-	jvmStartup(classHeap_ptr, objectHeap_ptr, stackFrame_ptr, classPathF_ptr, &dmSize, flag);
+	jvmStartup(classHeap_ptr, objectHeap_ptr, stackFrame_ptr, classPathStr, &dmSize, flag);
 
 	//Fecha o arquivo do primeiro class file aberto
 	fclose(classPathF_ptr);

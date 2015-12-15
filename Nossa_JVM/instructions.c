@@ -2958,11 +2958,11 @@ static void op_invokevirtual(Frame *pFrame) {
             //array
             if(strstr(methodDesc, "[C") != NULL){
                 array_ref = pop(pFrame);
-                for(i = 0; i < maquina.heap->array_count; i++){
-                    if(!memcmp(&maquina.heap->arrays[i], &array_ref, sizeof(u8)))
+                for(i = 0; i < objHeap->array_count; i++){
+                    if(!memcmp(&objHeap->arrays[i], &array_ref, sizeof(u8)))
                         break;
                 }
-                for(j = 0; j < maquina.heap->array_count; j++){
+                for(j = 0; j < objHeap->array_count; j++){
                     printf("%"PRIi16,(int16_t)(array_ref +i));
                 }
                 //CHAR
@@ -3190,10 +3190,10 @@ static void op_invokeinterface(Frame *pFrame) {
     classIndex = maquina.loadClass(className);
     class = maquina.method_area->classes[classIndex];
     
-    while(class != NULL && (method = maquina.getMethodByNameDesc(class, pFrame->current_class, nameTypeIndex)) == NULL) {
-        className = _MCLASS.getParentName(class);
-        classIndex = maquina.loadClass(className);
-        class = maquina.method_area->classes[classIndex];
+    while(class != NULL && (method = getMethodByNameDesc(class, pFrame->current_class, nameTypeIndex)) == NULL) {
+        className = getParentName(class);
+        classIndex = loadClass(className);
+        class = mHeap->classes[classIndex];
     }
     
     if(class == NULL) {
@@ -3201,12 +3201,12 @@ static void op_invokeinterface(Frame *pFrame) {
     }
     
     u8 objectref = pop(pFrame);
-    maquina.construirFrame(class, method);
+    createFrame(method,class);
     for(i = args_count; i > 0; i--) {
         pFrame->local[i] = fieldsTemp[i];
     }
     pFrame->local[0] = objectref;
-    maquina.execute();
+    Execute();
     pFrame->pc++;
     
 }
@@ -3232,13 +3232,13 @@ static void op_new(Frame *pFrame) {
     if (!index) {
         error(E_NOTVALID_CP_INDEX);
     }
-    className = _MCONSTANTP.getClassName(pFrame->runtime_constant_pool, index);
+    className = getClassNameUtf8(pFrame->pClass, index);
     
-    classIndex = maquina.loadClass(className);
+    classIndex = loadClass(className);
     
-    pClass = maquina.method_area->classes[classIndex];
+    pClass = mHeap->classes[classIndex];
     
-    objeto = maquina.heap->newObject(pClass);
+    objeto = newObject(objHeap,pClass);
     
     
     push(pFrame,(u8)(intptr_t)objeto);
@@ -3254,7 +3254,7 @@ static void op_newarray(Frame *pFrame) {
     type = pFrame->code[(pFrame->pc)];
     if (count < 0) error(E_NEG_ARR_SIZE);
     
-    push(pFrame,(u8)(intptr_t)maquina.heap->newArray(count,type));
+    push(pFrame,(u8)(intptr_t) newArray(objHeap,count,type));
     pFrame->pc++;
 }
 
@@ -3266,9 +3266,9 @@ static void op_anewarray(Frame *pFrame) {
     uint8_t index_byte2 = pFrame->code[++pFrame->pc];
     uint16_t index = index_byte1; index = index << 8 | index_byte2;
     
-    char* className = _MCONSTANTP.getClassName(pFrame->runtime_constant_pool, index);
+    u1 *className = getClassNameUtf8(pFrame->pClass, index);
     
-    void* pointer = maquina.heap->newRefArray(count,className);
+    void *pointer = newRefArray(objHeap,count,className);
     
     push(pFrame,(u8)(intptr_t)pointer);
     pFrame->pc++;
@@ -3278,11 +3278,11 @@ static void op_arraylength(Frame *pFrame) {
     u8 reference = pop(pFrame);
     if (reference == 0) error(E_NULL_POINTER);
     
-    for(int i=0;i < maquina.heap->array_count; i++){
+    for(int i=0;i < objHeap->array_count; i++){
         
         // push somente a quantidade do array correto
-        if(!memcmp(&maquina.heap->arrays[i], &reference, sizeof(struct _array*))) {
-            push(pFrame,maquina.heap->arrays[i]->quantidade);
+        if(!memcmp(&objHeap->arrays[i], &reference, sizeof(struct _array*))) {
+            push(pFrame,objHeap->arrays[i]->quantidade);
             pFrame->pc++;
             return;
         }
@@ -3307,8 +3307,8 @@ static void op_checkcast(Frame *pFrame) {
     
     reference = (struct _object *)(intptr_t)pop(pFrame);
     
-    char* className1 = pFrame->current_class->getName(pFrame->current_class);
-    char* className2 = _MCONSTANTP.getClassName(reference->class->constant_pool,index);
+    u1 *className1 = getClassNameUtf8(pFrame->pClass, pFrame->pClass->this_class);
+    u1 *className2 = getClassNameUtf8(reference->class, index);
     
     if(reference == NULL) {
         printf("Erro: Null Reference\n");
@@ -3337,8 +3337,8 @@ static void op_instanceof(Frame *pFrame) {
         printf("Erro: Null Reference\n");
     }
     
-    char* className1 = pFrame->current_class->getName(pFrame->current_class);
-    char* className2 = _MCONSTANTP.getClassName(reference->class->constant_pool,index);
+    u1 *className1 = getClassNameUtf8(pFrame->pClass, pFrame->pClass->ths_class);
+    u1 *className2 = getClassNameUtf8(reference->class, index);
     
     if(strcmp(className1, className2) == 0) {
         push(pFrame,1);
@@ -3369,7 +3369,7 @@ static void op_multianewarray(Frame *pFrame) {
     uint16_t index = pFrame->code[++pFrame->pc];
     index = index << 8 | pFrame->code[++pFrame->pc];
     int dimensionCount = pFrame->code[++pFrame->pc];
-    char* marrayInfo = getClassName(pFrame->pClass->constant_pool, index);
+    char *marrayInfo = getClassNameUtf8(pFrame->pClass->constant_pool, index);
     
     // multianewarray apenas para arrays de dimensão >= 2
     if (dimensionCount < 1 || marrayInfo == NULL || (marrayInfo[0] != '[' && marrayInfo[1] != '[')) {
@@ -3390,8 +3390,8 @@ static void op_multianewarray(Frame *pFrame) {
     uint32_t tipo = 0;
     switch(marrayInfo[dimensionCount]) {
         case 'L': // seta o tipo e carrega classe para method_area
-            tipo = tREFERENCIA;
-            char *className = (char*) malloc(strlen(marrayInfo)*sizeof(char));
+            tipo = ref_t;
+            u1 *className = (u1*) malloc(strlen(marrayInfo)*sizeof(u1));
             for (int i = dimensionCount + 1; i < strlen(marrayInfo); i++) {
                 className[i - dimensionCount - 1] = marrayInfo[i];
                 className[i - dimensionCount] = '\0';
@@ -3399,28 +3399,28 @@ static void op_multianewarray(Frame *pFrame) {
             loadClass(className);
             break;
         case 'Z':
-            tipo = tBOOLEAN;
+            tipo = bool_t;
             break;
         case 'C':
-            tipo = tCHAR;
+            tipo = char_t;
             break;
         case 'F':
-            tipo = tFLOAT;
+            tipo = float_t;
             break;
         case 'D':
-            tipo = tDOUBLE;
+            tipo = double_t;
             break;
         case 'B':
-            tipo = tBYTE;
+            tipo = byte_t;
             break;
         case 'S':
-            tipo = tSHORT;
+            tipo = short_t;
             break;
         case 'I':
-            tipo = tINT;
+            tipo = int_t;
             break;
         case 'J':
-            tipo = tLONG;
+            tipo = long_t;
             break;
         case '[':
             error(E_DISTINCT_MARRAY_DIMENSIONS);

@@ -32,6 +32,7 @@ typedef struct {
     
     u2 max_locals;
     u8* local;
+    u2 retornou;
     
     // funcoes
     void (*push)(Frame *,u8);
