@@ -13,7 +13,7 @@
 #include <math.h>
 #include <inttypes.h>
 #include "LoadClass_ui.h"
-
+#include "LoadClass_core.h"
 char *opcodes_str_names[] = { "nop", "aconst_null", "iconst_m1", "iconst_0", "iconst_1", 
 	"iconst_2", "iconst_3", "iconst_4", "iconst_5", "lconst_0", 
 	"lconst_1", "fconst_0", "fconst_1", "fconst_2", "dconst_0", 
@@ -56,7 +56,7 @@ char *opcodes_str_names[] = { "nop", "aconst_null", "iconst_m1", "iconst_0", "ic
 	"wide", "multianewarray", "ifnull", "ifnonnull", "goto_w", 
 	"jsr_w", "breakpoint" };
 
-void loadClass( FILE *classPathF_ptr, ClassFile* clsHeap, dataMSize_t *dmSize ); 
+ClassFile *loadClass( char *classPathStr, ClassFile* clsHeap, dataMSize_t *dmSize ); 
 u2 seekMethodInClass(ClassFile *class_ptr, char *methName_str, char *methDescriptor_str);
 
 int main(){
@@ -71,10 +71,12 @@ int main(){
 		printf("\nErro ao abrir");
 		exit(1);
 	}
+    //fclose(classPath_ptr);
 
-    loadClass( classPathF_ptr, classHeap_ptr, dmsize );
+    //classPathF_ptr era argumento.
+    loadClass( "testeStatic.class", classHeap_ptr, dmsize );
 
-    printf("\n\nConteudo do .class");
+    printf("\nConteudo do .class");
     printf("\n--------------------------------");
     print_ClassFile(classHeap_ptr);
  	
@@ -84,8 +86,8 @@ int main(){
 		printf("\nDeu pau");
 	}
 	else{
-		printf("\n%hu",  method_idx);	
-	 	printf("%d\n",classHeap_ptr->methods[method_idx].name_index);
+		//printf("\n%hu",  method_idx);	
+	 	//printf("%d\n",classHeap_ptr->methods[method_idx].name_index);
 
 	}   
        
@@ -111,7 +113,6 @@ u2 seekMethodInClass(ClassFile *class_ptr, char *methName_str, char *methDescrip
 		//methodN = malloc( (str_size + 1)*sizeof(char) );
 		//bytes = class_ptr->constant_pool[class_ptr->methods[i].name_index - 1].info.CONSTANT_Utf8_info_bytes;
 		
-		printf("\n%hu", i);
 			
 		methodN = class_ptr->constant_pool[class_ptr->methods[i].name_index - 1].info.CONSTANT_Utf8_info.bytes;
 		methodD = class_ptr->constant_pool[class_ptr->methods[i].descriptor_index - 1].info.CONSTANT_Utf8_info.bytes;
