@@ -12,7 +12,7 @@
  * @param stackFrame
  * @param classPathF_ptr
  */
-void jvmStartup(ClassFile *classHeap_ptr, Object *objectHeap_ptr, Frame *stackFrame_ptr, FILE *classPathF_ptr, dataMSize_t *dmSize_ptr){
+void jvmStartup(ClassFile *classHeap_ptr, Object *objectHeap_ptr, Frame *stackFrame_ptr, FILE *classPathF_ptr, dataMSize_t *dmSize_ptr, int flag){
     classHeap_ptr = malloc( CLSHEAP_MAX*sizeof( ClassFile ) );
     objectHeap_ptr = malloc( OBJHEAP_MAX*sizeof( Object_t ) );
     stackFrame_ptr = malloc( STKFRAME_MAX*sizeof( Frame ) );
@@ -27,10 +27,13 @@ void jvmStartup(ClassFile *classHeap_ptr, Object *objectHeap_ptr, Frame *stackFr
    	printf("\nstatic_values_size %d", classHeap_ptr->static_values_size); 
 	for(int i = 0; i < classHeap_ptr->static_values_size; i++)
 		printf("\nname %s", classHeap_ptr->static_values[i].field_name);
-    //Checa a consistência da classe
-    printf("\n\nConteudo do .class");
-    printf("\n--------------------------------");
-    print_ClassFile(classHeap_ptr);
+    ////Checa a consistência da classe
+    if( flag ){
+        printf("\n\nConteudo do .class");
+        printf("\n--------------------------------");
+        print_ClassFile(classHeap_ptr);
+        exit(1);
+    }
     //Inicializa a classe inicial, roda clinit
 
 	//OCUPADO

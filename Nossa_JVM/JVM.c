@@ -72,10 +72,13 @@ int main(int argc, char **argv){
 	FILE *classPathF_ptr;	
 	char *classPathStr = malloc( sizeof(char)*100 );
 	dataMSize_t dmSize;
-	
+    int flag = 0;	
 
 	if( argc > 1){
 		classPathStr = argv[1];	
+        if( argc > 2 && !strcmp(argv[2], "-p") ){
+            flag = 1;
+        } 
 	}
 	else{
 		printf("\nDigite o nome do arquivo: ");
@@ -91,7 +94,7 @@ int main(int argc, char **argv){
 	/** Inicicializa a JVM.
 		Cria espaço para os heaps e para o stackFrame.
 		Carrega a class inicial. */
-	jvmStartup(classHeap_ptr, objectHeap_ptr, stackFrame_ptr, classPathF_ptr, &dmSize);
+	jvmStartup(classHeap_ptr, objectHeap_ptr, stackFrame_ptr, classPathF_ptr, &dmSize, flag);
 
 	//Fecha o arquivo do primeiro class file aberto
 	fclose(classPathF_ptr);
