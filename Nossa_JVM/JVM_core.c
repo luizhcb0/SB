@@ -12,28 +12,37 @@
  * @param stackFrame
  * @param classPathF_ptr
  */
-void jvmStartup(ClassFile *classHeap_ptr, Object *objectHeap_ptr, Frame *stackFrame_ptr, u1 *classPathStr, dataMSize_t *dmSize_ptr, int flag){
-    classHeap_ptr = malloc( CLSHEAP_MAX*sizeof( ClassFile ) );
-    objectHeap_ptr = malloc( OBJHEAP_MAX*sizeof( Object_t ) );
-    stackFrame_ptr = malloc( STKFRAME_MAX*sizeof( Frame ) );
+
+dataMSize_t dmSize;
+ClassFile *classHeap;
+Frame *stackFrame;
+Heap objHeap;
+
+void jvmStartup(u1 *classPathStr, int flag){
+    classHeap = malloc( CLSHEAP_MAX*sizeof( ClassFile ) );
+    objectHeap = malloc( OBJHEAP_MAX*sizeof( Object_t ) );
+    stackFrame = malloc( STKFRAME_MAX*sizeof( Frame ) );
     
-    dmSize_ptr->clsHeap_size = 0;
-    dmSize_ptr->objHeap_size = 0;
-    dmSize_ptr->stkHeap_size = 0;
+    dmSize->clsHeap_size = 0;
+    dmSize->objHeap_size = 0;
+    dmSize->stkHeap_size = 0;
     
     //Carrega a classe inicial
     //OK! 
-    classLoader(classPathStr, classHeap_ptr, dmSize_ptr);
-   	printf("\nstatic_values_size %d", classHeap_ptr->static_values_size); 
-	for(int i = 0; i < classHeap_ptr->static_values_size; i++)
-		printf("\nname %s", classHeap_ptr->static_values[i].field_name);
+    classLoader(classPathStr);
+   	printf("\nstatic_values_size %d", classHeap->static_values_size);
+	for(int i = 0; i < classHeap->static_values_size; i++)
+		printf("\nname %s", classHeap->static_values[i].field_name);
     ////Checa a consistência da classe
     if( flag ){
         printf("\n\nConteudo do .class");
         printf("\n--------------------------------");
-        print_ClassFile(classHeap_ptr);
+        print_ClassFile(classHeap);
         exit(1);
     }
+    
+    //Fecha o arquivo do primeiro class file aberto
+    fclose(classPathF_ptr);
     //Inicializa a classe inicial, roda clinit
 
 	//OCUPADO

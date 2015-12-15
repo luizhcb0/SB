@@ -66,10 +66,7 @@ char *opcodes_str_names[] = { "nop", "aconst_null", "iconst_m1", "iconst_0", "ic
 	"jsr_w", "breakpoint" };
 
 int main(int argc, char **argv){
-	ClassFile *classHeap_ptr;
-	Object *objectHeap_ptr;
-	Frame *stackFrame_ptr;
-	FILE *classPathF_ptr;	
+	//FILE *classPathF_ptr;
 	char *classPathStr = malloc( sizeof(char)*100 );
 	dataMSize_t dmSize;
     int flag = 0;	
@@ -94,10 +91,9 @@ int main(int argc, char **argv){
 	/** Inicicializa a JVM.
 		Cria espaço para os heaps e para o stackFrame.
 		Carrega a class inicial. */
-	jvmStartup(classHeap_ptr, objectHeap_ptr, stackFrame_ptr, classPathStr, &dmSize, flag);
+	jvmStartup(classPathStr, flag);
 
-	//Fecha o arquivo do primeiro class file aberto
-	fclose(classPathF_ptr);
+	
 
 	return 0;
 }

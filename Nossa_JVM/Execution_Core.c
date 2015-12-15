@@ -20,13 +20,16 @@
  *
  *  @return <#return value description#>
  */
-u4 Execute (Frame *stackFrame_ptr, ClassFile *pClassHeap, dataMSize_t *dmSize_ptr) {
+
+dataMSize_t dmSize;
+ClassFile *ClassHeap;
+Frame *stackFrame;
+Heap objHeap;
+
+u4 Execute () {
     
-    Frame *pFrame = &stackFrame_ptr[dmSize_ptr->stkHeap_size - 1];
-    u2 classHeapLength = dmSize_ptr->clsHeap_size;
-    u4 *local_iterator = pFrame->local;
-    i4 error = 0;
-    i8 longVal;
+    Frame *pFrame = stackFrame[dmSize->stkHeap_size - 1];
+    u2 classHeapLength = dmSize->clsHeap_size;
     
     
     while (pFrame->retornou == 0 pFrame != NULL && (pFrame->pc) < pFrame->code_length) {
@@ -34,6 +37,8 @@ u4 Execute (Frame *stackFrame_ptr, ClassFile *pClassHeap, dataMSize_t *dmSize_pt
         instructions[iterator].call();
     }
     pFrame->retournou = 0;
+    // Fazer do nosso jeito
+    maquina.stack->popFrame();
     
 }
 
@@ -449,17 +454,17 @@ method_info *getMethodByNameDesc(ClassFile *main_class, ClassFile *name_type_cla
     u1 *name, *desc;
     u2 name_len, desc_len;
     
-    name = getUtf8String(name_type_class->constant_pool, name_type_class->constant_pool[name_type_index - 1].type.NameType.nameIndex);
+    name = getUtf8String(name_type_class->constant_pool, name_type_class->constant_pool[name_type_index - 1].info.CONSTANT_NameAndType_info.name_index);
     name_len = strlen(name);
-    desc = getgetNameConstants(name_type_class, name_type_class->constant_pool->constants[name_type_index-1].type.NameType.descriptorIndex);
+    desc = getUtf8String(name_type_class->constant_pool, name_type_class->constant_pool->constants[name_type_index - 1].info.CONSTANT_NameAndType_info.descriptor_index);
     desc_len = strlen(desc);
     
     for(i = 0; i < main_class->methods_count; i++) {
         
-        m_name = main_class->constant_pool->constants[(main_class->methods_pool->methods[i].name_index-1)].type.Utf8.bytes;
-        m_name_len = main_class->constant_pool->constants[(main_class->methods_pool->methods[i].name_index-1)].type.Utf8.tam;
-        m_desc = main_class->constant_pool->constants[(main_class->methods_pool->methods[i].descriptor_index-1)].type.Utf8.bytes;
-        m_desc_len = main_class->constant_pool->constants[(main_class->methods_pool->methods[i].descriptor_index-1)].type.Utf8.tam;
+        m_name = main_class->constant_pool[(main_class->methods[i].name_index - 1)].info.CONSTANT_Utf8_info.bytes;
+        m_name_len = strlen(main_class->constant_pool[(main_class->methods[i].name_index - 1)].info.CONSTANT_Utf8_info.bytes);
+        m_desc = main_class->constant_pool[(main_class->methods[i].descriptor_index - 1)].info.CONSTANT_Utf8_info.bytes;
+        m_desc_len = strlen(main_class->constant_pool[(main_class->methods[i].descriptor_index - 1)].info.CONSTANT_Utf8_info.bytes);
         
         if(name_len != m_name_len) {
             continue;
@@ -468,11 +473,114 @@ method_info *getMethodByNameDesc(ClassFile *main_class, ClassFile *name_type_cla
             continue;
         }
         if((strncmp((char *)name,(char *)m_name , m_name_len) == 0) &&(strncmp((char *)desc,(char *)m_desc , m_desc_len) == 0)) {
-            return &(main_class->methods_pool->methods[i]);
+            return &(main_class->methods[i]);
         }
         
     }
     return NULL;
+}
+
+int32_t getNumParameters(ClassFile *class, method_info *method) {
+    int32_t i;
+    int32_t parametros = 0;
+    uint16_t length;
+    uint8_t *bytes;
+    
+    bytes = class->constant_pool[(method->descriptor_index - 1)].info.CONSTANT_Utf8_info.bytes;
+    length = strlen(class->constant_pool[(method->descriptor_index - 1)].info.CONSTANT_Utf8_info.bytes);
+    for(i = 0; i < length && bytes[i] != ')'; i++) {
+        if(bytes[i] == 'L') {
+            while(bytes[i] != ';') {
+                i++;
+            }
+            parametros++;
+        }else if (bytes[i] == '[') {
+            parametros++;
+            while(bytes[i] != ';' && bytes[i] != ')') {
+                i++;
+            }
+        } else if((bytes[i] == 'B')||(bytes[i] == 'C')||(bytes[i] == 'F')|| (bytes[i] == 'I')||(bytes[i] == 'S')||(bytes[i] == 'Z') ) {
+            parametros++;
+        } else if((bytes[i] == 'D')||(bytes[i] == 'J')) {
+            parametros+=2;
+        }
+    }
+    
+    return parametros;
+}
+
+static uint64_t getObjectField(struct _object *object, uint32_t field_index) {
+    return object->fields[field_index];
+}
+
+/*!
+	seta um valor a um field que estah instanciado
+ */
+static void setObjectField(struct _object *object, uint32_t field_index, uint64_t value) {
+    object->fields[field_index] = value;
+}
+
+static ClassFile *getClassByName(u1 *classname){
+    int flag = getClassIndex(classname);
+    if (flag < 0) return NULL;
+    return mHeap->classes[getClassIndex(classname)];
+}
+
+
+static uint32_t getFieldIndex(char *className, char *name, uint16_t nameLen, char *desc, uint16_t descLen) {
+    
+    int32_t i;
+    ClassFile *main_class;
+    uint8_t *getName, *getDesc;
+    
+    main_class = getClassByName(className);
+    
+    if (!main_class) {
+        return -2;
+    }
+    
+    for (i = 0; main_class && i < main_class->fields_count; i++) {
+        getName = main_class->constant_pool[(main_class->fields[i].name_index - 1)].info.CONSTANT_Utf8_info.bytes;
+        getDesc = main_class->constant_pool[(main_class->fields[i].descriptor_index - 1)].info.CONSTANT_Utf8_info.bytes;
+        
+        if ((strcmp((char *)name, (char *)getName) == 0) && (strcmp((char *)desc, (char *)getDesc) == 0)) {
+            return i;
+        }
+    }
+    
+    return -1;
+}
+
+
+static uint64_t getStaticFieldVal(uint32_t class_index, uint32_t field_index){
+    return mHeap->classes[class_index]fields[field_index].value;
+}
+
+/*!
+	atribui um valor a um field estatico
+ */
+static void setStaticFieldVal(uint32_t class_index, uint32_t field_index, uint64_t value){
+    mHeap->classes[class_index]->fields[field_index].value = value;
+}
+
+/*!
+	pesquisa um valor de field de uma classe do method_area
+ */
+static uint32_t searchStaticFieldVal(uint32_t class_index, char* name,char* desc){
+    
+    for(int i =0; i < mHeap->classes[class_index]->fields_count; i++){
+        
+        field_info *var = &(mHeap->classes[class_index]->fields[i]);
+        char* fieldName = getUtf8String(mHeap->classes[class_index]->constant_pool, var->name_index);
+        char* fieldDesc = getUtf8String(mHeap->classes[class_index]->constant_pool, var->descriptor_index);
+        
+        if ((strcmp(name,fieldName) == 0) && (strcmp(desc,fieldDesc) == 0)) {
+            return i;
+        }
+        
+    }
+    
+    return -1;
 }
 
 

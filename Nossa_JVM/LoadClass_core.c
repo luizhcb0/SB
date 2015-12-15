@@ -100,6 +100,37 @@ u4 read_u4 (FILE *arq) {
     return value;
 }
 
+long getLong(u4 highBytes, u4 lowBytes) {
+    return ((u8)highBytes) << 32 | lowBytes;
+}
+
+/*!
+	pega e trata um double que esta na class, principalmente para exibir e tratar operacoes
+ */
+double getDouble(u4 highBytes, u4 lowBytes) {
+    
+    u8 var = 0, auxVar;
+    double toReturn;
+    
+    var = var | (u8)highBytes;
+    var = var << 32;
+    var = var | (u8)lowBytes;
+    
+    
+    double *double_value = (double*)malloc(sizeof(double));
+    
+    
+    auxVar = (u8)highBytes;
+    auxVar = auxVar << 32;
+    auxVar |= (u8)lowBytes;
+    
+    memcpy(double_value, &auxVar, sizeof(double));
+    
+    toReturn = *double_value;
+    
+    return toReturn;
+}
+
 // Função para ler Utf8
 void readUtf8 (u2 *poolLength, FILE *arq, cp_info* aux) {
 	u2 length;
