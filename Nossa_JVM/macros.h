@@ -638,15 +638,15 @@ typedef struct {
  Enumeração dos possíveis tipos definidos pela JVM para newArray
 	*/
 enum Array_Tipo {
-    ref_t = 0,
-    bool_t = 4,
-    char_t = 5,
-    float_t = 6,
-    double_t	= 7,
-    byte_t = 8,
-    short_t = 9,
-    int_t = 10,
-    long_t = 11
+    n_ref_t = 0,
+    n_bool_t = 4,
+    n_char_t = 5,
+    n_float_t = 6,
+    n_double_t	= 7,
+    n_byte_t = 8,
+    n_short_t = 9,
+    n_int_t = 10,
+    n_long_t = 11
 };
 
 /*!
