@@ -10,9 +10,15 @@
 */
 
 
-void loadClass( FILE *classPathF_ptr, ClassFile* clsHeap, dataMSize_t *dmSize ) {
+void classLoader( u1 *classPathStr, ClassFile* clsHeap, dataMSize_t *dmSize ) {
 	ClassFile *classHeap_ptr;
 
+    FILE *classPathF_ptr = fopen(classPathStr, "rb");
+    if( classPathF_ptr == NULL){
+    	printf("\nArquivo não encontrado");
+    	exit(1);
+    }
+    
 	classHeap_ptr = clsHeap + dmSize->clsHeap_size*sizeof( ClassFile );// seto a posição correta
 	if( classHeap_ptr < ( clsHeap + CLSHEAP_MAX*sizeof( ClassFile ) ) ){
 		dmSize->clsHeap_size++;// incremento a qtd de elementos na heap

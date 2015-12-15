@@ -1,6 +1,6 @@
 #include "macros.h"
 
-void jvmStartup(ClassFile *classHeap_ptr, Object *objectHeap_ptr, Frame *stackFrame_ptr, FILE *classPathF_ptr, dataMSize_t *dmSize_ptr, int flag);
+void jvmStartup(ClassFile *classHeap_ptr, Object *objectHeap_ptr, Frame *stackFrame_ptr, u1 *classPathStr, dataMSize_t *dmSize_ptr, int flag);
 
 void initializeClass(ClassFile *class_ptr, Frame *stkFrame_ptr, dataMSize_t *dmSize_ptr, ClassFile *classHeap_ptr);
 

@@ -14,9 +14,13 @@
 
 
 typedef struct {
-    ClasFile **classes, **interfaces;
-    u4 classes_count, interfaces_count;
+    ClasFile **classes;
+    ClassFie **interfaces;
+    u4 classes_count;
+    u4 interfaces_count;
 } MethodHeap;
+
+MethodHeap initMethodHeap();
 
 extern MethodHeap mheap;
 

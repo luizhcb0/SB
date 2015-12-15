@@ -510,7 +510,8 @@ typedef struct{
 	u2 access_flag;
 	u2 name_index;
 	u2 descriptor_index;
-	u2 attributes_count; //Indica o número de atributos 
+	u2 attributes_count; //Indica o número de atributos
+    u8 value;
 	attribute_info *attributes; //Tabela de attributos
 }field_info;
 
@@ -631,5 +632,36 @@ typedef struct {
     u4 *stack;
     u4 *local;
 }Frame;
+
+
+/*!
+ Enumeração dos possíveis tipos definidos pela JVM para newArray
+	*/
+enum Array_Tipo {
+    ref_t = 0,
+    bool_t = 4,
+    char_t = 5,
+    float_t = 6,
+    double_t	= 7,
+    byte_t = 8,
+    short_t = 9,
+    int_t = 10,
+    long_t = 11
+};
+
+/*!
+ Enumeração do tamanho em bytes dos tipos definidos pela JVM
+	*/
+enum _JVM_TIPO_SIZE {
+    tREFERENCIA_SIZE = 4,
+    tBOOLEAN_SIZE = 1,
+    tCHAR_SIZE = 2,
+    tFLOAT_SIZE = 4,
+    tDOUBLE_SIZE = 8,
+    tBYTE_SIZE = 1,
+    tSHORT_SIZE = 2,
+    tINT_SIZE = 4,
+    tLONG_SIZE = 8
+};
 
 #endif

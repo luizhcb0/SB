@@ -85,12 +85,7 @@ Frame *initFrame(ClassFile *Class, method_info *method, u2 codeIndex) {
     pFrame->pClass = Class;
     pFrame->pMethod = method;
     pFrame->pc = 0;
-    
-    //funcoes 
-    pFrame->pop = pop;
-    pFrame->push = push;
-    pFrame->push2 = push2;
-    pFrame->pop2 = pop2;
+    pFrame->retornou = 0;
     
     return pFrame;
 }
