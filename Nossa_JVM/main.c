@@ -72,24 +72,25 @@ int main(){
 		exit(1);
 	}
     //fclose(classPath_ptr);
-
+    
     //classPathF_ptr era argumento.
-    loadClass( "testeStatic.class", classHeap_ptr, dmsize );
+    classLoader( "testeStatic.class");
 
     printf("\nConteudo do .class");
     printf("\n--------------------------------");
     print_ClassFile(classHeap_ptr);
- 	
-	u2 method_idx;
-	method_idx = seekMethodInClass(classHeap_ptr, "<clinit>", "()V"); 
-   	if( method_idx == -1 ){
-		printf("\nDeu pau");
-	}
-	else{
-		//printf("\n%hu",  method_idx);	
-	 	//printf("%d\n",classHeap_ptr->methods[method_idx].name_index);
+ 	getchar();
+ 	getchar();
+/*	u2 method_idx;*/
+/*	method_idx = seekMethodInClass(classHeap_ptr, "<clinit>", "()V"); */
+/*   	if( method_idx == -1 ){*/
+/*		printf("\nDeu pau");*/
+/*	}*/
+/*	else{*/
+/*		//printf("\n%hu",  method_idx);	*/
+/*	 	//printf("%d\n",classHeap_ptr->methods[method_idx].name_index);*/
 
-	}   
+/*	}   */
        
     return 0;
 }
