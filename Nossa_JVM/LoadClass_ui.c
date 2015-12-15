@@ -7,6 +7,9 @@
 #include <string.h>
 #include <math.h>
 #include <inttypes.h>
+
+cp_info *pool_global;
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Constant Pool
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,9 +53,11 @@ void printContent (cp_info pool) {
 			break;
 		case 7: // Class
 			printf("\t#%"PRId16, pool.info.CONSTANT_Class_info.name_index);
+			printf("\t\t\t // %s", pool_global[pool.info.CONSTANT_Class_info.name_index-1].info.CONSTANT_Utf8_info.bytes);
 			break;
 		case 8: // String
             printf("\t#%"PRId16, pool.info.CONSTANT_String_info.string_index);
+            printf("\t\t\t // %s", pool_global[pool.info.CONSTANT_String_info.string_index-1].info.CONSTANT_Utf8_info.bytes);
             break;
         case 9: // Fieldref
 		case 10: // Methodref
@@ -60,11 +65,21 @@ void printContent (cp_info pool) {
 			printf("#%"PRId16", #%"PRId16, pool.info.\
 			CONSTANT_FieldMethodIMethod_info.class_index, pool.info\
 			.CONSTANT_FieldMethodIMethod_info.name_and_type_index);
+			
+			printf("\t\t // %s.", pool_global[pool_global[pool.info.CONSTANT_Class_info.name_index-1].info.CONSTANT_Class_info.name_index-1].info.CONSTANT_Utf8_info.bytes);
+			
+			
+			printf("%s:", pool_global[pool_global[pool.info.CONSTANT_FieldMethodIMethod_info.name_and_type_index-1].info.CONSTANT_NameAndType_info.name_index-1].info.CONSTANT_Utf8_info.bytes);
+			
+			printf("%s", pool_global[pool_global[pool.info.CONSTANT_FieldMethodIMethod_info.name_and_type_index-1].info.CONSTANT_NameAndType_info.descriptor_index-1].info.CONSTANT_Utf8_info.bytes);
+			
+			
 			break;
 		case 12: // Name and type
 			printf("#%"PRId16", #%"PRId16, pool.info.CONSTANT_NameAndType_info.\
 			name_index, pool.info.CONSTANT_NameAndType_info.\
 			descriptor_index);
+			printf("\t\t // %s:%s", pool_global[pool.info.CONSTANT_NameAndType_info.name_index-1].info.CONSTANT_Utf8_info.bytes, pool_global[pool.info.CONSTANT_NameAndType_info.descriptor_index].info.CONSTANT_Utf8_info.bytes);
 			break;
 		default: 
 			printf("Erro de consistência identificado na Pool de constantes!\n");
@@ -76,7 +91,8 @@ void printContent (cp_info pool) {
 //Retirei o segundo argumento u2 poolLength
 void printConstantPoolTable (u2 poolElementsNum,  cp_info pool[]) {
 	u2 counter = 0;
-	
+	//gambiarra
+	pool_global = pool;
 	printf("*****cp_info*****\n");
     printf("------------------------------------------------\n");
 	//printf("Number of bytes: %"PRId16"\n", poolLength);
@@ -196,7 +212,7 @@ void printField(cp_info* pool_array, field_info* fields_array, unsigned int fiel
 						printf("\nValor inteiro: %d", high);
 					case CONSTANT_FLOAT:
 						high = pool_array[index - 1].info.CONSTANT_IntegerFloat_info.bytes;
-						printf("\nValor inteiro: %f", high);
+						printf("\nValor inteiro: %f", (float)high); //fiz um cast, verificar se está correto
 					case CONSTANT_LONG:
 					case CONSTANT_DOUBLE:
 						high = pool_array[index - 1].info.CONSTANT_LongDouble_info.high_bytes;
@@ -992,7 +1008,7 @@ void print_attributes (attribute_info *attributes, u2 attr_count, cp_info *pool)
                         	printf("%s\n", opcodes_str_names[op_multianewarray]);
                         	break;
                         case op_ifnull: 
-                            i+=2;
+                             i+=2;
                         	printf("%s\n", opcodes_str_names[op_ifnull]);
                         	break;
                         case op_ifnonnull: 
@@ -1013,7 +1029,7 @@ void print_attributes (attribute_info *attributes, u2 attr_count, cp_info *pool)
                         default:
                             printf("opcode desconhecido\n");
                     }
-                } 
+                }
                 print_attributes(attributes[counter].info.Code_attribute.attribute, attributes[counter].info.Code_attribute.attribute_count, pool);
 
                 break;
