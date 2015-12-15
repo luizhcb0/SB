@@ -13,7 +13,7 @@
 #include <math.h>
 #include <inttypes.h>
 #include "LoadClass_ui.h"
-
+#include "LoadClas_core.h"
 char *opcodes_str_names[] = { "nop", "aconst_null", "iconst_m1", "iconst_0", "iconst_1", 
 	"iconst_2", "iconst_3", "iconst_4", "iconst_5", "lconst_0", 
 	"lconst_1", "fconst_0", "fconst_1", "fconst_2", "dconst_0", 
@@ -56,7 +56,7 @@ char *opcodes_str_names[] = { "nop", "aconst_null", "iconst_m1", "iconst_0", "ic
 	"wide", "multianewarray", "ifnull", "ifnonnull", "goto_w", 
 	"jsr_w", "breakpoint" };
 
-void loadClass( FILE *classPathF_ptr, ClassFile* clsHeap, dataMSize_t *dmSize ); 
+//void loadClass( FILE *classPathF_ptr, ClassFile* clsHeap, dataMSize_t *dmSize ); 
 u2 seekMethodInClass(ClassFile *class_ptr, char *methName_str, char *methDescriptor_str);
 
 int main(){
@@ -71,8 +71,10 @@ int main(){
 		printf("\nErro ao abrir");
 		exit(1);
 	}
+    fclose(classPath_ptr);
 
-    loadClass( classPathF_ptr, classHeap_ptr, dmsize );
+    //classPathF_ptr era argumento.
+    loadClass( "testeStatic.class", classHeap_ptr, dmsize );
 
     printf("\nConteudo do .class");
     printf("\n--------------------------------");
