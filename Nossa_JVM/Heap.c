@@ -36,10 +36,10 @@ static struct _object* newObject(Heap heap, CLASS* class) {
     newObj->class = class;
     newObj->fields = (uint64_t*)malloc(class->fields_count*sizeof(uint64_t));
     
-    int index = maquina.loadClass(_MCLASS.getParentName(class));
+    int index = loadClass(getParentName(class));
     
     if(index > -1 ){
-        ClassFile *parentClass = maquina.method_area->classes[index];
+        ClassFile *parentClass = mHeap->classes[index];
         newObj->super = newObject(parentClass);
     }else{
         return NULL;
@@ -139,11 +139,5 @@ Heap *initHeap() {
     toReturn->array_count = 0;
     toReturn->objects = (struct _object**)malloc(sizeof(struct _object*));
     toReturn->arrays = (struct _array**)malloc(sizeof(struct _array*));
-    
-    // funcoes
-    toReturn->newObject = newObject;
-    toReturn->newArray = newArray;
-    toReturn->newRefArray = newRefArray;
-    toReturn->newMultiArray = newMultiArray;
     return toReturn;
 }

@@ -9,6 +9,8 @@
 
 #include "LoadClass_core.h"
 #include "macros.h"
+#include "Heap.h"
+#include "Frame.h"
 #include "Execution_Core.h"
 
 /**
@@ -37,8 +39,6 @@ u4 Execute () {
         instructions[iterator].call();
     }
     pFrame->retournou = 0;
-    // Fazer do nosso jeito
-    maquina.stack->popFrame();
     
 }
 

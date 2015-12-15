@@ -1,5 +1,14 @@
 #include "LoadClass_core.h"
 #include "macros.h"
+#include "Heap.h"
+#include "Frame.h"
+
+
+dataMSize_t dmSize;
+ClassFile *classHeap;
+Frame *stackFrame;
+Heap objHeap;
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Constant Pool    -   inicio
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -11,14 +20,12 @@
  * 		rafaelgpenna@gmail.com
  * 
  */
-
-
-ClassFile *fetchClass(ClassFile *classHeap, u1 *strClassName, u2 classHeap_lenght) {
+ClassFile *fetchClass(char *strClassName) {
     u2 i = 0;
     u2 found = 0;
     
-    while (i < classHeap_lenght && found == 0) {
-        if (strcmp(strClassName, classHeap[i].className) == 0) {
+    while (i < dmSize.clsHeap_size && found == 0) {
+        if (strcmp(strClassName, (char*)classHeap[i].className) == 0) {
             found = 1;
         }
         else {
@@ -155,7 +162,7 @@ void readUtf8 (u2 *poolLength, FILE *arq, cp_info* aux) {
 		size = strlen(string);
 	}
 	aux->info.CONSTANT_Utf8_info.length = length;
-	aux->info.CONSTANT_Utf8_info.bytes = string;
+	aux->info.CONSTANT_Utf8_info.bytes = (u1*)string;
     
 }
 
@@ -919,7 +926,7 @@ void fillStaticFields(ClassFile *clsFile_ptr){
 	clsFile_ptr->static_values = malloc( clsFile_ptr->static_values_size*sizeof(Field_Value) );
 	int j = 0;
 	for(int i = 0; i < clsFile_ptr->fields_count; i++){
-		if( (clsFile_ptr->fields[i].access_flag && 0x0008) ){
+		if( (clsFile_ptr->fields[i].access_flag & 0x0008) ){
 			clsFile_ptr->static_values[j].field_name = \
 			clsFile_ptr->constant_pool[clsFile_ptr->fields[i].name_index - 1].info.CONSTANT_Utf8_info.bytes;
             clsFile_ptr->static_values[j].descriptor = \

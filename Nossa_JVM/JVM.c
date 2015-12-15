@@ -66,6 +66,12 @@ char *opcodes_str_names[] = { "nop", "aconst_null", "iconst_m1", "iconst_0", "ic
 	"jsr_w", "breakpoint" };
 
 int main(int argc, char **argv){
+    
+    objHeap = initHeap();
+    mHeap = initMethodHeap();
+    
+    
+    
 	//FILE *classPathF_ptr;
 	char *classPathStr = malloc( sizeof(char)*100 );
 	dataMSize_t dmSize;

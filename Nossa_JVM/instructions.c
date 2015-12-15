@@ -14,222 +14,222 @@ uint8_t wide = 0;
 Heap objHeap;
 
 const Instruction_t instructions[] = {
-    {0,     "nop", 				op_nop			},
-    {0, 	"aconst_null", 		op_aconst_null	},
-    {0, 	"iconst_m1", 		op_iconst_m1	},
-    {0, 	"iconst_0", 		op_iconst_0		},
-    {0, 	"iconst_1",			op_iconst_1		},
-    {0, 	"iconst_2",			op_iconst_2		},
-    {0, 	"iconst_3",			op_iconst_3		},
-    {0, 	"iconst_4",			op_iconst_4		},
-    {0, 	"iconst_5",			op_iconst_5		},
-    {0, 	"lconst_0",			op_lconst_0		},
-    {0, 	"lconst_1",			op_lconst_1		},
-    {0, 	"fconst_0",			op_fconst_0		},
-    {0, 	"fconst_1",			op_fconst_1		},
-    {0, 	"fconst_2",			op_fconst_2		},
-    {0, 	"dconst_0",			op_dconst_0		},
-    {0, 	"dconst_1",			op_dconst_1		},
-    {1, 	"bipush",			op_bipush		},
-    {2, 	"sipush",			op_sipush		},
-    {1, 	"ldc",				op_ldc			},
-    {2, 	"ldc_w",			op_ldc_w		},
-    {2, 	"ldc2_w",			op_ldc2_w		},
-    {1, 	"iload",			op_iload		},
-    {1, 	"lload",			op_lload		},
-    {1, 	"fload",			op_fload		},
-    {1, 	"dload",			op_dload		},
-    {1, 	"aload",			op_aload		},
-    {0, 	"iload_0",			op_iload_0		},
-    {0, 	"iload_1",			op_iload_1		},
-    {0, 	"iload_2",			op_iload_2		},
-    {0, 	"iload_3",			op_iload_3		},
-    {0, 	"lload_0",			op_lload_0		},
-    {0, 	"lload_1",			op_lload_1		},
-    {0, 	"lload_2",			op_lload_2		},
-    {0, 	"lload_3",			op_lload_3		},
-    {0, 	"fload_0",			op_fload_0		},
-    {0, 	"fload_1",			op_fload_1		},
-    {0, 	"fload_2",			op_fload_2		},
-    {0, 	"fload_3",			op_fload_3		},
-    {0, 	"dload_0",			op_dload_0		},
-    {0, 	"dload_1",			op_dload_1		},
-    {0, 	"dload_2",			op_dload_2		},
-    {0, 	"dload_3",			op_dload_3		},
-    {0, 	"aload_0",			op_aload_0		},
-    {0, 	"aload_1",			op_aload_1		},
-    {0, 	"aload_2",			op_aload_2		},
-    {0, 	"aload_3",			op_aload_3		},
-    {0, 	"iaload",			op_iaload		},
-    {0, 	"laload",			op_laload		},
-    {0, 	"faload",			op_faload		},
-    {0, 	"daload",			op_daload		},
-    {0, 	"aaload",			op_aaload		},
-    {0, 	"baload",			op_baload		},
-    {0, 	"caload",			op_caload		},
-    {0, 	"saload",			op_saload		},
-    {1, 	"istore",			op_istore		},
-    {1, 	"lstore",			op_lstore		},
-    {1, 	"fstore",			op_fstore		},
-    {1, 	"dstore",			op_dstore		},
-    {1, 	"astore",			op_astore		},
-    {0, 	"istore_0",			op_istore_0		},
-    {0, 	"istore_1",			op_istore_1		},
-    {0, 	"istore_2",			op_istore_2		},
-    {0, 	"istore_3",			op_istore_3		},
-    {0, 	"lstore_0",			op_lstore_0		},
-    {0, 	"lstore_1",			op_lstore_1		},
-    {0, 	"lstore_2",			op_lstore_2		},
-    {0, 	"lstore_3",			op_lstore_3		},
-    {0, 	"fstore_0",			op_fstore_0		},
-    {0, 	"fstore_1",			op_fstore_1		},
-    {0, 	"fstore_2",			op_fstore_2		},
-    {0, 	"fstore_3",			op_fstore_3		},
-    {0, 	"dstore_0",			op_dstore_0		},
-    {0, 	"dstore_1",			op_dstore_1		},
-    {0, 	"dstore_2",			op_dstore_2		},
-    {0, 	"dstore_3",			op_dstore_3		},
-    {0, 	"astore_0",			op_astore_0		},
-    {0, 	"astore_1",			op_astore_1		},
-    {0, 	"astore_2",			op_astore_2		},
-    {0, 	"astore_3",			op_astore_3		},
-    {0, 	"iastore",			op_iastore		},
-    {0, 	"lastore",			op_lastore		},
-    {0, 	"fastore",			op_fastore		},
-    {0, 	"dastore",			op_dastore		},
-    {0, 	"aastore",			op_aastore		},
-    {0, 	"bastore",			op_bastore		},
-    {0, 	"castore",			op_castore		},
-    {0, 	"sastore",			op_sastore		},
-    {0, 	"pop",				op_pop			},
-    {0, 	"pop2",				op_pop2			},
-    {0, 	"dup",				op_dup			},
-    {0, 	"dup_x1",			op_dup_x1		},
-    {0, 	"dup_x2",			op_dup_x2		},
-    {0, 	"dup2",				op_dup2			},
-    {0, 	"dup2_x1",			op_dup2_x1		},
-    {0, 	"dup2_x2",			op_dup2_x2		},
-    {0, 	"swap",				op_swap			},
-    {0, 	"iadd",				op_iadd			},
-    {0, 	"ladd",				op_ladd			},
-    {0, 	"fadd",				op_fadd			},
-    {0, 	"dadd",				op_dadd			},
-    {0, 	"isub",				op_isub			},
-    {0, 	"lsub",				op_lsub			},
-    {0, 	"fsub",				op_fsub			},
-    {0, 	"dsub",				op_dsub			},
-    {0, 	"imul",				op_imul			},
-    {0, 	"lmul",				op_lmul			},
-    {0, 	"fmul",				op_fmul			},
-    {0, 	"dmul",				op_dmul			},
-    {0, 	"idiv",				op_idiv			},
-    {0, 	"ldiv",				op_ldiv			},
-    {0, 	"fdiv",				op_fdiv			},
-    {0, 	"ddiv",				op_ddiv			},
-    {0, 	"irem",				op_irem			},
-    {0, 	"lrem",				op_lrem			},
-    {0, 	"frem",				op_frem			},
-    {0, 	"drem",				op_drem			},
-    {0, 	"ineg",				op_ineg			},
-    {0, 	"lneg",				op_lneg			},
-    {0, 	"fneg",				op_fneg			},
-    {0, 	"dneg",				op_dneg			},
-    {0, 	"ishl",				op_ishl			},
-    {0, 	"lshl",				op_lshl			},
-    {0, 	"ishr",				op_ishr			},
-    {0, 	"lshr",				op_lshr			},
-    {0, 	"iushr",			op_iushr		},
-    {0, 	"lushr",			op_lushr		},
-    {0, 	"iand",				op_iand			},
-    {0, 	"land",				op_land			},
-    {0, 	"ior",				op_ior			},
-    {0, 	"lor",				op_lor			},
-    {0, 	"ixor",				op_ixor			},
-    {0, 	"lxor",				op_lxor			},
-    {2, 	"iinc",				op_iinc			},
-    {0, 	"i2l",				op_i2l			},
-    {0, 	"i2f",				op_i2f			},
-    {0, 	"i2d",				op_i2d			},
-    {0, 	"l2i",				op_l2i			},
-    {0, 	"l2f",				op_l2f			},
-    {0, 	"l2d",				op_l2d			},
-    {0, 	"f2i",				op_f2i			},
-    {0, 	"f2l",				op_f2l			},
-    {0, 	"f2d",				op_f2d			},
-    {0, 	"d2i",				op_d2i			},
-    {0, 	"d2l",				op_d2l			},
-    {0, 	"d2f",				op_d2f			},
-    {0, 	"i2b",				op_i2b			},
-    {0, 	"i2c",				op_i2c			},
-    {0, 	"i2s",				op_i2s			},
-    {0, 	"lcmp",				op_lcmp			},
-    {0, 	"fcmpl",			op_fcmpl		},
-    {0, 	"fcmpg",			op_fcmpg		},
-    {0, 	"dcmpl",			op_dcmpl		},
-    {0, 	"dcmpg",			op_dcmpg		},
-    {2, 	"ifeq",				op_ifeq			},
-    {2, 	"ifne",				op_ifne			},
-    {2, 	"iflt",				op_iflt			},
-    {2, 	"ifge",				op_ifge			},
-    {2, 	"ifgt",				op_ifgt			},
-    {2, 	"ifle",				op_ifle			},
-    {2, 	"if_icmpeq",		op_if_icmpeq	},
-    {2, 	"if_icmpne",		op_if_icmpne	},
-    {2, 	"if_icmplt",		op_if_icmplt	},
-    {2, 	"if_icmpge",		op_if_icmpge	},
-    {2, 	"if_icmpgt",		op_if_icmpgt	},
-    {2, 	"if_icmple",		op_if_icmple	},
-    {2, 	"if_acmpeg",		op_if_acmpeg	},
-    {2, 	"if_acmpne",		op_if_acmpne	},
-    {2, 	"goto",				op_goto			},
-    {2, 	"jsr",				op_jsr			},
-    {1, 	"ret",				op_ret			},
-    {14, 	"tableswitch",		op_tableswitch	},
-    {10,	"lookupswitch",		op_lookupswitch	},
-    {0, 	"ireturn",			op_ireturn		},
-    {0, 	"lreturn",			op_lreturn		},
-    {0, 	"freturn",			op_freturn		},
-    {0, 	"dreturn",			op_dreturn		},
-    {0, 	"areturn",			op_areturn		},
-    {0, 	"return",			op_return		},
-    {2, 	"getstatic",		op_getstatic	},
-    {2, 	"putstatic",		op_putstatic	},
-    {2, 	"getfield",			op_getfield		},
-    {2, 	"putfield",			op_putfield		},
-    {2, 	"invokevirtual",	op_invokevirtual},
-    {2, 	"invokespecial",	op_invokespecial},
-    {2, 	"invokestatic",		op_invokestatic	},
-    {4, 	"invokeinterface",	op_invokeinterface},
-    {0, 	NULL,				NULL			},
-    {2, 	"new",				op_new			},
-    {1, 	"newarray",			op_newarray		},
-    {2, 	"anewarray",		op_anewarray	},
-    {0, 	"arraylength",		op_arraylength	},
-    {0, 	"athrow",			op_athrow		},
-    {0, 	"checkcast",		op_checkcast	},
-    {0, 	"instanceof",		op_instanceof	},
-    {0, 	"monitorenter",		op_monitorenter	},
-    {0, 	"monitorexit",		op_monitorexit	},
-    {7, 	"wide",				op_wide			},
-    {3, 	"multianewarray",	op_multianewarray},
-    {2, 	"ifnull",			op_ifnull		},
-    {2, 	"ifnonnull",		op_ifnonnull	},
-    {4, 	"goto_w",			op_goto_w		},
-    {4, 	"jsr_w",			op_jsr_w		}
+    {0,     "nop", 				func_op_nop		},
+    {0, 	"aconst_null", 		func_op_aconst_null},
+    {0, 	"iconst_m1", 		func_op_iconst_m1	},
+    {0, 	"iconst_0", 		func_op_iconst_0	},
+    {0, 	"iconst_1",			func_op_iconst_1	},
+    {0, 	"iconst_2",			func_op_iconst_2	},
+    {0, 	"iconst_3",			func_op_iconst_3	},
+    {0, 	"iconst_4",			func_op_iconst_4	},
+    {0, 	"iconst_5",			func_op_iconst_5	},
+    {0, 	"lconst_0",			func_op_lconst_0	},
+    {0, 	"lconst_1",			func_op_lconst_1	},
+    {0, 	"fconst_0",			func_op_fconst_0	},
+    {0, 	"fconst_1",			func_op_fconst_1	},
+    {0, 	"fconst_2",			func_op_fconst_2	},
+    {0, 	"dconst_0",			func_op_dconst_0	},
+    {0, 	"dconst_1",			func_op_dconst_1	},
+    {1, 	"bipush",			func_op_bipush		},
+    {2, 	"sipush",			func_op_sipush		},
+    {1, 	"ldc",				func_op_ldc         },
+    {2, 	"ldc_w",			func_op_ldc_w		},
+    {2, 	"ldc2_w",			func_op_ldc2_w		},
+    {1, 	"iload",			func_op_iload		},
+    {1, 	"lload",			func_op_lload		},
+    {1, 	"fload",			func_op_fload		},
+    {1, 	"dload",			func_op_dload		},
+    {1, 	"aload",			func_op_aload		},
+    {0, 	"iload_0",			func_op_iload_0     },
+    {0, 	"iload_1",			func_op_iload_1     },
+    {0, 	"iload_2",			func_op_iload_2     },
+    {0, 	"iload_3",			func_op_iload_3     },
+    {0, 	"lload_0",			func_op_lload_0     },
+    {0, 	"lload_1",			func_op_lload_1     },
+    {0, 	"lload_2",			func_op_lload_2     },
+    {0, 	"lload_3",			func_op_lload_3     },
+    {0, 	"fload_0",			func_op_fload_0     },
+    {0, 	"fload_1",			func_op_fload_1     },
+    {0, 	"fload_2",			func_op_fload_2     },
+    {0, 	"fload_3",			func_op_fload_3     },
+    {0, 	"dload_0",			func_op_dload_0     },
+    {0, 	"dload_1",			func_op_dload_1     },
+    {0, 	"dload_2",			func_op_dload_2     },
+    {0, 	"dload_3",			func_op_dload_3     },
+    {0, 	"aload_0",			func_op_aload_0     },
+    {0, 	"aload_1",			func_op_aload_1     },
+    {0, 	"aload_2",			func_op_aload_2     },
+    {0, 	"aload_3",			func_op_aload_3     },
+    {0, 	"iaload",			func_op_iaload		},
+    {0, 	"laload",			func_op_laload		},
+    {0, 	"faload",			func_op_faload		},
+    {0, 	"daload",			func_op_daload		},
+    {0, 	"aaload",			func_op_aaload		},
+    {0, 	"baload",			func_op_baload		},
+    {0, 	"caload",			func_op_caload		},
+    {0, 	"saload",			func_op_saload		},
+    {1, 	"istore",			func_op_istore		},
+    {1, 	"lstore",			func_op_lstore		},
+    {1, 	"fstore",			func_op_fstore		},
+    {1, 	"dstore",			func_op_dstore		},
+    {1, 	"astore",			func_op_astore		},
+    {0, 	"istore_0",			func_op_istore_0	},
+    {0, 	"istore_1",			func_op_istore_1	},
+    {0, 	"istore_2",			func_op_istore_2	},
+    {0, 	"istore_3",			func_op_istore_3	},
+    {0, 	"lstore_0",			func_op_lstore_0	},
+    {0, 	"lstore_1",			func_op_lstore_1	},
+    {0, 	"lstore_2",			func_op_lstore_2	},
+    {0, 	"lstore_3",			func_op_lstore_3	},
+    {0, 	"fstore_0",			func_op_fstore_0	},
+    {0, 	"fstore_1",			func_op_fstore_1	},
+    {0, 	"fstore_2",			func_op_fstore_2	},
+    {0, 	"fstore_3",			func_op_fstore_3	},
+    {0, 	"dstore_0",			func_op_dstore_0	},
+    {0, 	"dstore_1",			func_op_dstore_1	},
+    {0, 	"dstore_2",			func_op_dstore_2	},
+    {0, 	"dstore_3",			func_op_dstore_3	},
+    {0, 	"astore_0",			func_op_astore_0	},
+    {0, 	"astore_1",			func_op_astore_1	},
+    {0, 	"astore_2",			func_op_astore_2	},
+    {0, 	"astore_3",			func_op_astore_3	},
+    {0, 	"iastore",			func_op_iastore     },
+    {0, 	"lastore",			func_op_lastore     },
+    {0, 	"fastore",			func_op_fastore     },
+    {0, 	"dastore",			func_op_dastore     },
+    {0, 	"aastore",			func_op_aastore     },
+    {0, 	"bastore",			func_op_bastore     },
+    {0, 	"castore",			func_op_castore     },
+    {0, 	"sastore",			func_op_sastore     },
+    {0, 	"pop",				func_op_pop         },
+    {0, 	"pop2",				func_op_pop2		},
+    {0, 	"dup",				func_op_dup         },
+    {0, 	"dup_x1",			func_op_dup_x1		},
+    {0, 	"dup_x2",			func_op_dup_x2		},
+    {0, 	"dup2",				func_op_dup2		},
+    {0, 	"dup2_x1",			func_op_dup2_x1     },
+    {0, 	"dup2_x2",			func_op_dup2_x2     },
+    {0, 	"swap",				func_op_swap		},
+    {0, 	"iadd",				func_op_iadd		},
+    {0, 	"ladd",				func_op_ladd		},
+    {0, 	"fadd",				func_op_fadd		},
+    {0, 	"dadd",				func_op_dadd		},
+    {0, 	"isub",				func_op_isub		},
+    {0, 	"lsub",				func_op_lsub		},
+    {0, 	"fsub",				func_op_fsub		},
+    {0, 	"dsub",				func_op_dsub		},
+    {0, 	"imul",				func_op_imul		},
+    {0, 	"lmul",				func_op_lmul		},
+    {0, 	"fmul",				func_op_fmul		},
+    {0, 	"dmul",				func_op_dmul		},
+    {0, 	"idiv",				func_op_idiv		},
+    {0, 	"ldiv",				func_op_ldiv		},
+    {0, 	"fdiv",				func_op_fdiv		},
+    {0, 	"ddiv",				func_op_ddiv		},
+    {0, 	"irem",				func_op_irem		},
+    {0, 	"lrem",				func_op_lrem		},
+    {0, 	"frem",				func_op_frem		},
+    {0, 	"drem",				func_op_drem		},
+    {0, 	"ineg",				func_op_ineg		},
+    {0, 	"lneg",				func_op_lneg		},
+    {0, 	"fneg",				func_op_fneg		},
+    {0, 	"dneg",				func_op_dneg		},
+    {0, 	"ishl",				func_op_ishl		},
+    {0, 	"lshl",				func_op_lshl		},
+    {0, 	"ishr",				func_op_ishr		},
+    {0, 	"lshr",				func_op_lshr		},
+    {0, 	"iushr",			func_op_iushr		},
+    {0, 	"lushr",			func_op_lushr		},
+    {0, 	"iand",				func_op_iand		},
+    {0, 	"land",				func_op_land		},
+    {0, 	"ior",				func_op_ior         },
+    {0, 	"lor",				func_op_lor         },
+    {0, 	"ixor",				func_op_ixor		},
+    {0, 	"lxor",				func_op_lxor		},
+    {2, 	"iinc",				func_op_iinc		},
+    {0, 	"i2l",				func_op_i2l         },
+    {0, 	"i2f",				func_op_i2f         },
+    {0, 	"i2d",				func_op_i2d         },
+    {0, 	"l2i",				func_op_l2i         },
+    {0, 	"l2f",				func_op_l2f         },
+    {0, 	"l2d",				func_op_l2d         },
+    {0, 	"f2i",				func_op_f2i         },
+    {0, 	"f2l",				func_op_f2l         },
+    {0, 	"f2d",				func_op_f2d         },
+    {0, 	"d2i",				func_op_d2i         },
+    {0, 	"d2l",				func_op_d2l         },
+    {0, 	"d2f",				func_op_d2f         },
+    {0, 	"i2b",				func_op_i2b         },
+    {0, 	"i2c",				func_op_i2c         },
+    {0, 	"i2s",				func_op_i2s         },
+    {0, 	"lcmp",				func_op_lcmp		},
+    {0, 	"fcmpl",			func_op_fcmpl		},
+    {0, 	"fcmpg",			func_op_fcmpg		},
+    {0, 	"dcmpl",			func_op_dcmpl		},
+    {0, 	"dcmpg",			func_op_dcmpg		},
+    {2, 	"ifeq",				func_op_ifeq		},
+    {2, 	"ifne",				func_op_ifne		},
+    {2, 	"iflt",				func_op_iflt		},
+    {2, 	"ifge",				func_op_ifge		},
+    {2, 	"ifgt",				func_op_ifgt		},
+    {2, 	"ifle",				func_op_ifle		},
+    {2, 	"if_icmpeq",		func_op_if_icmpeq	},
+    {2, 	"if_icmpne",		func_op_if_icmpne	},
+    {2, 	"if_icmplt",		func_op_if_icmplt	},
+    {2, 	"if_icmpge",		func_op_if_icmpge	},
+    {2, 	"if_icmpgt",		func_op_if_icmpgt	},
+    {2, 	"if_icmple",		func_op_if_icmple	},
+    {2, 	"if_acmpeg",		func_op_if_acmpeg	},
+    {2, 	"if_acmpne",		func_op_if_acmpne	},
+    {2, 	"goto",				func_op_goto		},
+    {2, 	"jsr",				func_op_jsr         },
+    {1, 	"ret",				func_op_ret         },
+    {14, 	"tableswitch",		func_op_tableswitch },
+    {10,	"lookupswitch",		func_op_lookupswitch},
+    {0, 	"ireturn",			func_op_ireturn     },
+    {0, 	"lreturn",			func_op_lreturn     },
+    {0, 	"freturn",			func_op_freturn     },
+    {0, 	"dreturn",			func_op_dreturn     },
+    {0, 	"areturn",			func_op_areturn     },
+    {0, 	"return",			func_op_return		},
+    {2, 	"getstatic",		func_op_getstatic	},
+    {2, 	"putstatic",		func_op_putstatic	},
+    {2, 	"getfield",			func_op_getfield	},
+    {2, 	"putfield",			func_op_putfield	},
+    {2, 	"invokevirtual",	func_op_invokevirtual},
+    {2, 	"invokespecial",	func_op_invokespecial},
+    {2, 	"invokestatic",		func_op_invokestatic},
+    {4, 	"invokeinterface",	func_op_invokeinterface},
+    {0, 	NULL,				NULL                },
+    {2, 	"new",				func_op_new         },
+    {1, 	"newarray",			func_op_newarray	},
+    {2, 	"anewarray",		func_op_anewarray	},
+    {0, 	"arraylength",		func_op_arraylength },
+    {0, 	"athrow",			func_op_athrow		},
+    {0, 	"checkcast",		func_op_checkcast	},
+    {0, 	"instanceof",		func_op_instanceof	},
+    {0, 	"monitorenter",		func_op_monitorenter},
+    {0, 	"monitorexit",		func_op_monitorexit },
+    {7, 	"wide",				func_op_wide		},
+    {3, 	"multianewarray",	func_op_multianewarray},
+    {2, 	"ifnull",			func_op_ifnull		},
+    {2, 	"ifnonnull",		func_op_ifnonnull	},
+    {4, 	"goto_w",			func_op_goto_w		},
+    {4, 	"jsr_w",			func_op_jsr_w		}
 };
 
 
 /*!
 	Incrementa PC
  */
-static void op_nop(Frame *pFrame) {
+static void func_op_nop(Frame *pFrame) {
     pFrame->pc++;
 }
 
 /*!
 	Empilha NULL na pilha de operandos
  */
-static void op_aconst_null(Frame *pFrame) {
+static void func_op_aconst_null(Frame *pFrame) {
     push(pFrame,0);
     pFrame->pc++;
 }
@@ -237,7 +237,7 @@ static void op_aconst_null(Frame *pFrame) {
 /*!
 	Empilha int -1 na pilha de operandos
  */
-static void op_iconst_m1(Frame *pFrame) {
+static void func_op_iconst_m1(Frame *pFrame) {
     push(pFrame,-1);
     pFrame->pc++;
 }
@@ -245,7 +245,7 @@ static void op_iconst_m1(Frame *pFrame) {
 /*!
 	Empilha int 0 na pilha de operandos
  */
-static void op_iconst_0(Frame *pFrame) {
+static void func_op_iconst_0(Frame *pFrame) {
     push(pFrame,0);
     pFrame->pc++;
 }
@@ -253,7 +253,7 @@ static void op_iconst_0(Frame *pFrame) {
 /*!
 	Empilha int 1 na pilha de operandos
  */
-static void op_iconst_1(Frame *pFrame) {
+static void func_op_iconst_1(Frame *pFrame) {
     push(pFrame,1);
     pFrame->pc++;
 }
@@ -261,7 +261,7 @@ static void op_iconst_1(Frame *pFrame) {
 /*!
 	Empilha int 2 na pilha de operandos
  */
-static void op_iconst_2(Frame *pFrame) {
+static void func_op_iconst_2(Frame *pFrame) {
     push(pFrame,2);
     pFrame->pc++;
 }
@@ -269,7 +269,7 @@ static void op_iconst_2(Frame *pFrame) {
 /*!
 	Empilha int 3 na pilha de operandos
  */
-static void op_iconst_3(Frame *pFrame) {
+static void func_op_iconst_3(Frame *pFrame) {
     push(pFrame,3);
     pFrame->pc++;
 }
@@ -277,7 +277,7 @@ static void op_iconst_3(Frame *pFrame) {
 /*!
 	Empilha int 4 na pilha de operandos
  */
-static void op_iconst_4(Frame *pFrame) {
+static void func_op_iconst_4(Frame *pFrame) {
     push(pFrame,4);
     pFrame->pc++;
 }
@@ -285,7 +285,7 @@ static void op_iconst_4(Frame *pFrame) {
 /*!
 	Empilha int 5 na pilha de operandos
  */
-static void op_iconst_5(Frame *pFrame) {
+static void func_op_iconst_5(Frame *pFrame) {
     push(pFrame,5);
     pFrame->pc++;
 }
@@ -293,7 +293,7 @@ static void op_iconst_5(Frame *pFrame) {
 /*!
 	Empilha long 0 na pilha de operandos
  */
-static void op_lconst_0(Frame *pFrame) {
+static void func_op_lconst_0(Frame *pFrame) {
     push2(pFrame,0);
     pFrame->pc++;
 }
@@ -301,7 +301,7 @@ static void op_lconst_0(Frame *pFrame) {
 /*!
 	Empilha long 1 na pilha de operandos
  */
-static void op_lconst_1(Frame *pFrame) {
+static void func_op_lconst_1(Frame *pFrame) {
     push2(pFrame,1);
     pFrame->pc++;
 }
@@ -309,7 +309,7 @@ static void op_lconst_1(Frame *pFrame) {
 /*!
 	Empilha constante float 0.0 na pilha de operandos
  */
-static void op_fconst_0(Frame *pFrame) {
+static void func_op_fconst_0(Frame *pFrame) {
     float float_number = 0.0;
     push(pFrame,*((u8*)&float_number));
     pFrame->pc++;
@@ -318,7 +318,7 @@ static void op_fconst_0(Frame *pFrame) {
 /*!
 	Empilha constante float 1.0 na pilha de operandos
  */
-static void op_fconst_1(Frame *pFrame) {
+static void func_op_fconst_1(Frame *pFrame) {
     float float_number = 1.0;
     push(pFrame,*((u8*)&float_number));
     pFrame->pc++;
@@ -327,7 +327,7 @@ static void op_fconst_1(Frame *pFrame) {
 /*!
 	Empilha constante float 2.0 na pilha de operandos
  */
-static void op_fconst_2(Frame *pFrame) {
+static void func_op_fconst_2(Frame *pFrame) {
     float float_number = 2.0;
     push(pFrame,*((u8*)&float_number));
     pFrame->pc++;
@@ -336,7 +336,7 @@ static void op_fconst_2(Frame *pFrame) {
 /*!
 	Empilha constante double 0.0 na pilha de operandos
  */
-static void op_dconst_0(Frame *pFrame) {
+static void func_op_dconst_0(Frame *pFrame) {
     double double_number = 0.0;
     u8 *aux_64 = malloc(sizeof(u8));
     
@@ -348,7 +348,7 @@ static void op_dconst_0(Frame *pFrame) {
 /*!
 	Empilha constante double 1.0 na pilha de operandos
  */
-static void op_dconst_1(Frame *pFrame) {
+static void func_op_dconst_1(Frame *pFrame) {
     double double_number = 1.0;
     u8 *aux_64 = malloc(sizeof(u8));
     
@@ -362,7 +362,7 @@ static void op_dconst_1(Frame *pFrame) {
 	O valor imediato do byte tem o sinal extendido para um valor int  (8 bits)
 	O valor é colocado na pilha de operandos
  */
-static void op_bipush(Frame *pFrame) {
+static void func_op_bipush(Frame *pFrame) {
     //Pula os 8 bits codigo da instrucao contida no array de codes
     int8_t var = 0;
     i8 aux;
@@ -375,7 +375,7 @@ static void op_bipush(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_sipush(Frame *pFrame) {
+static void func_op_sipush(Frame *pFrame) {
     uint8_t high,low;
     int16_t aux_16;
     //i8 t;
@@ -395,7 +395,7 @@ static void op_sipush(Frame *pFrame) {
 
 
 
-static void op_ldc(Frame *pFrame) {
+static void func_op_ldc(Frame *pFrame) {
     uint8_t index, type;
     
     pFrame->pc++;
@@ -420,7 +420,7 @@ static void op_ldc(Frame *pFrame) {
     
 }
 
-static void op_ldc_w(Frame *pFrame) {
+static void func_op_ldc_w(Frame *pFrame) {
     uint64_t index;
     uint8_t type;
     uint64_t high, low;
@@ -454,7 +454,7 @@ static void op_ldc_w(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_ldc2_w(Frame *pFrame) {
+static void func_op_ldc2_w(Frame *pFrame) {
     
     uint64_t index, high, low, completeValue = 0;
     uint8_t type;
@@ -494,7 +494,7 @@ static void op_ldc2_w(Frame *pFrame) {
 }
 
 
-static void op_iload(Frame *pFrame) {
+static void func_op_iload(Frame *pFrame) {
     
     uint16_t index;
     pFrame->pc++;
@@ -511,7 +511,7 @@ static void op_iload(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_lload(Frame *pFrame) {
+static void func_op_lload(Frame *pFrame) {
     uint16_t index;
     pFrame->pc++;
     index = pFrame->code[pFrame->pc];
@@ -529,111 +529,111 @@ static void op_lload(Frame *pFrame) {
     pFrame->pc++;
     
 }
-static void op_fload(Frame *pFrame) {
-    op_iload(pFrame);
+static void func_op_fload(Frame *pFrame) {
+    func_op_iload(pFrame);
 }
 
-static void op_dload(Frame *pFrame) {
-    op_lload(pFrame);
+static void func_op_dload(Frame *pFrame) {
+    func_op_lload(pFrame);
 }
 
-static void op_aload(Frame *pFrame) {
-    op_iload(pFrame);
+static void func_op_aload(Frame *pFrame) {
+    func_op_iload(pFrame);
 }
 
-static void op_iload_0(Frame *pFrame) {
+static void func_op_iload_0(Frame *pFrame) {
     push(pFrame,pFrame->local[0]);
     pFrame->pc++;
 }
 
-static void op_iload_1(Frame *pFrame) {
+static void func_op_iload_1(Frame *pFrame) {
     push(pFrame,pFrame->local[1]);
     pFrame->pc++;
 }
 
-static void op_iload_2(Frame *pFrame) {
+static void func_op_iload_2(Frame *pFrame) {
     push(pFrame,pFrame->local[2]);
     pFrame->pc++;
 }
 
-static void op_iload_3(Frame *pFrame) {
+static void func_op_iload_3(Frame *pFrame) {
     push(pFrame,pFrame->local[3]);
     pFrame->pc++;
 }
 
-static void op_lload_0(Frame *pFrame) {
+static void func_op_lload_0(Frame *pFrame) {
     push(pFrame,pFrame->local[0]);
     push(pFrame,pFrame->local[1]);
     pFrame->pc++;
 }
 
-static void op_lload_1(Frame *pFrame) {
+static void func_op_lload_1(Frame *pFrame) {
     push(pFrame,pFrame->local[1]);
     push(pFrame,pFrame->local[2]);
     pFrame->pc++;
 }
 
-static void op_lload_2(Frame *pFrame) {
+static void func_op_lload_2(Frame *pFrame) {
     push(pFrame,pFrame->local[2]);
     push(pFrame,pFrame->local[3]);
     pFrame->pc++;
 }
 
-static void op_lload_3(Frame *pFrame) {
+static void func_op_lload_3(Frame *pFrame) {
     push(pFrame,pFrame->local[3]);
     push(pFrame,pFrame->local[4]);
     pFrame->pc++;
 }
 
-static void op_fload_0(Frame *pFrame) {
-    op_iload_0(pFrame);
+static void func_op_fload_0(Frame *pFrame) {
+    func_op_iload_0(pFrame);
 }
 
-static void op_fload_1(Frame *pFrame) {
-    op_iload_1(pFrame);
+static void func_op_fload_1(Frame *pFrame) {
+    func_op_iload_1(pFrame);
 }
 
-static void op_fload_2(Frame *pFrame) {
-    op_iload_2(pFrame);
+static void func_op_fload_2(Frame *pFrame) {
+    func_op_iload_2(pFrame);
 }
 
-static void op_fload_3(Frame *pFrame) {
-    op_iload_3(pFrame);
+static void func_op_fload_3(Frame *pFrame) {
+    func_op_iload_3(pFrame);
 }
 
-static void op_dload_0(Frame *pFrame) {
-    op_lload_0(pFrame);
+static void func_op_dload_0(Frame *pFrame) {
+    func_op_lload_0(pFrame);
 }
 
-static void op_dload_1(Frame *pFrame) {
-    op_lload_1(pFrame);
+static void func_op_dload_1(Frame *pFrame) {
+    func_op_lload_1(pFrame);
 }
 
-static void op_dload_2(Frame *pFrame) {
-    op_lload_2(pFrame);
+static void func_op_dload_2(Frame *pFrame) {
+    func_op_lload_2(pFrame);
 }
 
-static void op_dload_3(Frame *pFrame) {
-    op_lload_3(pFrame);
+static void func_op_dload_3(Frame *pFrame) {
+    func_op_lload_3(pFrame);
 }
 
-static void op_aload_0(Frame *pFrame) {
-    op_iload_0(pFrame);
+static void func_op_aload_0(Frame *pFrame) {
+    func_op_iload_0(pFrame);
 }
 
-static void op_aload_1(Frame *pFrame) {
-    op_iload_1(pFrame);
+static void func_op_aload_1(Frame *pFrame) {
+    func_op_iload_1(pFrame);
 }
 
-static void op_aload_2(Frame *pFrame) {
-    op_iload_2(pFrame);
+static void func_op_aload_2(Frame *pFrame) {
+    func_op_iload_2(pFrame);
 }
 
-static void op_aload_3(Frame *pFrame) {
-    op_iload_3(pFrame);
+static void func_op_aload_3(Frame *pFrame) {
+    func_op_iload_3(pFrame);
 }
 
-static void op_iaload(Frame *pFrame) {
+static void func_op_iaload(Frame *pFrame) {
     u8 index, aux;
     struct _array *arrayRef;
     
@@ -646,7 +646,7 @@ static void op_iaload(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_laload(Frame *pFrame) {
+static void func_op_laload(Frame *pFrame) {
     u8 index, aux;
     struct _array *arrayRef;
     
@@ -659,7 +659,7 @@ static void op_laload(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_faload(Frame *pFrame) {
+static void func_op_faload(Frame *pFrame) {
     u8 index, aux;
     struct _array* arrayRef;
     
@@ -671,7 +671,7 @@ static void op_faload(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_daload(Frame *pFrame) {
+static void func_op_daload(Frame *pFrame) {
     u8 index, aux;
     struct _array *arrayRef;
     
@@ -683,7 +683,7 @@ static void op_daload(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_aaload(Frame *pFrame) {
+static void func_op_aaload(Frame *pFrame) {
     u8 index, aux;
     struct _array *arrayRef;
     
@@ -696,7 +696,7 @@ static void op_aaload(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_baload(Frame *pFrame) {
+static void func_op_baload(Frame *pFrame) {
     u8 index,aux;
     struct _array* arrayRef;
     
@@ -709,7 +709,7 @@ static void op_baload(Frame *pFrame) {
     
 }
 
-static void op_caload(Frame *pFrame) {
+static void func_op_caload(Frame *pFrame) {
     u8 index,aux;
     struct _array* arrayRef;
     
@@ -721,7 +721,7 @@ static void op_caload(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_saload(Frame *pFrame) {
+static void func_op_saload(Frame *pFrame) {
     u8 index,aux;
     i8 t;
     struct _array* arrayRef;
@@ -735,7 +735,7 @@ static void op_saload(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_istore(Frame *pFrame) {
+static void func_op_istore(Frame *pFrame) {
     uint16_t index;
     i8 value;
     
@@ -748,7 +748,7 @@ static void op_istore(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_lstore(Frame *pFrame) {
+static void func_op_lstore(Frame *pFrame) {
     uint16_t index;
     u8 high, low;
     
@@ -764,11 +764,11 @@ static void op_lstore(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_fstore(Frame *pFrame) {
-    op_istore(pFrame);
+static void func_op_fstore(Frame *pFrame) {
+    func_op_istore(pFrame);
 }
 
-static void op_dstore(Frame *pFrame) {
+static void func_op_dstore(Frame *pFrame) {
     uint16_t index;
     u8 high, low;
     
@@ -784,39 +784,39 @@ static void op_dstore(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_astore(Frame *pFrame) {
-    op_istore(pFrame);
+static void func_op_astore(Frame *pFrame) {
+    func_op_istore(pFrame);
 }
 
-static void op_istore_0(Frame *pFrame) {
+static void func_op_istore_0(Frame *pFrame) {
     u8 value = pop(pFrame);
     
     pFrame->local[0] = value;
     pFrame->pc++;
 }
 
-static void op_istore_1(Frame *pFrame) {
+static void func_op_istore_1(Frame *pFrame) {
     i8 value = pop(pFrame);
     
     pFrame->local[1] = value;
     pFrame->pc++;
 }
 
-static void op_istore_2(Frame *pFrame) {
+static void func_op_istore_2(Frame *pFrame) {
     u8 value = pop(pFrame);
     
     pFrame->local[2] = value;
     pFrame->pc++;
 }
 
-static void op_istore_3(Frame *pFrame) {
+static void func_op_istore_3(Frame *pFrame) {
     u8 value = pop(pFrame);
     
     pFrame->local[3] = value;
     pFrame->pc++;
 }
 
-static void op_lstore_0(Frame *pFrame) {
+static void func_op_lstore_0(Frame *pFrame) {
     u8 high, low;
     
     low = pop(pFrame);
@@ -827,7 +827,7 @@ static void op_lstore_0(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_lstore_1(Frame *pFrame) {
+static void func_op_lstore_1(Frame *pFrame) {
     u8 high, low;
     
     low = pop(pFrame);
@@ -838,7 +838,7 @@ static void op_lstore_1(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_lstore_2(Frame *pFrame) {
+static void func_op_lstore_2(Frame *pFrame) {
     u8 high, low;
     
     low = pop(pFrame);
@@ -849,7 +849,7 @@ static void op_lstore_2(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_lstore_3(Frame *pFrame) {
+static void func_op_lstore_3(Frame *pFrame) {
     u8 high, low;
     
     low = pop(pFrame);
@@ -860,7 +860,7 @@ static void op_lstore_3(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_fstore_0(Frame *pFrame) {
+static void func_op_fstore_0(Frame *pFrame) {
     u8  value;
     
     value = pop(pFrame);
@@ -869,64 +869,64 @@ static void op_fstore_0(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_fstore_1(Frame *pFrame) {
-    op_istore_1(pFrame);
+static void func_op_fstore_1(Frame *pFrame) {
+    func_op_istore_1(pFrame);
 }
 
 
-static void op_fstore_2(Frame *pFrame) {
-    op_istore_2(pFrame);
+static void func_op_fstore_2(Frame *pFrame) {
+    func_op_istore_2(pFrame);
 }
 
-static void op_fstore_3(Frame *pFrame) {
-    op_istore_3(pFrame);
+static void func_op_fstore_3(Frame *pFrame) {
+    func_op_istore_3(pFrame);
 }
 
-static void op_dstore_0(Frame *pFrame) {
-    op_lstore_0(pFrame);
+static void func_op_dstore_0(Frame *pFrame) {
+    func_op_lstore_0(pFrame);
 }
 
-static void op_dstore_1(Frame *pFrame) {
-    op_lstore_1(pFrame);
+static void func_op_dstore_1(Frame *pFrame) {
+    func_op_lstore_1(pFrame);
 }
 
-static void op_dstore_2(Frame *pFrame) {
-    op_lstore_2(pFrame);
+static void func_op_dstore_2(Frame *pFrame) {
+    func_op_lstore_2(pFrame);
 }
 
-static void op_dstore_3(Frame *pFrame) {
-    op_lstore_3(pFrame);
+static void func_op_dstore_3(Frame *pFrame) {
+    func_op_lstore_3(pFrame);
 }
 
-static void op_astore_0(Frame *pFrame) {
+static void func_op_astore_0(Frame *pFrame) {
     u8 value = pop(pFrame);
     
     pFrame->local[0] = value;
     pFrame->pc++;
 }
 
-static void op_astore_1(Frame *pFrame) {
+static void func_op_astore_1(Frame *pFrame) {
     u8 value = pop(pFrame);
     
     pFrame->local[1] = value;
     pFrame->pc++;
 }
 
-static void op_astore_2(Frame *pFrame) {
+static void func_op_astore_2(Frame *pFrame) {
     u8 value = pop(pFrame);
     
     pFrame->local[2] = value;
     pFrame->pc++;
 }
 
-static void op_astore_3(Frame *pFrame) {
+static void func_op_astore_3(Frame *pFrame) {
     u8 value = pop(pFrame);
     
     pFrame->local[3] = value;
     pFrame->pc++;
 }
 
-static void op_iastore(Frame *pFrame) {
+static void func_op_iastore(Frame *pFrame) {
     u8 index, value, aux;
     struct _array* arrayRef;
     
@@ -941,7 +941,7 @@ static void op_iastore(Frame *pFrame) {
 }
 
 
-static void op_lastore(Frame *pFrame) {
+static void func_op_lastore(Frame *pFrame) {
     u8 index, low, high, aux;
     long value;
     struct _array* arrayRef;
@@ -959,7 +959,7 @@ static void op_lastore(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_fastore(Frame *pFrame) {
+static void func_op_fastore(Frame *pFrame) {
     u8 index, value, aux;
     struct _array* arrayRef;
     
@@ -973,7 +973,7 @@ static void op_fastore(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_dastore(Frame *pFrame) {
+static void func_op_dastore(Frame *pFrame) {
     u8 index, low, high, aux,value;
     struct _array* arrayRef;
     
@@ -993,7 +993,7 @@ static void op_dastore(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_aastore(Frame *pFrame) {
+static void func_op_aastore(Frame *pFrame) {
     u8 index,aux,value;
     struct _array* arrayRef;
     
@@ -1006,7 +1006,7 @@ static void op_aastore(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_bastore(Frame *pFrame) {
+static void func_op_bastore(Frame *pFrame) {
     u8 index,aux;
     uint8_t value;
     struct _array* arrayRef;
@@ -1021,7 +1021,7 @@ static void op_bastore(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_castore(Frame *pFrame) {
+static void func_op_castore(Frame *pFrame) {
     u8 index,aux, value;
     struct _array* arrayRef;
     
@@ -1035,7 +1035,7 @@ static void op_castore(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_sastore(Frame *pFrame) {
+static void func_op_sastore(Frame *pFrame) {
     u8 index,aux;
     i8 value;
     struct _array* arrayRef;
@@ -1050,18 +1050,18 @@ static void op_sastore(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_pop(Frame *pFrame) {
+static void func_op_pop(Frame *pFrame) {
     pop(pFrame);
     pFrame->pc++;
 }
 
-static void op_pop2(Frame *pFrame) {
+static void func_op_pop2(Frame *pFrame) {
     pop(pFrame);
     pop(pFrame);
     pFrame->pc++;
 }
 
-static void op_dup(Frame *pFrame) {
+static void func_op_dup(Frame *pFrame) {
     u8 data;
     data = pop(pFrame);
     push(pFrame,data);
@@ -1069,7 +1069,7 @@ static void op_dup(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_dup_x1(Frame *pFrame) {
+static void func_op_dup_x1(Frame *pFrame) {
     u8 data,other;
     data = pop(pFrame);
     other = pop(pFrame);
@@ -1079,7 +1079,7 @@ static void op_dup_x1(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_dup_x2(Frame *pFrame) {
+static void func_op_dup_x2(Frame *pFrame) {
     u8 data,other,last;
     data = pop(pFrame);
     other = pop(pFrame);
@@ -1091,7 +1091,7 @@ static void op_dup_x2(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_dup2 (Frame *pFrame) {
+static void func_op_dup2 (Frame *pFrame) {
     u8 data,other;
     data = pop(pFrame);
     other = pop(pFrame);
@@ -1102,7 +1102,7 @@ static void op_dup2 (Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_dup2_x1(Frame *pFrame) {
+static void func_op_dup2_x1(Frame *pFrame) {
     u8 data,other,last;
     data = pop(pFrame);
     other = pop(pFrame);
@@ -1115,7 +1115,7 @@ static void op_dup2_x1(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_dup2_x2(Frame *pFrame) {
+static void func_op_dup2_x2(Frame *pFrame) {
     u8 data,other,middle,last;
     data = pop(pFrame);
     other = pop(pFrame);
@@ -1130,7 +1130,7 @@ static void op_dup2_x2(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_swap(Frame *pFrame) {
+static void func_op_swap(Frame *pFrame) {
     u8 data,other;
     data = pop(pFrame);
     other = pop(pFrame);
@@ -1139,7 +1139,7 @@ static void op_swap(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_iadd(Frame *pFrame) {
+static void func_op_iadd(Frame *pFrame) {
     u8 op,opp;
     op  = pop(pFrame);
     opp = pop(pFrame);
@@ -1149,7 +1149,7 @@ static void op_iadd(Frame *pFrame) {
     
 }
 
-static void op_ladd(Frame *pFrame) {
+static void func_op_ladd(Frame *pFrame) {
     
     u8 op,opp;
     u8 high,low;
@@ -1173,7 +1173,7 @@ static void op_ladd(Frame *pFrame) {
     
 }
 
-static void op_fadd(Frame *pFrame) {
+static void func_op_fadd(Frame *pFrame) {
     
     float op, opp, sum;
     u8 value, other,result;
@@ -1192,7 +1192,7 @@ static void op_fadd(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_dadd(Frame *pFrame) {
+static void func_op_dadd(Frame *pFrame) {
     
     u8 hiOp,loOp,hiOpp,loOpp;
     double sum;
@@ -1211,7 +1211,7 @@ static void op_dadd(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_isub(Frame *pFrame) {
+static void func_op_isub(Frame *pFrame) {
     u8 op,opp;
     op  = pop(pFrame);
     opp = pop(pFrame);
@@ -1219,7 +1219,7 @@ static void op_isub(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_lsub(Frame *pFrame) {
+static void func_op_lsub(Frame *pFrame) {
     u8 op,opp;
     u8 high,low;
     
@@ -1241,7 +1241,7 @@ static void op_lsub(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_fsub(Frame *pFrame) {
+static void func_op_fsub(Frame *pFrame) {
     float op, opp, sum;
     u8 value, other,result;
     
@@ -1259,7 +1259,7 @@ static void op_fsub(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_dsub(Frame *pFrame) {
+static void func_op_dsub(Frame *pFrame) {
     double op, opp, sum;
     u8 result;
     u8 high,low;
@@ -1280,7 +1280,7 @@ static void op_dsub(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_imul(Frame *pFrame) {
+static void func_op_imul(Frame *pFrame) {
     u8 op,opp;
     op  = (i8)pop(pFrame);
     opp = (i8)pop(pFrame);
@@ -1288,7 +1288,7 @@ static void op_imul(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_lmul(Frame *pFrame) {
+static void func_op_lmul(Frame *pFrame) {
     
     i8 hop, lop, hopp, lopp;
     i8 op, opp;
@@ -1311,7 +1311,7 @@ static void op_lmul(Frame *pFrame) {
     
 }
 
-static void op_fmul(Frame *pFrame) {
+static void func_op_fmul(Frame *pFrame) {
     float op, opp, mult;
     u8 value, other,result;
     
@@ -1329,7 +1329,7 @@ static void op_fmul(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_dmul(Frame *pFrame) {
+static void func_op_dmul(Frame *pFrame) {
     i8 hop, lop, hopp, lopp;
     double op, opp, mult;
     u8 final;
@@ -1349,7 +1349,7 @@ static void op_dmul(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_idiv(Frame *pFrame) {
+static void func_op_idiv(Frame *pFrame) {
     u8 op,opp;
     op  = (i8)pop(pFrame);
     opp = (i8)pop(pFrame);
@@ -1357,7 +1357,7 @@ static void op_idiv(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_ldiv(Frame *pFrame) {
+static void func_op_ldiv(Frame *pFrame) {
     
     i8 hop, lop, hopp, lopp;
     i8 op, opp;
@@ -1380,7 +1380,7 @@ static void op_ldiv(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_fdiv(Frame *pFrame) {
+static void func_op_fdiv(Frame *pFrame) {
     float op, opp, mult;
     u8 value, other,result;
     
@@ -1398,7 +1398,7 @@ static void op_fdiv(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_ddiv(Frame *pFrame) {
+static void func_op_ddiv(Frame *pFrame) {
     i8 hop, lop, hopp, lopp, final;
     double op, opp, div;
     
@@ -1417,7 +1417,7 @@ static void op_ddiv(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_irem(Frame *pFrame) {
+static void func_op_irem(Frame *pFrame) {
     u8 op,opp;
     op  = pop(pFrame);
     opp = pop(pFrame);
@@ -1425,7 +1425,7 @@ static void op_irem(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_lrem(Frame *pFrame) {
+static void func_op_lrem(Frame *pFrame) {
     u8 op,opp;
     u8 high,low;
     
@@ -1447,7 +1447,7 @@ static void op_lrem(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_frem(Frame *pFrame) {
+static void func_op_frem(Frame *pFrame) {
     float op, opp, mod;
     u8 value2, value1, result;
     
@@ -1465,7 +1465,7 @@ static void op_frem(Frame *pFrame) {
     
 }
 
-static void op_drem(Frame *pFrame) {
+static void func_op_drem(Frame *pFrame) {
     u8 hop, lop, hopp, lopp;
     double op, opp, mod;
     u8 final;
@@ -1485,7 +1485,7 @@ static void op_drem(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_ineg(Frame *pFrame) {
+static void func_op_ineg(Frame *pFrame) {
     i8 op;
     u8 aux = 0;
     
@@ -1496,7 +1496,7 @@ static void op_ineg(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_lneg(Frame *pFrame) {
+static void func_op_lneg(Frame *pFrame) {
     u8 op;
     u8 high,low;
     
@@ -1513,7 +1513,7 @@ static void op_lneg(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_fneg(Frame *pFrame) {
+static void func_op_fneg(Frame *pFrame) {
     float op, negative;
     u8 value, result;
     
@@ -1528,7 +1528,7 @@ static void op_fneg(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_dneg(Frame *pFrame) {
+static void func_op_dneg(Frame *pFrame) {
     double op, negative;
     u8 result;
     u8 high,low;
@@ -1545,7 +1545,7 @@ static void op_dneg(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_ishl(Frame *pFrame) {
+static void func_op_ishl(Frame *pFrame) {
     u8 lowsFive = 0x1f;
     u8 value1, value2;
     
@@ -1560,7 +1560,7 @@ static void op_ishl(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_lshl(Frame *pFrame) {
+static void func_op_lshl(Frame *pFrame) {
     i8 bigBits;
     u8 lowSix = 0x3f;
     u8 low, high, result;
@@ -1584,7 +1584,7 @@ static void op_lshl(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_ishr(Frame *pFrame) {
+static void func_op_ishr(Frame *pFrame) {
     
     int32_t value1,lowFive = 0x1f;
     int32_t value2;
@@ -1601,7 +1601,7 @@ static void op_ishr(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_lshr(Frame *pFrame) {
+static void func_op_lshr(Frame *pFrame) {
     
     u8 allOne = 0xffffffffffffffff, firstOne = 0x8000000000000000, var;
     u8 low, high, vartwo, lowSeven = 0x3f;;
@@ -1630,7 +1630,7 @@ static void op_lshr(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_iushr(Frame *pFrame) {
+static void func_op_iushr(Frame *pFrame) {
     u8 lowFive = 0x1f;
     u8 value, other;
     
@@ -1642,7 +1642,7 @@ static void op_iushr(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_lushr(Frame *pFrame) {
+static void func_op_lushr(Frame *pFrame) {
     i8 bigBits;
     u8 var, low, high, lowFive = 0x3f;
     
@@ -1662,7 +1662,7 @@ static void op_lushr(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_iand(Frame *pFrame) {
+static void func_op_iand(Frame *pFrame) {
     u8 op,opp;
     op  = pop(pFrame);
     opp = pop(pFrame);
@@ -1670,7 +1670,7 @@ static void op_iand(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_land(Frame *pFrame) {
+static void func_op_land(Frame *pFrame) {
     
     u8 op,opp;
     u8 high,low;
@@ -1693,7 +1693,7 @@ static void op_land(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_ior(Frame *pFrame) {
+static void func_op_ior(Frame *pFrame) {
     u8 op,opp;
     op  = pop(pFrame);
     opp = pop(pFrame);
@@ -1701,7 +1701,7 @@ static void op_ior(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_lor(Frame *pFrame) {
+static void func_op_lor(Frame *pFrame) {
     u8 op,opp;
     u8 high,low;
     
@@ -1723,7 +1723,7 @@ static void op_lor(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_ixor(Frame *pFrame) {
+static void func_op_ixor(Frame *pFrame) {
     u8 op,opp;
     op  = pop(pFrame);
     opp = pop(pFrame);
@@ -1731,7 +1731,7 @@ static void op_ixor(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_lxor(Frame *pFrame) {
+static void func_op_lxor(Frame *pFrame) {
     u8 op,opp;
     u8 high,low;
     
@@ -1753,7 +1753,7 @@ static void op_lxor(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_iinc(Frame *pFrame) {
+static void func_op_iinc(Frame *pFrame) {
     uint8_t field_index = pFrame->code[++(pFrame->pc)];
     u8 auxiliar = pFrame->local[field_index];
     uint8_t auxiliar2 = pFrame->code[++(pFrame->pc)];
@@ -1766,7 +1766,7 @@ static void op_iinc(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_i2l(Frame *pFrame) {
+static void func_op_i2l(Frame *pFrame) {
     u8 value1, value3, oneOne = 0x80000000;
     u8 bigBits,getHigh = 0xffffffff00000000;
     
@@ -1782,7 +1782,7 @@ static void op_i2l(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_i2f(Frame *pFrame) {
+static void func_op_i2f(Frame *pFrame) {
     
     u8 value;
     u8 value2 = 0;
@@ -1799,7 +1799,7 @@ static void op_i2f(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_i2d(Frame *pFrame) {
+static void func_op_i2d(Frame *pFrame) {
     
     u8 value;
     u8 value2 = 0;
@@ -1816,7 +1816,7 @@ static void op_i2d(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_l2i(Frame *pFrame) {
+static void func_op_l2i(Frame *pFrame) {
     u8 low;
     low = pop(pFrame);
     pop(pFrame);
@@ -1825,7 +1825,7 @@ static void op_l2i(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_l2f(Frame *pFrame) {
+static void func_op_l2f(Frame *pFrame) {
     u8 low, high, toPush;
     long val;
     float number;
@@ -1842,7 +1842,7 @@ static void op_l2f(Frame *pFrame) {
 }
 
 
-static void op_l2d(Frame *pFrame) {
+static void func_op_l2d(Frame *pFrame) {
     u8 low, high, toPush = 0;
     long val;
     double number;
@@ -1859,7 +1859,7 @@ static void op_l2d(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_f2i(Frame *pFrame) {
+static void func_op_f2i(Frame *pFrame) {
     u8 value;
     float number;
     
@@ -1872,7 +1872,7 @@ static void op_f2i(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_f2l(Frame *pFrame) {
+static void func_op_f2l(Frame *pFrame) {
     
     u8 value;
     u8 other;
@@ -1887,7 +1887,7 @@ static void op_f2l(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_f2d(Frame *pFrame) {
+static void func_op_f2d(Frame *pFrame) {
     
     u8 value;
     u8 other;
@@ -1906,7 +1906,7 @@ static void op_f2d(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_d2i(Frame *pFrame) {
+static void func_op_d2i(Frame *pFrame) {
     
     i8 hop, lop;
     double op;
@@ -1927,7 +1927,7 @@ static void op_d2i(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_d2l(Frame *pFrame) {
+static void func_op_d2l(Frame *pFrame) {
     
     i8 hop, lop;
     double op;
@@ -1949,7 +1949,7 @@ static void op_d2l(Frame *pFrame) {
     
 }
 
-static void op_d2f(Frame *pFrame) {
+static void func_op_d2f(Frame *pFrame) {
     
     i8 hop, lop;
     double op;
@@ -1969,7 +1969,7 @@ static void op_d2f(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_i2b(Frame *pFrame) {
+static void func_op_i2b(Frame *pFrame) {
     
     int8_t value;
     i8 other;
@@ -1981,7 +1981,7 @@ static void op_i2b(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_i2c(Frame *pFrame) {
+static void func_op_i2c(Frame *pFrame) {
     
     int16_t value;
     i8 other;
@@ -1993,7 +1993,7 @@ static void op_i2c(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_i2s(Frame *pFrame) {
+static void func_op_i2s(Frame *pFrame) {
     
     int16_t value;
     i8 other;
@@ -2006,7 +2006,7 @@ static void op_i2s(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_lcmp(Frame *pFrame) {
+static void func_op_lcmp(Frame *pFrame) {
     
     i8 result;
     i8 low, high;
@@ -2036,7 +2036,7 @@ static void op_lcmp(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_fcmpl(Frame *pFrame) {
+static void func_op_fcmpl(Frame *pFrame) {
     
     i8 empilha;
     u8 value;
@@ -2064,7 +2064,7 @@ static void op_fcmpl(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_fcmpg(Frame *pFrame) {
+static void func_op_fcmpg(Frame *pFrame) {
     
     float value, other;
     u8 auxiliar;
@@ -2091,7 +2091,7 @@ static void op_fcmpg(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_dcmpl(Frame *pFrame) {
+static void func_op_dcmpl(Frame *pFrame) {
     double double_number, double_number2;
     u8 low, high;
     i8 empilha;
@@ -2120,7 +2120,7 @@ static void op_dcmpl(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_dcmpg(Frame *pFrame) {
+static void func_op_dcmpg(Frame *pFrame) {
     double double_number, double_number2;
     u8 low, high;
     i8 empilha;
@@ -2150,7 +2150,7 @@ static void op_dcmpg(Frame *pFrame) {
     
 }
 
-static void op_ifeq(Frame *pFrame) {
+static void func_op_ifeq(Frame *pFrame) {
     
     uint8_t pathOne, pathTwo;
     int16_t desloc;
@@ -2174,7 +2174,7 @@ static void op_ifeq(Frame *pFrame) {
 }
 
 
-static void op_ifne(Frame *pFrame) {
+static void func_op_ifne(Frame *pFrame) {
     
     uint8_t pathOne, pathTwo;
     int16_t desloc;
@@ -2197,7 +2197,7 @@ static void op_ifne(Frame *pFrame) {
     }
 }
 
-static void op_iflt(Frame *pFrame) {
+static void func_op_iflt(Frame *pFrame) {
     
     uint8_t pathOne, pathTwo;
     int16_t desloc;
@@ -2220,7 +2220,7 @@ static void op_iflt(Frame *pFrame) {
     }
 }
 
-static void op_ifge(Frame *pFrame) {
+static void func_op_ifge(Frame *pFrame) {
     
     uint8_t pathOne, pathTwo;
     int16_t desloc;
@@ -2244,7 +2244,7 @@ static void op_ifge(Frame *pFrame) {
     
 }
 
-static void op_ifgt(Frame *pFrame) {
+static void func_op_ifgt(Frame *pFrame) {
     
     uint8_t pathOne, pathTwo;
     int16_t desloc;
@@ -2268,7 +2268,7 @@ static void op_ifgt(Frame *pFrame) {
     
 }
 
-static void op_ifle(Frame *pFrame) {
+static void func_op_ifle(Frame *pFrame) {
     
     uint8_t pathOne, pathTwo;
     uint16_t desloc;
@@ -2291,7 +2291,7 @@ static void op_ifle(Frame *pFrame) {
     }
 }
 
-static void op_if_icmpeq(Frame *pFrame) {
+static void func_op_if_icmpeq(Frame *pFrame) {
     
     int8_t pathOne, pathTwo;
     i8 value1, value2;
@@ -2317,7 +2317,7 @@ static void op_if_icmpeq(Frame *pFrame) {
     
 }
 
-static void op_if_icmpne(Frame *pFrame) {
+static void func_op_if_icmpne(Frame *pFrame) {
     
     int8_t pathOne, pathTwo;
     i8 value1, value2;
@@ -2343,7 +2343,7 @@ static void op_if_icmpne(Frame *pFrame) {
     
 }
 
-static void op_if_icmplt(Frame *pFrame) {
+static void func_op_if_icmplt(Frame *pFrame) {
     
     int8_t pathOne, pathTwo;
     i8 value1, value2;
@@ -2369,7 +2369,7 @@ static void op_if_icmplt(Frame *pFrame) {
     
 }
 
-static void op_if_icmpge(Frame *pFrame) {
+static void func_op_if_icmpge(Frame *pFrame) {
     
     int8_t pathOne, pathTwo;
     i8 value1, value2;
@@ -2395,7 +2395,7 @@ static void op_if_icmpge(Frame *pFrame) {
     
 }
 
-static void op_if_icmpgt(Frame *pFrame) {
+static void func_op_if_icmpgt(Frame *pFrame) {
     
     int8_t pathOne, pathTwo;
     i8 value1, value2;
@@ -2421,7 +2421,7 @@ static void op_if_icmpgt(Frame *pFrame) {
     
 }
 
-static void op_if_icmple(Frame *pFrame) {
+static void func_op_if_icmple(Frame *pFrame) {
     
     int8_t pathOne, pathTwo;
     i8 value1, value2;
@@ -2447,7 +2447,7 @@ static void op_if_icmple(Frame *pFrame) {
     
 }
 
-static void op_if_acmpeg(Frame *pFrame) {
+static void func_op_if_acmpeg(Frame *pFrame) {
     
     int8_t pathOne, pathTwo;
     i8 value1, value2;
@@ -2473,7 +2473,7 @@ static void op_if_acmpeg(Frame *pFrame) {
     
 }
 
-static void op_if_acmpne(Frame *pFrame) {
+static void func_op_if_acmpne(Frame *pFrame) {
     
     int8_t pathOne, pathTwo;
     i8 value1, value2;
@@ -2499,7 +2499,7 @@ static void op_if_acmpne(Frame *pFrame) {
     
 }
 
-static void op_goto(Frame *pFrame) {
+static void func_op_goto(Frame *pFrame) {
     uint8_t pathOne, pathTwo;
     int16_t desloc;
     pathOne = pFrame->code[(pFrame->pc)+1];
@@ -2512,7 +2512,7 @@ static void op_goto(Frame *pFrame) {
     pFrame->pc += desloc;
 }
 
-static void op_jsr(Frame *pFrame) {
+static void func_op_jsr(Frame *pFrame) {
     
     uint8_t pathOne, pathTwo;
     int16_t desloc;
@@ -2529,7 +2529,7 @@ static void op_jsr(Frame *pFrame) {
     
 }
 
-static void op_ret(Frame *pFrame) {
+static void func_op_ret(Frame *pFrame) {
     
     int16_t index;
     pFrame->pc++;
@@ -2544,7 +2544,7 @@ static void op_ret(Frame *pFrame) {
     pFrame->pc = pFrame->local[index];
 }
 
-static void op_tableswitch(Frame *pFrame) {
+static void func_op_tableswitch(Frame *pFrame) {
     
     int padrao, hi, lo, index, i ,j;
     int *tabelao;
@@ -2604,7 +2604,7 @@ static void op_tableswitch(Frame *pFrame) {
 }
 
 
-static void op_lookupswitch(Frame *pFrame) {
+static void func_op_lookupswitch(Frame *pFrame) {
     
     int padrao, index, i ,j, pairs,found;
     u8 locate,saltar, bytes[5];
@@ -2667,11 +2667,11 @@ static void op_lookupswitch(Frame *pFrame) {
 }
 
 
-static void op_ireturn(Frame *pFrame) {
+static void func_op_ireturn(Frame *pFrame) {
     u8 aux = pop(pFrame);
     
     //Fazer do nosso jeito
-    maquina.stack->popFrame();
+    deleteFrame();
     pFrame->retornou = 1;
     
     if (pFrame) {
@@ -2680,12 +2680,12 @@ static void op_ireturn(Frame *pFrame) {
     
 }
 
-static void op_lreturn(Frame *pFrame) {
+static void func_op_lreturn(Frame *pFrame) {
     u8 low = pop(pFrame);
     u8 high = pop(pFrame);
     
     //Fazer do nosso jeito
-    maquina.stack->popFrame();
+    deleteFrame();
     pFrame->retornou = 1;
     
     if (pFrame) {
@@ -2693,16 +2693,16 @@ static void op_lreturn(Frame *pFrame) {
     }
 }
 
-static void op_freturn(Frame *pFrame) {
-    op_ireturn(pFrame);
+static void func_op_freturn(Frame *pFrame) {
+    func_op_ireturn(pFrame);
 }
 
-static void op_dreturn(Frame *pFrame) {
+static void func_op_dreturn(Frame *pFrame) {
     u8 low = pop(pFrame);
     u8 high = pop(pFrame);
     
     //Fazer do nosso jeito
-    maquina.stack->popFrame();
+    deleteFrame();
     pFrame->retornou = 1;
     
     if (pFrame) {
@@ -2713,16 +2713,15 @@ static void op_dreturn(Frame *pFrame) {
     
 }
 
-static void op_areturn(Frame *pFrame) {
-    op_ireturn(pFrame);
+static void func_op_areturn(Frame *pFrame) {
+    func_op_ireturn(pFrame);
 }
 
-static void op_return(Frame *pFrame) {
+static void func_op_return(Frame *pFrame) {
     pFrame->retornou = 1;
 }
 
-static void op_getstatic(Frame *pFrame) {
-    // printf("\n\t\t\t\tentrou getstatic: %p; method_area: %p", maquina.current_frame, maquina.method_area);
+static void func_op_getstatic(Frame *pFrame) {
     uint8_t index_1, index_2;
     uint16_t index, nameTypeIndex;
     u8 classIndexTemp;
@@ -2742,17 +2741,17 @@ static void op_getstatic(Frame *pFrame) {
     type = getUtf8String(pFrame->pClass->constant_pool, pFrame->pClass->constant_pool[nameTypeIndex-1].info.CONSTANT_NameAndType_info.name_index.descriptor_index);
     
     
-    while((field_index = maquina.getFieldIndex(className, name, strlen(name), type, strlen(type))) == -1) {
-        className = _MCLASS.getParentName(maquina.getClassByName(className));
+    while((field_index = getFieldIndex(className, name, strlen(name), type, strlen(type))) == -1) {
+        className = getParentName(getClassByName(className));
     }
     
-    classIndex = maquina.loadClass(className);
+    classIndex = loadClass(className);
     
     if(field_index < 0){
-        field_index = maquina.searchStaticFieldVal(classIndex,name,type);
+        field_index = searchStaticFieldVal(classIndex,name,type);
     }
     
-    valor = maquina.getStaticFieldVal(classIndex , field_index);
+    valor = getStaticFieldVal(classIndex , field_index);
     
     if(type[0] == 'J' || type[0] == 'D') {
         push2(pFrame,valor);
@@ -2763,7 +2762,7 @@ static void op_getstatic(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_putstatic(Frame *pFrame) {
+static void func_op_putstatic(Frame *pFrame) {
     uint8_t index_1, index_2;
     uint16_t index, nameTypeIndex;
     u8 classIndexTemp;
@@ -2803,7 +2802,7 @@ static void op_putstatic(Frame *pFrame) {
 }
 
 
-static void op_getfield(Frame *pFrame) {
+static void func_op_getfield(Frame *pFrame) {
     uint8_t low, high;
     u8 index;
     i8 classIndex, field_index, aux;
@@ -2848,7 +2847,7 @@ static void op_getfield(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_putfield(Frame *pFrame) {
+static void func_op_putfield(Frame *pFrame) {
     
     uint8_t low, high;
     u8 index,aux;
@@ -2898,7 +2897,7 @@ static void op_putfield(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_invokevirtual(Frame *pFrame) {
+static void func_op_invokevirtual(Frame *pFrame) {
     u8 index = 0, valorHigh = 0, valorLow = 0, vU8 = 0, array_ref = 0;
     uint8_t low = 0, high = 0;
     i8 numParams = 0, i = 0, j = 0;
@@ -3000,13 +2999,13 @@ static void op_invokevirtual(Frame *pFrame) {
         
         pop(pFrame);
     } else {
-        classIndex = maquina.loadClass(className);
-        class = maquina.method_area->classes[classIndex];
+        classIndex = loadClass(className);
+        class = mHeap->classes[classIndex];
         
-        while(class != NULL && (method = maquina.getMethodByNameDesc(class, pFrame->pClass, nameTypeIndex)) == NULL) {
-            className = _MCLASS.getParentName(class);
-            classIndex = maquina.loadClass(className);
-            class = maquina.method_area->classes[classIndex];
+        while(class != NULL && (method = getMethodByNameDesc(class, pFrame->pClass, nameTypeIndex)) == NULL) {
+            className = getParentName(class);
+            classIndex = loadClass(className);
+            class = mHeap->classes[classIndex];
         }
         
         if(class == NULL) {
@@ -3014,13 +3013,13 @@ static void op_invokevirtual(Frame *pFrame) {
             exit(1);
         }
         
-        numParams = maquina.getNumParameters(class, method);
+        numParams = getNumParameters(class, method);
         fieldsTemp = calloc(sizeof(u8),numParams+1);
         for(i = numParams; i > 0; i--) {
             fieldsTemp[i] = pop(pFrame);
         }
         
-        if(((method->access_flags) & mask_native) || strcmp("println", maquina.getNameConstants(class, method->name_index)) == 0) {
+        if(((method->access_flags) & mask_native) || strcmp("println", getUtf8String(class->constant_pool, method->name_index)) == 0) {
             pop(pFrame);
             
             // implementar aqui codigo para lidar com metodos nativos
@@ -3039,7 +3038,7 @@ static void op_invokevirtual(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_invokespecial(Frame *pFrame) {
+static void func_op_invokespecial(Frame *pFrame) {
     u8 index, *fieldsTemp;;
     uint8_t low, high;
     i8 i, classIndex, classIndexTemp;
@@ -3105,8 +3104,7 @@ static void op_invokespecial(Frame *pFrame) {
     
 }
 
-static void op_invokestatic(Frame *pFrame) {
-    // printf("\n\t\t\t\tentrou invokestatic: %p", maquina.current_frame);
+static void func_op_invokestatic(Frame *pFrame) {
     u8 index, *fieldsTemp;
     uint8_t low, high;
     i8 numParams, i, classIndex, classIndexTemp;
@@ -3154,7 +3152,7 @@ static void op_invokestatic(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_invokeinterface(Frame *pFrame) {
+static void func_op_invokeinterface(Frame *pFrame) {
     u8 index, *fieldsTemp;
     uint8_t low, high, args_count;
     i8 classIndex, classIndexTemp, i;
@@ -3212,7 +3210,7 @@ static void op_invokeinterface(Frame *pFrame) {
     
 }
 
-static void op_new(Frame *pFrame) {
+static void func_op_new(Frame *pFrame) {
     // printf("\n\t\t\tentrou _new");
     u1 low, high;
     u8 index;
@@ -3246,7 +3244,7 @@ static void op_new(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_newarray(Frame *pFrame) {
+static void func_op_newarray(Frame *pFrame) {
     int count;
     uint8_t type;
     count = pop(pFrame);
@@ -3259,7 +3257,7 @@ static void op_newarray(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_anewarray(Frame *pFrame) {
+static void func_op_anewarray(Frame *pFrame) {
     int count = pop(pFrame);
     if (count < 0) error(E_NEG_ARR_SIZE);
     
@@ -3275,7 +3273,7 @@ static void op_anewarray(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_arraylength(Frame *pFrame) {
+static void func_op_arraylength(Frame *pFrame) {
     u8 reference = pop(pFrame);
     if (reference == 0) error(E_NULL_POINTER);
     
@@ -3292,11 +3290,11 @@ static void op_arraylength(Frame *pFrame) {
     error(E_ARR_NOT_FOUND);
 }
 
-static void op_athrow(Frame *pFrame) {
+static void func_op_athrow(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_checkcast(Frame *pFrame) {
+static void func_op_checkcast(Frame *pFrame) {
     struct _object *reference;
     uint16_t index;
     
@@ -3322,7 +3320,7 @@ static void op_checkcast(Frame *pFrame) {
     
 }
 
-static void op_instanceof(Frame *pFrame) {
+static void func_op_instanceof(Frame *pFrame) {
     
     struct _object *reference;
     uint16_t index;
@@ -3350,22 +3348,22 @@ static void op_instanceof(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_monitorenter(Frame *pFrame) {
+static void func_op_monitorenter(Frame *pFrame) {
     printf("monitorenter: Not supported instruction");
     exit(1);
 }
 
-static void op_monitorexit(Frame *pFrame) {
+static void func_op_monitorexit(Frame *pFrame) {
     printf("monitorexit: Not supported instruction");
     exit(1);
 }
 
-static void op_wide(Frame *pFrame) {
+static void func_op_wide(Frame *pFrame) {
     wide = 1;
     pFrame->pc++;
 }
 
-static void op_multianewarray(Frame *pFrame) {
+static void func_op_multianewarray(Frame *pFrame) {
     // error(E_NOT_SUPPORTED_INSTRUCTION);
     uint16_t index = pFrame->code[++pFrame->pc];
     index = index << 8 | pFrame->code[++pFrame->pc];
@@ -3391,7 +3389,7 @@ static void op_multianewarray(Frame *pFrame) {
     uint32_t tipo = 0;
     switch(marrayInfo[dimensionCount]) {
         case 'L': // seta o tipo e carrega classe para method_area
-            tipo = ref_t;
+            tipo = tREFERENCIA;
             u1 *className = (u1*) malloc(strlen(marrayInfo)*sizeof(u1));
             for (int i = dimensionCount + 1; i < strlen(marrayInfo); i++) {
                 className[i - dimensionCount - 1] = marrayInfo[i];
@@ -3400,28 +3398,28 @@ static void op_multianewarray(Frame *pFrame) {
             loadClass(className);
             break;
         case 'Z':
-            tipo = bool_t;
+            tipo = tBOOLEAN;
             break;
         case 'C':
-            tipo = char_t;
+            tipo = tChar;
             break;
         case 'F':
-            tipo = float_t;
+            tipo = tFLOAT;
             break;
         case 'D':
-            tipo = double_t;
+            tipo = tDOUBLE;
             break;
         case 'B':
-            tipo = byte_t;
+            tipo = tBYTE;
             break;
         case 'S':
-            tipo = short_t;
+            tipo = tSHORT;
             break;
         case 'I':
-            tipo = int_t;
+            tipo = tINT;
             break;
         case 'J':
-            tipo = long_t;
+            tipo = tLONG;
             break;
         case '[':
             error(E_DISTINCT_MARRAY_DIMENSIONS);
@@ -3436,7 +3434,7 @@ static void op_multianewarray(Frame *pFrame) {
     pFrame->pc++;
 }
 
-static void op_ifnull(Frame *pFrame) {
+static void func_op_ifnull(Frame *pFrame) {
     uint8_t bb1, bb2;
     i8 auxiliar_32;
     u8 offset;
@@ -3458,7 +3456,7 @@ static void op_ifnull(Frame *pFrame) {
     
 }
 
-static void op_ifnonnull(Frame *pFrame) {
+static void func_op_ifnonnull(Frame *pFrame) {
     uint8_t bb1, bb2;
     i8 auxiliar_32;
     int16_t offset;
@@ -3480,7 +3478,7 @@ static void op_ifnonnull(Frame *pFrame) {
     
 }
 
-static void op_goto_w(Frame *pFrame) {
+static void func_op_goto_w(Frame *pFrame) {
     u8 bb1, bb2, bb3, bb4;
     i8 offset;
     
@@ -3493,7 +3491,7 @@ static void op_goto_w(Frame *pFrame) {
     pFrame->pc += offset;
 }
 
-static void op_jsr_w(Frame *pFrame) {
+static void func_op_jsr_w(Frame *pFrame) {
     u8 bb1, bb2, bb3, bb4;
     i8 offset;
     

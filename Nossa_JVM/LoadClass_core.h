@@ -10,7 +10,7 @@
 #include <inttypes.h>
 
 
-ClassFile *classLoader( u1 *classPathStr, ClassFile* clsHeap, dataMSize_t *dmSize );
+ClassFile *classLoader(char *classPathStr);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Constant Pool    -   inicio

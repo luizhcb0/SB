@@ -63,21 +63,21 @@ void jvmStartup(u1 *classPathStr, int flag){
  * @param stkFrame_ptr
  * @param stkFrameTop_ptr
  */
-void initializeClass(ClassFile *class_ptr, Frame *stkFrame_ptr, dataMSize_t *dmSize_ptr, ClassFile *classHeap_ptr){
+void initializeClass(ClassFile *class_ptr){
 
     u2 method_idx = seekMethodInClass( class_ptr, "<clinit>", "()V" );
     method_info *method_ptr = &class_ptr->methods[method_idx];
     //Quem cria deleta.
     
-    createFrame(method_ptr, class_ptr, stkFrame_ptr, &dmSize_ptr->stkHeap_size);//Cria o frame para o método <clinit> da classe.
+    createFrame(method_ptr, class_ptr);//Cria o frame para o método <clinit> da classe.
     
     u2 aux_idx = dmSize_ptr->stkHeap_size - 1; // o stkFrameTop_ptr na verdade é o stack frame size, que indica a qtd de frames na stkframe.
     
     //Teste
-    Execute(stkFrame_ptr, classHeap_ptr, dmSize_ptr);
+    Execute();
     
     //Deleta o frame.
-    deleteFrame(&stkFrame_ptr[aux_idx], &dmSize_ptr->stkHeap_size);
+    deleteFrame();
 }
 
 /**
@@ -90,8 +90,7 @@ void initializeClass(ClassFile *class_ptr, Frame *stkFrame_ptr, dataMSize_t *dmS
 * @param mth_name
 * @param mth_descriptor
 */
-void callMethod(ClassFile *class_ptr, Frame *stkFrame_ptr, dataMSize_t *dmSize_ptr, ClassFile *classHeap_ptr, \
-	char *mth_name, char *mth_descriptor){
+void callMethod(ClassFile *class_ptr, char *mth_name, char *mth_descriptor){
     u2 method_idx = seekMethodInClass( class_ptr, mth_name, mth_descriptor );
 
 	if( method_idx  == SEEK_NOTFOUND){
@@ -100,15 +99,13 @@ void callMethod(ClassFile *class_ptr, Frame *stkFrame_ptr, dataMSize_t *dmSize_p
     method_info *method_ptr = &class_ptr->methods[method_idx];
     //Quem cria deleta.
     
-    createFrame(method_ptr, class_ptr, stkFrame_ptr, &dmSize_ptr->stkHeap_size);//Cria o frame para o método <clinit> da classe.
-    
-    u2 aux_idx = dmSize_ptr->stkHeap_size - 1; // o stkFrameTop_ptr na verdade é o stack frame size, que indica a qtd de frames na stkframe.
+    createFrame(method_ptr, class_ptr);//Cria o frame para o método <clinit> da classe.
     
     //Teste
-    Execute(stkFrame_ptr, classHeap_ptr, dmSize_ptr);
+    Execute();
     
     //Deleta o frame.
-    deleteFrame(&stkFrame_ptr[aux_idx], &dmSize_ptr->stkHeap_size);
+    deleteFrame();
 }
 
 /** OK!
@@ -155,14 +152,14 @@ u2 seekMethodInClass(ClassFile *class_ptr, char *methName_str, char *methDescrip
  *
  *  @return <#return value description#>
  */
-int findClass(ClassFile *classHeap_ptr, dataMSize_t dmSize, char* ClassName){
+int findClass(char* ClassName){
     
     u2 clsHeapSize = dmSize.stkHeap_size;
     u2 index;
     
     for(int i=0; i < clsHeapSize; i++) {
-        index = classHeap_ptr[i].this_class;
-        if(strcmp(classHeap_ptr[i].constant_pool[index-1].info.CONSTANT_Utf8_info.bytes, ClassName) == 0) {
+        index = classHeap[i].this_class;
+        if(strcmp(classHeap[i].constant_pool[index-1].info.CONSTANT_Utf8_info.bytes, ClassName) == 0) {
             return i;
         }
     }
@@ -243,8 +240,7 @@ void createFrame(method_info *method, ClassFile *Class, Frame *frame_ptr, u2 *nu
 //Lembrar de enviar o dataMSize->stkHeap_size para o numFrames
 void deleteFrame(Frame *frame_ptr, u2 *numFrames) {
     
-    //free(frame_ptr);
-    (*numFrames)--;
+    dmSize->stkHeap_size--;
     
 }
 

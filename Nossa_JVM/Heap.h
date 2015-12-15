@@ -9,9 +9,7 @@
 #ifndef Heap_h
 #define Heap_h
 
-#include <stdio.h>
-
-#endif /* Heap_h */
+#include "macros.h"
 
 
 // Heap
@@ -38,12 +36,14 @@ typedef struct {
     u4 array_count;
     
     // funções
-    struct _object* (*newObject)(ClassFile *);
-    struct _array* (*newArray)(u4, u4);
-    struct _array* (*newRefArray)(u4, char *);
-    struct _array* (*newMultiArray)(int, int, int*, u4);
 } Heap;
 
 Heap *initHeap();
+struct _object* (*newObject)(ClassFile *);
+struct _array* (*newArray)(u4, u4);
+struct _array* (*newRefArray)(u4, char *);
+struct _array* (*newMultiArray)(int, int, int*, u4);
 
 extern Heap objHeap;
+
+#endif /* Heap_h */

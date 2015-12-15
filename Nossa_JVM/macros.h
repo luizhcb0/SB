@@ -18,8 +18,8 @@
  * =====================================================================================
  */
 
-#ifndef HEADER_MACROS
-#define HEADER_MACROS
+#ifndef MACROS_H
+#define MACROS_H
 #include <stdint.h>
 #include "exceptions.h"
 #include <string.h>
@@ -619,34 +619,21 @@ typedef union {
     Object_t object;
 }Variable_t;
 
-typedef struct {
-    //Variable *pOpStack;
-    ClassFile *pClass;
-    method_info *pMethod;
-    u4 code_length; //Número de bytes do array abaixo
-    u1 *code; //Vetor com a qtd de byte indicada acima
-    u4 pc;
-    i4 sp;
-    u2 stack_size;
-    u2 local_size;
-    u4 *stack;
-    u4 *local;
-}Frame;
 
 
 /*!
  Enumeração dos possíveis tipos definidos pela JVM para newArray
 	*/
 enum Array_Tipo {
-    ref_t = 0,
-    bool_t = 4,
-    char_t = 5,
-    float_t = 6,
-    double_t	= 7,
-    byte_t = 8,
-    short_t = 9,
-    int_t = 10,
-    long_t = 11
+    tREFERENCIA = 0,
+    tBOOLEAN = 4,
+    tCHAR = 5,
+    tFLOAT = 6,
+    tDOUBLE	= 7,
+    tBYTE = 8,
+    tSHORT = 9,
+    tINT = 10,
+    tLONG = 11
 };
 
 /*!

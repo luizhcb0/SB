@@ -1,6 +1,9 @@
 #include "LoadClass_core.h"
 #include "LoadClass_ui.h"
 #include "macros.h"
+#include "Execution_Core.h"
+#include "Frame.h"
+#include "Heap.h"
 /**
 * @brief 
 *
@@ -9,8 +12,12 @@
 * @param dmSize
 */
 
+dataMSize_t dmSize;
+ClassFile *classHeap;
+Frame *stackFrame;
+Heap objHeap;
 
-void classLoader( u1 *classPathStr, ClassFile* clsHeap, dataMSize_t *dmSize ) {
+ClassFile *classLoader(char *classPathStr) {
 	ClassFile *classHeap_ptr;
 
     FILE *classPathF_ptr = fopen(classPathStr, "rb");
@@ -19,9 +26,9 @@ void classLoader( u1 *classPathStr, ClassFile* clsHeap, dataMSize_t *dmSize ) {
     	exit(1);
     }
     
-	classHeap_ptr = clsHeap + dmSize->clsHeap_size*sizeof( ClassFile );// seto a posição correta
-	if( classHeap_ptr < ( clsHeap + CLSHEAP_MAX*sizeof( ClassFile ) ) ){
-		dmSize->clsHeap_size++;// incremento a qtd de elementos na heap
+	classHeap_ptr = classHeap + dmSize.clsHeap_size * sizeof( ClassFile );// seto a posição correta
+	if( classHeap_ptr < ( classHeap + CLSHEAP_MAX * sizeof( ClassFile ) ) ){
+		dmSize.clsHeap_size++;// incremento a qtd de elementos na heap
 	}
 	else{
 		printf("\nClassHeap está cheio\n");
@@ -108,7 +115,7 @@ void classLoader( u1 *classPathStr, ClassFile* clsHeap, dataMSize_t *dmSize ) {
 	//fclose(classPathF_ptr);
 
 	fillStaticFields(classHeap_ptr);
-	clsHeap[ dmSize->clsHeap_size - 1] = *classHeap_ptr;
-	return ;
+	classHeap[ dmSize.clsHeap_size - 1] = *classHeap_ptr;
+	return classHeap_ptr;
 
 }

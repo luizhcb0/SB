@@ -9,13 +9,18 @@
 #ifndef Execution_Core_h
 #define Execution_Core_h
 
-#include <stdio.h>
-
-
+#include "macros.h"
+#include "Frame.h"
 
 typedef struct {
-    ClasFile **classes;
-    ClassFie **interfaces;
+    uint16_t qtd_operandos;
+    char *nome;
+    void (*call)(Frame*);
+} Instruction_t;
+
+typedef struct {
+    ClassFile **classes;
+    ClassFile **interfaces;
     u4 classes_count;
     u4 interfaces_count;
 } MethodHeap;

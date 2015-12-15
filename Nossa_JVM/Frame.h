@@ -11,6 +11,12 @@
 /*!
  FRAME define a estrutura de um frame e provê funções para manuseio de um frame da JVM
  */
+#ifndef FRAME_H
+#define FRAME_H
+
+#include "macros.h"
+
+
 typedef struct {
     // campos
     
@@ -35,8 +41,11 @@ typedef struct {
     u2 retornou;
     
     // funcoes
-    void (*push)(Frame *,u8);
-    u8 (*pop)(Frame *);
-    void (*push2)(u8);
-    u8 (*pop2)(Frame *);
 } Frame;
+
+void (*push)(Frame *,u8);
+u8 (*pop)(Frame *);
+void (*push2)(u8);
+u8 (*pop2)(Frame *);
+
+#endif
