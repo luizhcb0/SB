@@ -71,6 +71,75 @@ u2 getClassIndex(u1 *class_name) {
     return -1;
 }
 
+static void initialize(int class_index) {
+    ClassFile *class = maquina.method_area->classes[class_index];
+    struct _method_info* clinit = getclinit(class);
+    
+    if (clinit == NULL) return; // classe abstrata ou interface
+    
+    construirFrame(class, clinit);
+    execute();
+    
+}
+
+/// aloca e inicializa valores default para os fields estaticos da classe indicada por $index
+static void prepare(uint32_t index) {
+    
+    for (int j = 0; j < maquina.method_area->classes[index]->fields_count; j++) {
+        if (checkIfFieldIsStatic(maquina.method_area->classes[index]->fields_pool->fields[j].access_flags)) {
+            maquina.method_area->classes[index]->fields_pool->fields[j].value = 0;
+        }
+    }
+}
+
+
+/// verifica, prepara e opcionalmente resolve
+static void link(int class_index) {
+    prepare(class_index);
+}
+
+static int loadParentClasses() {
+    CLASS* class = maquina.method_area->classes[maquina.method_area->classes_count-1];
+    char* parentName = _MCLASS.getParentName(class);
+    int flag = 0;
+    
+    // insere parent em maquina.method_area->classes caso parent ainda nao esteja carregado
+    if (getClassIndex(parentName) == -1) {
+        
+        expandClassArray();
+        maquina.method_area->classes[maquina.method_area->classes_count++] = _MCLASSL.load(_MUTIL.getClassPath(maquina.basePath, parentName));
+        
+        link(maquina.method_area->classes_count-1);
+        initialize(maquina.method_area->classes_count-1);
+        
+        if (maquina.method_area->classes[maquina.method_area->classes_count-1]->super_class != 0) {
+            flag = loadParentClasses(maquina);
+        }
+        
+        // free(cl);
+    }
+    return flag;
+}
+
+/// carrega as interfaces da classe na posicao maquina.classes.size - 1 no array de interfaces da area de metodo
+static int loadInterfaces(CLASS* class) {
+    int interfacesCount = class->interfaces_count;
+    
+    for(int i=0; i<interfacesCount; i++){
+        char* name = class->getInterfaceName(class, i);
+        
+        if (getInterfceIndex(name) == -1) {
+            expandInterfaceArray();
+            maquina.method_area->interfaces[maquina.method_area->interfaces_count++] = _MCLASSL.load(_MUTIL.getClassPath(maquina.basePath, name));
+        }
+        
+    }
+    
+    // free(cl);
+    return E_SUCCESS;
+}
+
+
 int loadClass(u1 *name) {
     
     if(name == NULL){

@@ -11,9 +11,20 @@
 
 #include <stdio.h>
 
-#endif /* Execution_Core_h */
+
+
+typedef struct {
+    ClasFile **classes, **interfaces;
+    u4 classes_count, interfaces_count;
+} MethodHeap;
+
+extern MethodHeap mheap;
+
 
 u1 * getFieldName(u2 index, cp_info *pool);
 u4 LoadConstant(ClassFile *pClass, u2 nIndex);
 Field_Value *getFieldValue(u1 *name, Field_Value *pField, u2 static_values_size);
 u1 *GetStringFromConstPool(u2 nIndex, cp_info *pool);
+
+
+#endif /* Execution_Core_h */

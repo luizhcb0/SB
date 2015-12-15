@@ -579,6 +579,8 @@ typedef struct {
     
 }ClassFile;
 
+extern ClassFile globClass;
+
 
 typedef struct {
     Variable *data;

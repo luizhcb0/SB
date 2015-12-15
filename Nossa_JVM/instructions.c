@@ -7,9 +7,11 @@
 //
 
 #include <stdio.h>
-#include "maquina.h"
+#include "Heap.h"
+#include "Execution_Core.h"
 
 uint8_t wide = 0;
+Heap objHeap;
 
 const Instruction_t instructions[] = {
     {0,     "nop", 				op_nop			},
@@ -3428,7 +3430,7 @@ static void op_multianewarray(Frame *pFrame) {
             break;
     }
     
-    void *pointer = maquina.heap->newMultiArray(0, dimensionCount, qtdByDimension, tipo);
+    void *pointer = newMultiArray(0, dimensionCount, qtdByDimension, tipo);
     push(pFrame,(u8)(intptr_t)pointer);
     pFrame->pc++;
 }

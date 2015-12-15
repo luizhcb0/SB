@@ -206,6 +206,8 @@ void createFrame(method_info *method, ClassFile *Class, Frame *frame_ptr, u2 *nu
         frame_ptr[i].stack = malloc(frame_ptr[i].stack_size * sizeof(u4));
         frame_ptr[i].local = malloc(frame_ptr[i].local_size * sizeof(u4));
         */
+        
+        
         /*TESTE*/
         frame_ptr[i - 1].pClass = Class;
             frame_ptr[i -1].pMethod = method;
