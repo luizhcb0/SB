@@ -33,12 +33,13 @@ void jvmStartup(ClassFile *classHeap_ptr, Object *objectHeap_ptr, Frame *stackFr
     print_ClassFile(classHeap_ptr);
     //Inicializa a classe inicial, roda clinit
 
-	//OK!
-    initializeClass(classHeap_ptr, stackFrame_ptr, dmSize_ptr, classHeap_ptr);
+	//OCUPADO
+    //initializeClass(classHeap_ptr, stackFrame_ptr, dmSize_ptr, classHeap_ptr);
     //initializeClass(classHeap_ptr, stackFrame_ptr, &dmSize_ptr->stkHeap_size); //Sei que o primeiro elemento da classHeap é a classe inicial
 	
+    //OCUPADO
 	//Chamo o método main
-	callMethod(classHeap_ptr, stackFrame_ptr, dmSize_ptr, classHeap_ptr, "main", "([Ljava/lang/String;)V");
+	//callMethod(classHeap_ptr, stackFrame_ptr, dmSize_ptr, classHeap_ptr, "main", "([Ljava/lang/String;)V");
 
 
 }
@@ -185,7 +186,8 @@ void createFrame(method_info *method, ClassFile *Class, Frame *frame_ptr, u2 *nu
     codeIndex = findCode(method);
     
     if (i < STKFRAME_MAX - 1) {
-        frame_ptr[i] = initFrame(Class, method, codeIndex);
+        //OCUPADO
+        //frame_ptr[i] = initFrame(Class, method, codeIndex);
         
         /*
         frame_ptr[i].pClass = Class;
@@ -202,19 +204,19 @@ void createFrame(method_info *method, ClassFile *Class, Frame *frame_ptr, u2 *nu
         frame_ptr[i].local = malloc(frame_ptr[i].local_size * sizeof(u4));
         */
         /*TESTE*/
-        //      frame_ptr[i - 1].pClass = Class;
-        //          frame_ptr[i -1].pMethod = method;
-        //          frame_ptr[i -1].code_length = Class->methods->attribute[codeIndex].info.Code_attribute.code_length;
-        //          frame_ptr[i - 1].code = malloc(frame_ptr[i].code_length * sizeof(u1));
-        //
-        //          frame_ptr[i - 1].pc = 0;
-        //          frame_ptr[i - 1].sp = 0;
-        //
-        //          frame_ptr[i - 1].stack_size = Class->methods->attribute[codeIndex].info.Code_attribute.max_stack;
-        //          frame_ptr[i - 1].local_size = Class->methods->attribute[codeIndex].info.Code_attribute.max_locals;
-        //          frame_ptr[i - 1].stack = malloc(frame_ptr[i].stack_size * sizeof(u4));
-        //          frame_ptr[i - 1].local = malloc(frame_ptr[i].local_size * sizeof(u4));
-        //
+        frame_ptr[i - 1].pClass = Class;
+            frame_ptr[i -1].pMethod = method;
+            frame_ptr[i -1].code_length = Class->methods->attribute[codeIndex].info.Code_attribute.code_length;
+            frame_ptr[i - 1].code = malloc(frame_ptr[i].code_length * sizeof(u1));
+        
+            frame_ptr[i - 1].pc = 0;
+            frame_ptr[i - 1].sp = 0;
+        
+            frame_ptr[i - 1].stack_size = Class->methods->attribute[codeIndex].info.Code_attribute.max_stack;
+            frame_ptr[i - 1].local_size = Class->methods->attribute[codeIndex].info.Code_attribute.max_locals;
+            frame_ptr[i - 1].stack = malloc(frame_ptr[i].stack_size * sizeof(u4));
+            frame_ptr[i - 1].local = malloc(frame_ptr[i].local_size * sizeof(u4));
+        
         
         
         (*numFrames)++;
