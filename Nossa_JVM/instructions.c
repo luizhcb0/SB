@@ -3066,7 +3066,7 @@ static void func_op_anewarray(Frame *pFrame) {
 
     u1 *className = getClassNameUtf8(pFrame->pClass, index);
 
-    void *pointer = newRefArray(count,className);
+    void *pointer = newRefArray(count,(char*)className);
 
     push(pFrame,(u8)(intptr_t)pointer);
     pFrame->pc++;
@@ -3106,7 +3106,7 @@ static void func_op_checkcast(Frame *pFrame) {
     reference = (struct _object *)(intptr_t)pop(pFrame);
 
     u1 *className1 = getClassNameUtf8(pFrame->pClass, pFrame->pClass->this_class);
-    u1 *className2 = getClassNameUtf8(reference->pClass, index);
+    u1 *className2 = getClassNameUtf8(reference->class, index);
 
     if(reference == NULL) {
         printf("Erro: Null Reference\n");
@@ -3136,7 +3136,7 @@ static void func_op_instanceof(Frame *pFrame) {
     }
 
     u1 *className1 = getClassNameUtf8(pFrame->pClass, pFrame->pClass->this_class);
-    u1 *className2 = getClassNameUtf8(reference->pClass, index);
+    u1 *className2 = getClassNameUtf8(reference->class, index);
 
     if(strcmp((char*)className1, (char*)className2) == 0) {
         push(pFrame,1);
