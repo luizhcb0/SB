@@ -198,7 +198,7 @@ static void func_op_ldc(Frame *pFrame) {
 
     pFrame->pc++;
     index = pFrame->code[pFrame->pc];
-    type = pFrame->pCLass->constant_pool->constants[index - 1].tag;
+    type = pFrame->pClass->constant_pool->constants[index - 1].tag;
 
     switch (type) {
         case CONSTANT_INTEGER:
@@ -268,16 +268,16 @@ static void func_op_ldc2_w(Frame *pFrame) {
 
     switch (type) {
         case CONSTANT_LONG:
-            high = pFrame->constant_pool[index - 1].info.CONSTANT_LongDouble_info.high_bytes;
-            low = pFrame->constant_pool[index - 1].info.CONSTANT_LongDouble_info.low_bytes;
+            high = pFrame->pClass->constant_pool[index - 1].info.CONSTANT_LongDouble_info.high_bytes;
+            low = pFrame->pClass->constant_pool[index - 1].info.CONSTANT_LongDouble_info.low_bytes;
             long l = getLong(high, low);
             memcpy(&completeValue, &l, sizeof(u8));
 
             push2(pFrame,completeValue);
             break;
         case CONSTANT_DOUBLE:
-            high = pFrame->constant_pool[index - 1].info.CONSTANT_LongDouble_info.high_bytes;
-            low = pFrame->constant_pool[index - 1].info.CONSTANT_LongDouble_info.low_bytes;
+            high = pFrame->pClass->constant_pool[index - 1].info.CONSTANT_LongDouble_info.high_bytes;
+            low = pFrame->pClass->constant_pool[index - 1].info.CONSTANT_LongDouble_info.low_bytes;
 
             double d = getDouble(high, low);
 
