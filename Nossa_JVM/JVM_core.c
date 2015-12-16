@@ -32,7 +32,6 @@ void jvmStartup(char *classPathStr, int flag){
     //Carrega a classe inicial
     //OK!
     classLoader(classPathStr);
-    
    	printf("\nstatic_values_size %d", classHeap->static_values_size);
 	for(int i = 0; i < classHeap->static_values_size; i++)
 		printf("\nname %s", classHeap->static_values[i].field_name);

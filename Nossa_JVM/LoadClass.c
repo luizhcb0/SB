@@ -120,7 +120,8 @@ ClassFile *classLoader(char *classPathStr) {
 	//fclose(classPathF_ptr);
 
 	fillStaticFields(classHeap_ptr);
-	classHeap[ dmSize.clsHeap_size - 1] = *classHeap_ptr;
+	classHeap[dmSize.clsHeap_size - 1] = *classHeap_ptr;
+    
 	return classHeap_ptr;
 
 }

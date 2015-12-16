@@ -950,6 +950,7 @@ void print_attributes (attribute_info *attributes, u2 attr_count, cp_info *pool)
                         	printf("%s", opcodes_str_names[op_getstatic]);
                         	pcIdx = buildCPindex(attributes[counter].info.Code_attribute.code[++i], \
                         	attributes[counter].info.Code_attribute.code[++i]);
+
                         	printf("\t#%d", pcIdx);
                         	printFMI_str(pcIdx);
                         	break;
@@ -985,6 +986,8 @@ void print_attributes (attribute_info *attributes, u2 attr_count, cp_info *pool)
                         case op_invokestatic: 
                             //i+=2;
                         	printf("%s", opcodes_str_names[op_invokestatic]);
+                            getchar();
+                            getchar();
                         	pcIdx = buildCPindex(attributes[counter].info.Code_attribute.code[++i], \
                         	attributes[counter].info.Code_attribute.code[++i]);
                         	printf("\t#%d", pcIdx);
@@ -1165,8 +1168,7 @@ void print_ClassFile(ClassFile* class_file_ptr){
 }
 
 void printFMI_str(u2 index) {
-	printf("\t// %s.", pool_global[pool_global[pool_global[index-1].info.CONSTANT_FieldMethodIMethod_info.class_index-1]\
-	.info.CONSTANT_Class_info.name_index-1].info.CONSTANT_Utf8_info.bytes);
+	printf("\t// %s.", pool_global[pool_global[pool_global[index-1].info.CONSTANT_FieldMethodIMethod_info.class_index-1].info.CONSTANT_Class_info.name_index-1].info.CONSTANT_Utf8_info.bytes);
 	
 	printf("%s:", pool_global[pool_global[pool_global[index-1].info.CONSTANT_FieldMethodIMethod_info.name_and_type_index -1].info.CONSTANT_NameAndType_info.name_index -1].info.CONSTANT_Utf8_info.bytes);
 	
