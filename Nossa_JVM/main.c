@@ -58,9 +58,9 @@ char *opcodes_str_names[] = { "nop", "aconst_null", "iconst_m1", "iconst_0", "ic
 
 ClassFile *loadClass( char *classPathStr, ClassFile* clsHeap, dataMSize_t *dmSize ); 
 u2 seekMethodInClass(ClassFile *class_ptr, char *methName_str, char *methDescriptor_str);
-
+ClassFile *classHeap;
 int main(){
-    ClassFile* classHeap_ptr = malloc( sizeof( ClassFile ) );
+    classHeap = malloc( CLSHEAP_MAX*sizeof( ClassFile ) );
 	dataMSize_t *dmsize;
 	dmsize->clsHeap_size = 0;
 	dmsize->objHeap_size = 0;
@@ -78,9 +78,8 @@ int main(){
 
     printf("\nConteudo do .class");
     printf("\n--------------------------------");
-    print_ClassFile(classHeap_ptr);
- 	getchar();
- 	getchar();
+    print_ClassFile(classHeap);
+
 /*	u2 method_idx;*/
 /*	method_idx = seekMethodInClass(classHeap_ptr, "<clinit>", "()V"); */
 /*   	if( method_idx == -1 ){*/
