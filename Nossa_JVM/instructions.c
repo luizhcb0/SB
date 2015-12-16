@@ -16,7 +16,13 @@
 #include "LoadClass_core.h"
 
 uint8_t wide = 0;
-Heap objHeap;
+extern Heap objHeap;
+extern dataMSize_t dmSize;
+extern ClassFile *classHeap;
+extern Frame *stackFrame;
+extern Heap objHeap;
+extern char *basePath;
+extern  MethodHeap mHeap;
 
 
 
@@ -164,6 +170,9 @@ static void func_op_dconst_1(Frame *pFrame) {
 	O valor é colocado na pilha de operandos
  */
 static void func_op_bipush(Frame *pFrame) {
+    printf("dentro do bipush!!!!!!!!! \n");
+    getchar();
+    getchar();
     //Pula os 8 bits codigo da instrucao contida no array de codes
     int8_t var = 0;
     i8 aux;
@@ -2588,6 +2597,7 @@ static void func_op_putstatic(Frame *pFrame) {
         className = getParentName(getClassByName(className));
     }
 
+    printf("nova chamada = %s\n",className);
     classIndex = loadClass(className);
 
     if(type[0] == 'J' || type[0] == 'D') {

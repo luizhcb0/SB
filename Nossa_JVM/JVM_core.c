@@ -19,6 +19,7 @@ dataMSize_t dmSize;
 ClassFile *classHeap;
 Frame *stackFrame;
 extern Heap objHeap;
+extern MethodHeap mHeap;
 
 void jvmStartup(char *classPathStr, int flag){
     classHeap = malloc( CLSHEAP_MAX*sizeof( ClassFile ) );
@@ -32,7 +33,7 @@ void jvmStartup(char *classPathStr, int flag){
     //Carrega a classe inicial
     //OK!
     classLoader(classPathStr);
-   	printf("\nstatic_values_size %d", classHeap->static_values_size);
+    
 	for(int i = 0; i < classHeap->static_values_size; i++)
 		printf("\nname %s", classHeap->static_values[i].field_name);
     ////Checa a consistência da classe
@@ -42,7 +43,17 @@ void jvmStartup(char *classPathStr, int flag){
         print_ClassFile(classHeap);
         exit(1);
     }
+    loadClass(classPathStr);
 
+    method_info* _main = getMainMethod();
+    if (_main == NULL)
+        printf("nao tem main\n");
+    getchar();
+    getchar();
+    //error(E_NO_MAIN_FOUND);
+    
+    createFrame(_main, mHeap.classes[0]);
+    Execute();
     //Fecha o arquivo do primeiro class file aberto
     //fclose(classPathF_ptr);
     //Inicializa a classe inicial, roda clinit
@@ -77,6 +88,7 @@ void initializeClass(ClassFile *class_ptr){
 
     //Teste
     Execute();
+    
 
     //Deleta o frame.
     deleteFrame();
@@ -195,10 +207,16 @@ void createFrame(method_info *method, ClassFile *Class) {
     u2 i = dmSize.stkHeap_size;
     u2 codeIndex = 0;
     codeIndex = findCode(method);
+    printf("clinit %d\n", method->name_index);
+    getchar();
+    getchar();
 
     if (i < STKFRAME_MAX - 1) {
         //OCUPADO
         stackFrame[i] = initFrame(Class, method, codeIndex);
+        printf("stack %d\n", stackFrame[i].code_length);
+        getchar();
+        getchar();
 
         /*
         frame_ptr[i].pClass = Class;

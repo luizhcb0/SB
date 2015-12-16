@@ -19,7 +19,7 @@ typedef struct _instruction {
 } Instruction;
 
 extern const Instruction instructions[];
-extern u1 *basePath;
+
 
 typedef struct {
     ClassFile **classes;
@@ -29,8 +29,6 @@ typedef struct {
 } MethodHeap;
 
 MethodHeap initMethodHeap();
-
-extern MethodHeap mHeap;
 
 void Execute ();
 int getClassIndex(u1 *class_name);

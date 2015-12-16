@@ -24,14 +24,20 @@
  *  @return <#return value description#>
  */
 
-dataMSize_t dmSize;
-ClassFile *ClassHeap;
-Frame *stackFrame;
-Heap objHeap;
+extern dataMSize_t dmSize;
+extern ClassFile *classHeap;
+extern Frame *stackFrame;
+extern Heap objHeap;
+extern MethodHeap mHeap;
+extern char *basePath;
 
 void Execute () {
 
     Frame *pFrame = &stackFrame[dmSize.stkHeap_size - 1];
+    
+    printf("stack dentro do pframe%d\n", pFrame->code_length);
+    getchar();
+    getchar();
     u2 classHeapLength = dmSize.clsHeap_size;
 
 
@@ -46,9 +52,10 @@ void Execute () {
 void initialize(int class_index) {
     ClassFile *class = mHeap.classes[class_index];
     method_info *clinit = getclinit(class);
-
     if (clinit == NULL) return; // classe abstrata ou interface
-
+    printf("clinit %d\n", clinit->name_index);
+    getchar();
+    getchar();
     createFrame(clinit, class);
     Execute();
 
@@ -70,6 +77,7 @@ int loadParentClasses() {
     u1 *parentName = getParentName(class);
     int flag = 0;
 
+    
         if (getClassIndex(parentName) == -1) {
 
         expandClassArray();
@@ -120,6 +128,7 @@ int loadClass(u1 *name) {
 
         toReturn = mHeap.classes_count;
         expandClassArray();
+        
         mHeap.classes[mHeap.classes_count++] = classLoader((char*)getClassPath(basePath, name));
 
         prepare(mHeap.classes_count - 1);

@@ -68,11 +68,15 @@ char *opcodes_str_names[] = { "nop", "aconst_null", "iconst_m1", "iconst_0", "ic
 	"wide", "multianewarray", "ifnull", "ifnonnull", "goto_w",
 	"jsr_w", "breakpoint" };
 MethodHeap mHeap;
-u1 *basePath;
+char *basePath;
+Heap objHeap;
 int main(int argc, char **argv){
 
+    basePath = (char*)calloc(1024,sizeof(char));
+    basePath[0] = '\0';
     objHeap = initHeap();
     mHeap = initMethodHeap();
+    
 
 
 

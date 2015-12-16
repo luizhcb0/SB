@@ -8,6 +8,9 @@
 #include "Execution_Core.h"
 #include "Heap.h"
 
+extern MethodHeap mHeap;
+extern Heap objHeap;
+
 /*!
 	adiciona um objeto no array de objetos para um possível Garbage Collector
  */

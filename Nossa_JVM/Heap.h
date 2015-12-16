@@ -44,6 +44,5 @@ struct _array *newArray(u4, u4);
 struct _array *newRefArray(u4, char *);
 struct _array *newMultiArray(int, int, int*, u4);
 
-extern Heap objHeap;
 
 #endif /* Heap_h */
