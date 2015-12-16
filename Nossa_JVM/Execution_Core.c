@@ -115,7 +115,7 @@ static int loadInterfaces(ClassFile *class) {
     }
     
     // free(cl);
-    return E_SUCCESS;
+    return 1;
 }
 
 
@@ -126,7 +126,7 @@ int loadClass(u1 *name) {
     }
 
     if (strchr(name, '$')) {
-        error(E_DOLAR_NOT_SUPPORTED);
+        //error(E_DOLAR_NOT_SUPPORTED);
     }
     
     int toReturn = -1;
@@ -192,7 +192,7 @@ static int getClassIndex(u1 *class_name) {
 
 /// retorna um index para o array de interfaces da area de metodos
 static int getInterfceIndex(char* interface_name) {
-    if (mheap.classes == NULL) return -1;
+    if (mHeap.classes == NULL) return -1;
     if (interface_name == NULL || !strcmp(interface_name, "")) return -2;
     
     for(int i=0; i < mHeap.interfaces_count; i++){
