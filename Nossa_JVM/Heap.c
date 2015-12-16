@@ -11,25 +11,25 @@
 /*!
 	adiciona um objeto no array de objetos para um possível Garbage Collector
  */
-static struct _object* addObject(Heap heap, struct _object* obj) {
-    heap->objects = realloc(heap->objects, (heap->object_count+1)*sizeof(struct _object*));
-    heap->objects[heap->object_count++] = obj;
+struct _object* addObject(struct _object* obj) {
+    objHeap.objects = realloc(objHeap.objects, (objHeap.object_count+1)*sizeof(struct _object*));
+    objHeap.objects[objHeap.object_count++] = obj;
     return obj;
 }
 
 /*!
 	adiciona um array na no array de arrays para um possível Garbage Collector
  */
-static struct _array* addArray(Heap heap, struct _array* arr) {
-    heap->arrays = realloc(heap->arrays, (heap->array_count+1)*sizeof(struct _array*));
-    heap->arrays[heap->array_count++] = arr;
+struct _array* addArray(struct _array* arr) {
+    objHeap.arrays = realloc(objHeap.arrays, (objHeap.array_count+1)*sizeof(struct _array*));
+    objHeap.arrays[objHeap.array_count++] = arr;
     return arr;
 }
 
 /*!
 	cria um novo objeto, alocando espaco na memoria para ele
  */
-static struct _object* newObject(Heap heap, CLASS* class) {
+struct _object* newObject(ClassFile *class) {
     if (!class) return NULL;
     
     struct _object* newObj = (struct _object*)malloc(sizeof(struct _object));
@@ -39,7 +39,7 @@ static struct _object* newObject(Heap heap, CLASS* class) {
     int index = loadClass(getParentName(class));
     
     if(index > -1 ){
-        ClassFile *parentClass = mHeap->classes[index];
+        ClassFile *parentClass = mHeap.classes[index];
         newObj->super = newObject(parentClass);
     }else{
         return NULL;
@@ -51,7 +51,7 @@ static struct _object* newObject(Heap heap, CLASS* class) {
 /*!
 	devolve uma instancia de um array, do tipo passado por parametro
  */
-static struct _array* newArray(Heap heap, uint32_t count, uint32_t tipo) {
+struct _array* newArray(uint32_t count, uint32_t tipo) {
     struct _array* newArr = (struct _array*)malloc(sizeof(struct _array));
     
     newArr->quantidade = count;
@@ -95,7 +95,7 @@ static struct _array* newArray(Heap heap, uint32_t count, uint32_t tipo) {
 /*!
 	Cria uma instancia de array de referencia
  */
-static struct _array* newRefArray(Heap heap, uint32_t count, char* className) {
+struct _array* newRefArray(uint32_t count, char* className) {
     struct _array* newArr = newArray(count, tREFERENCIA);
     
     maquina.loadClass(className);
@@ -113,7 +113,7 @@ static struct _array* newRefArray(Heap heap, uint32_t count, char* className) {
 	@param tipo: o tipo do array
 	@return um array de múltiplas dimensões
  */
-static struct _array* newMultiArray(Heap heap, int dimension, int dimensionCount, int* qtdByDimension, uint32_t tipo){
+struct _array* newMultiArray(int dimension, int dimensionCount, int* qtdByDimension, uint32_t tipo){
     if (dimension == dimensionCount - 1) {
         return newArray(qtdByDimension[dimension], tipo);
     } else if (dimension < dimensionCount) {

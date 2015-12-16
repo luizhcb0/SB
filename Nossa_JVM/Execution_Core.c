@@ -30,25 +30,25 @@ Heap objHeap;
 
 u4 Execute () {
     
-    Frame *pFrame = stackFrame[dmSize->stkHeap_size - 1];
-    u2 classHeapLength = dmSize->clsHeap_size;
+    Frame *pFrame = &stackFrame[dmSize.stkHeap_size - 1];
+    u2 classHeapLength = dmSize.clsHeap_size;
     
     
-    while (pFrame->retornou == 0 pFrame != NULL && (pFrame->pc) < pFrame->code_length) {
+    while (pFrame->retornou == 0 && pFrame != NULL && (pFrame->pc) < pFrame->code_length) {
         uint32_t iterator = pFrame->code[pFrame->pc];
-        instructions[iterator].call();
+        instructions[iterator].call(pFrame);
     }
-    pFrame->retournou = 0;
+    pFrame->retornou = 0;
     
 }
 
 u2 getClassIndex(u1 *class_name) {
     // printf("\n\t\t\tentrou getClassIndex: %s", class_name);
-    if (maquina.method_area->classes == NULL) {printf("\n\t\t\tsaiu getClassIndex: %s; toReturn: %d", class_name, -3); return -3;}
+    if (mHeap.classes == NULL) {printf("\n\t\t\tsaiu getClassIndex: %s; toReturn: %d", class_name, -3); return -3;}
     if (class_name == NULL || !strcmp(class_name, "")) {printf("\n\t\t\tsaiu getClassIndex: %s; toReturn: %d", class_name, -2);return -2;}
     
-    for(int i=0; i < maquina.method_area->classes_count; i++){
-        char *aux = maquina.method_area->classes[i]->getName(maquina.method_area->classes[i]);
+    for(int i=0; i < mHeap.classes_count; i++){
+        char *aux = getName(mHeap.classes[i]);
         if(!strcmp(class_name,aux)){
             return i;
         }
@@ -58,7 +58,7 @@ u2 getClassIndex(u1 *class_name) {
 }
 
 static void initialize(int class_index) {
-    ClassFile *class = mHeap->classes[class_index];
+    ClassFile *class = mHeap.classes[class_index];
     struct method_info *clinit = getclinit(class);
     
     if (clinit == NULL) return; // classe abstrata ou interface
@@ -71,29 +71,28 @@ static void initialize(int class_index) {
 /// aloca e inicializa valores default para os fields estaticos da classe indicada por $index
 static void prepare(u4 index) {
     
-    for (int j = 0; j < mHeap->classes[index]->fields_count; j++) {
-        if (checkIfFieldIsStatic(mHeap->classes[index]->fields[j].access_flag)) {
-            mHeap->classes[index]->fields[j].value = 0;
+    for (int j = 0; j < mHeap.classes[index]->fields_count; j++) {
+        if (checkIfFieldIsStatic(mHeap.classes[index]->fields[j].access_flag)) {
+            mHeap.classes[index]->fields[j].value = 0;
         }
     }
 }
 
 
 static int loadParentClasses() {
-    ClassFile *class = mHeap->classes[mHeap->classes_count - 1];
+    ClassFile *class = mHeap.classes[mHeap.classes_count - 1];
     u1 *parentName = getParentName(class);
     int flag = 0;
     
-    // insere parent em maquina.method_area->classes caso parent ainda nao esteja carregado
-    if (getClassIndex(parentName) == -1) {
+        if (getClassIndex(parentName) == -1) {
         
         expandClassArray();
-        mHeap->classes[mHeap->classes_count++] = classLoader(getClassPath(basePath, parentName), clsHeap, dmSize);
+        mHeap.classes[mHeap.classes_count++] = classLoader(getClassPath(basePath, parentName));
         
-        prepare(mHeap->classes_count - 1);
-        initialize(mHeap->classes_count - 1);
+        prepare(mHeap.classes_count - 1);
+        initialize(mHeap.classes_count - 1);
         
-        if (mHeap->classes[mHeap->classes_count - 1]->super_class != 0) {
+        if (mHeap.classes[mHeap.classes_count - 1]->super_class != 0) {
             flag = loadParentClasses();
         }
         
@@ -106,11 +105,11 @@ static int loadInterfaces(ClassFile *class) {
     int interfacesCount = class->interfaces_count;
     
     for(int i=0; i < interfacesCount; i++){
-        u1 *name = class->getInterfaceName(class, i);
+        u1 *name = getInterfaceName(class, i);
         
         if (getInterfceIndex(name) == -1) {
             expandInterfaceArray();
-            mHeap->interfaces[mHeap->interfaces_count++] = classLoader(getClassPath(basePath, name));
+            mHeap.interfaces[mHeap.interfaces_count++] = classLoader(getClassPath(basePath, name));
         }
         
     }
@@ -133,15 +132,15 @@ int loadClass(u1 *name) {
     int toReturn = -1;
     if ((toReturn = getClassIndex(name)) <= -1) {
         
-        toReturn = mHeap->classes_count;
+        toReturn = mHeap.classes_count;
         expandClassArray();
-        mHeap->classes[mHeap->classes_count++] = classLoader(getClassPath(basePath, name), clsHeap, dmSize);
+        mHeap.classes[mHeap.classes_count++] = classLoader(getClassPath(basePath, name));
         
-        prepare(mHeap->classes_count - 1);
-        initialize(mHeap->classes_count-1);
+        prepare(mHeap.classes_count - 1);
+        initialize(mHeap.classes_count-1);
         
         loadParentClasses(); // insere em maquina.classes todas as classes pai ainda nao carregadas em maquina.clasess
-        loadInterfaces(mHeap->classes[toReturn]); // insere em maquinas.interfaces todas as interfaces ainda nao carregadas em maquina.interfaces
+        loadInterfaces(mHeap.classes[toReturn]); // insere em maquinas.interfaces todas as interfaces ainda nao carregadas em maquina.interfaces
         
     }
     
@@ -175,15 +174,15 @@ static char* getClassPath(char* base_path, char* class_name) {
 
 /// retorna um index para o array de classes da area de metodos
 static int getClassIndex(u1 *class_name) {
-    if (mHeap->classes == NULL) {
+    if (mHeap.classes == NULL) {
         return -3;
     }
     if (class_name == NULL || !strcmp(class_name, "")) {
         return -2;
     }
     
-    for(int i=0; i < mHeap->classes_count; i++){
-        u1 *aux = getClassNameUtf8(mHeap->classes[i], mHeap->classes[i]->this_class);
+    for(int i=0; i < mHeap.classes_count; i++){
+        u1 *aux = getClassNameUtf8(mHeap.classes[i], mHeap.classes[i]->this_class);
         if(!strcmp(class_name,aux)){
             return i;
         }
@@ -193,11 +192,11 @@ static int getClassIndex(u1 *class_name) {
 
 /// retorna um index para o array de interfaces da area de metodos
 static int getInterfceIndex(char* interface_name) {
-    if (maquina.method_area->classes == NULL) return -1;
+    if (mheap.classes == NULL) return -1;
     if (interface_name == NULL || !strcmp(interface_name, "")) return -2;
     
-    for(int i=0; i < maquina.method_area->interfaces_count; i++){
-        char *aux = maquina.method_area->interfaces[i]->getName(maquina.method_area->interfaces[i]);
+    for(int i=0; i < mHeap.interfaces_count; i++){
+        char *aux = mHeap.interfaces[i]->getName(mHeap.interfaces[i]);
         if(!strcmp(interface_name,aux)){
             return i;
         }
@@ -217,26 +216,26 @@ int checkIfFieldIsStatic(uint16_t access_flags) {
 /// realoca o array de classes por 10 (precaução contra memory corruption)
 static void expandClassArray() {
     ClassFile** tmp;
-    tmp = (ClassFile **) realloc(mHeap->classes,(mHeap->classes_count + 10)*sizeof(ClassFile *));
+    tmp = (ClassFile **) realloc(mHeap.classes,(mHeap.classes_count + 10)*sizeof(ClassFile *));
     
     if (tmp == NULL) {
         exit(-1000);
     }
     
-    mHeap->classes = tmp;
+    mHeap.classes = tmp;
 }
 
 /// realoca o array de interfaces por 10 (precaução contra memory corruption)
 static void expandInterfaceArray() {
     ClassFile ** tmp;
-    tmp = (ClassFile **)realloc(mHeap->interfaces,(mHeap->interfaces_count+10)*sizeof(ClassFile*));
+    tmp = (ClassFile **)realloc(mHeap.interfaces,(mHeap.interfaces_count+10)*sizeof(ClassFile*));
     
     if (tmp == NULL) {
         printf("\nexpandInterfaceArray(): MEMORY CORRUPTION");
         exit(-1000);
     }
     
-    mHeap->interfaces = tmp;
+    mHeap.interfaces = tmp;
 }
 
 /// procura pela presenca do metodo clinit na classe $class
@@ -261,7 +260,7 @@ struct _method_info* getMainMethod() {
     CLASS *main_class;
     char *name, *desc;
     
-    main_class = mHeap->classes[0];
+    main_class = mHeap.classes[0];
     
     /* procura por método main ([LJava/lang/String;)V */
     for (int i = 0; i < main_class->methods_count; i++){
@@ -325,15 +324,15 @@ Field_Value *getFieldValue(u1 *name, Field_Value *pField, u2 static_values_size)
 
 /// retorna um index para o array de interfaces da area de metodos
 static int getInterfceIndex(u1 *interface_name) {
-    if (mHeap->classes == NULL) {
+    if (mHeap.classes == NULL) {
         return -1;
     }
     if (interface_name == NULL || !strcmp(interface_name, "")) {
         return -2;
     }
     
-    for(int i = 0; i < mHeap->interfaces_count; i++){
-        u1 *aux = getClassNameUtf8(mHeap->interfaces[i], mHeap->interfaces[i]->this_class);
+    for(int i = 0; i < mHeap.interfaces_count; i++){
+        u1 *aux = getClassNameUtf8(mHeap.interfaces[i], mHeap.interfaces[i]->this_class);
         if(!strcmp(interface_name,aux)){
             return i;
         }
@@ -399,10 +398,10 @@ u1 *getFieldName(u2 index, cp_info *pool) { //3
 MethodHeap *initMethodHeap() {
     MethodHeap *mHeap = (MethodHeap *) malloc(sizeof(MethodHeap));
     
-    mHeap->classes = (ClassFile **) malloc(sizeof(ClassFile*));
-    mHeap->interfaces = (ClassFile **) malloc(sizeof(ClassFile*));
-    mHeap->classes_count = 0;
-    mHeap->interfaces_count = 0;
+    mHeap.classes = (ClassFile **) malloc(sizeof(ClassFile*));
+    mHeap.interfaces = (ClassFile **) malloc(sizeof(ClassFile*));
+    mHeap.classes_count = 0;
+    mHeap.interfaces_count = 0;
     
     return mHeap;
 }
@@ -433,7 +432,7 @@ method_info* getMainMethod() {
     CLASS *main_class;
     char *name, *desc;
     
-    main_class = maquina.method_area->classes[0];
+    main_class = mHeap->classes[0];
     
     /* procura por método main ([LJava/lang/String;)V */
     for (int i = 0; i < main_class->methods_count; i++){
@@ -523,7 +522,7 @@ static void setObjectField(struct _object *object, uint32_t field_index, uint64_
 static ClassFile *getClassByName(u1 *classname){
     int flag = getClassIndex(classname);
     if (flag < 0) return NULL;
-    return mHeap->classes[getClassIndex(classname)];
+    return mHeap.classes[getClassIndex(classname)];
 }
 
 
@@ -553,14 +552,14 @@ static uint32_t getFieldIndex(char *className, char *name, uint16_t nameLen, cha
 
 
 static uint64_t getStaticFieldVal(uint32_t class_index, uint32_t field_index){
-    return mHeap->classes[class_index]fields[field_index].value;
+    return mHeap.classes[class_index]fields[field_index].value;
 }
 
 /*!
 	atribui um valor a um field estatico
  */
 static void setStaticFieldVal(uint32_t class_index, uint32_t field_index, uint64_t value){
-    mHeap->classes[class_index]->fields[field_index].value = value;
+    mHeap.classes[class_index]->fields[field_index].value = value;
 }
 
 /*!
@@ -568,11 +567,11 @@ static void setStaticFieldVal(uint32_t class_index, uint32_t field_index, uint64
  */
 static uint32_t searchStaticFieldVal(uint32_t class_index, char* name,char* desc){
     
-    for(int i =0; i < mHeap->classes[class_index]->fields_count; i++){
+    for(int i =0; i < mHeap.classes[class_index]->fields_count; i++){
         
-        field_info *var = &(mHeap->classes[class_index]->fields[i]);
-        char* fieldName = getUtf8String(mHeap->classes[class_index]->constant_pool, var->name_index);
-        char* fieldDesc = getUtf8String(mHeap->classes[class_index]->constant_pool, var->descriptor_index);
+        field_info *var = &(mHeap.classes[class_index]->fields[i]);
+        char* fieldName = getUtf8String(mHeap.classes[class_index]->constant_pool, var->name_index);
+        char* fieldDesc = getUtf8String(mHeap.classes[class_index]->constant_pool, var->descriptor_index);
         
         if ((strcmp(name,fieldName) == 0) && (strcmp(desc,fieldDesc) == 0)) {
             return i;

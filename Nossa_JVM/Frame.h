@@ -43,9 +43,11 @@ typedef struct {
     // funcoes
 } Frame;
 
-void (*push)(Frame *,u8);
-u8 (*pop)(Frame *);
-void (*push2)(u8);
-u8 (*pop2)(Frame *);
+void push(Frame *,u8);
+u8 pop (Frame *);
+void push2(Frame *,u8);
+u8 pop2 (Frame *);
+
+Frame *initFrame(ClassFile *Class, method_info *method, u2 codeIndex);
 
 #endif

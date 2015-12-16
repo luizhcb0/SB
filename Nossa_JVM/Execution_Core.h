@@ -12,11 +12,14 @@
 #include "macros.h"
 #include "Frame.h"
 
-typedef struct {
+typedef struct _instruction {
     uint16_t qtd_operandos;
     char *nome;
     void (*call)(Frame*);
-} Instruction_t;
+} Instruction;
+
+extern const Instruction instructions[];
+extern char *basePath;
 
 typedef struct {
     ClassFile **classes;
@@ -27,7 +30,7 @@ typedef struct {
 
 MethodHeap initMethodHeap();
 
-extern MethodHeap mheap;
+extern MethodHeap mHeap;
 
 
 u1 * getFieldName(u2 index, cp_info *pool);

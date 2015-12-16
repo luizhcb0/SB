@@ -22,6 +22,9 @@
 #include <stdlib.h>
 #include "macros.h"
 #include "JVM_core.h"
+#include "Execution_Core.h"
+#include "Frame.h"
+#include "Heap.h"
 
 char *opcodes_str_names[] = { "nop", "aconst_null", "iconst_m1", "iconst_0", "iconst_1", 
 	"iconst_2", "iconst_3", "iconst_4", "iconst_5", "lconst_0", 

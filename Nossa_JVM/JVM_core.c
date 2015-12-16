@@ -1,5 +1,7 @@
 #include "macros.h"
 #include "JVM_core.h"
+#include "Heap.h"
+#include "Frame.h"
 #include "LoadClass_core.h"
 #include "Execution_Core.h"
 #include "LoadClass_ui.h"
@@ -23,9 +25,9 @@ void jvmStartup(u1 *classPathStr, int flag){
     objectHeap = malloc( OBJHEAP_MAX*sizeof( Object_t ) );
     stackFrame = malloc( STKFRAME_MAX*sizeof( Frame ) );
     
-    dmSize->clsHeap_size = 0;
-    dmSize->objHeap_size = 0;
-    dmSize->stkHeap_size = 0;
+    dmSize.clsHeap_size = 0;
+    dmSize.objHeap_size = 0;
+    dmSize.stkHeap_size = 0;
     
     //Carrega a classe inicial
     //OK! 
@@ -71,7 +73,7 @@ void initializeClass(ClassFile *class_ptr){
     
     createFrame(method_ptr, class_ptr);//Cria o frame para o método <clinit> da classe.
     
-    u2 aux_idx = dmSize_ptr->stkHeap_size - 1; // o stkFrameTop_ptr na verdade é o stack frame size, que indica a qtd de frames na stkframe.
+    u2 aux_idx = dmSize.stkHeap_size - 1; // o stkFrameTop_ptr na verdade é o stack frame size, que indica a qtd de frames na stkframe.
     
     //Teste
     Execute();
@@ -127,8 +129,8 @@ u2 seekMethodInClass(ClassFile *class_ptr, char *methName_str, char *methDescrip
         //methodN = malloc( (str_size + 1)*sizeof(char) );
         //bytes = class_ptr->constant_pool[class_ptr->methods[i].name_index - 1].info.CONSTANT_Utf8_info_bytes;
         
-        methodN = class_ptr->constant_pool[class_ptr->methods[i].name_index - 1].info.CONSTANT_Utf8_info.bytes;
-        methodD = class_ptr->constant_pool[class_ptr->methods[i].descriptor_index - 1].info.CONSTANT_Utf8_info.bytes;
+        methodN = (char*)class_ptr->constant_pool[class_ptr->methods[i].name_index - 1].info.CONSTANT_Utf8_info.bytes;
+        methodD = (char*)class_ptr->constant_pool[class_ptr->methods[i].descriptor_index - 1].info.CONSTANT_Utf8_info.bytes;
         if( !strcmp(methodN, methName_str) && !strcmp(methodD, methDescriptor_str) ){
             return i;
             
@@ -188,15 +190,15 @@ u2 findCode(method_info *method) {
  *  @return <#return value description#>
  */
 //Lembrar de enviar o dataMSize->stkHeap_size para o numFrames
-void createFrame(method_info *method, ClassFile *Class, Frame *frame_ptr, u2 *numFrames) {
+void createFrame(method_info *method, ClassFile *Class) {
     
-    u2 i = *numFrames;
+    u2 i = dmSize.stkHeap_size;
     u2 codeIndex = 0;
     codeIndex = findCode(method);
     
     if (i < STKFRAME_MAX - 1) {
         //OCUPADO
-        //frame_ptr[i] = initFrame(Class, method, codeIndex);
+        stackFrame[i] = initFrame(Class, method, codeIndex);
         
         /*
         frame_ptr[i].pClass = Class;
@@ -215,6 +217,7 @@ void createFrame(method_info *method, ClassFile *Class, Frame *frame_ptr, u2 *nu
         
         
         /*TESTE*/
+        /*
         frame_ptr[i - 1].pClass = Class;
             frame_ptr[i -1].pMethod = method;
             frame_ptr[i -1].code_length = Class->methods->attribute[codeIndex].info.Code_attribute.code_length;
@@ -225,12 +228,11 @@ void createFrame(method_info *method, ClassFile *Class, Frame *frame_ptr, u2 *nu
         
             frame_ptr[i - 1].stack_size = Class->methods->attribute[codeIndex].info.Code_attribute.max_stack;
             frame_ptr[i - 1].local_size = Class->methods->attribute[codeIndex].info.Code_attribute.max_locals;
-            frame_ptr[i - 1].stack = malloc(frame_ptr[i].stack_size * sizeof(u4));
+            frame_ptr[i - 1].stack = malloc(frame_ptr[i].max_stack * sizeof(u4));
             frame_ptr[i - 1].local = malloc(frame_ptr[i].local_size * sizeof(u4));
+        */
         
-        
-        
-        (*numFrames)++;
+        dmSize.stkHeap_size++;
     } else {
         printf("Frame não pode ser alocado, tamanho máximo atingido");
         exit(1);
@@ -240,7 +242,7 @@ void createFrame(method_info *method, ClassFile *Class, Frame *frame_ptr, u2 *nu
 //Lembrar de enviar o dataMSize->stkHeap_size para o numFrames
 void deleteFrame(Frame *frame_ptr, u2 *numFrames) {
     
-    dmSize->stkHeap_size--;
+    dmSize.stkHeap_size--;
     
 }
 
