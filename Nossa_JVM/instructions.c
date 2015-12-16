@@ -197,7 +197,7 @@ static void func_op_ldc(Frame *pFrame) {
 
     pFrame->pc++;
     index = pFrame->code[pFrame->pc];
-    type = pFrame->runtime_constant_pool->constants[index - 1].tag;
+    type = pFrame->pCLass->constant_pool->constants[index - 1].tag;
 
     switch (type) {
         case CONSTANT_INTEGER:
@@ -263,7 +263,7 @@ static void func_op_ldc2_w(Frame *pFrame) {
     index = index << 8;
     index = index | low;
 
-    type = pFrame->constant_pool[index - 1].tag;
+    type = pFrame->pClass->constant_pool[index - 1].tag;
 
     switch (type) {
         case CONSTANT_LONG:
