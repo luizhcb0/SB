@@ -48,8 +48,10 @@ void error(int errorCode){
         default:
             printf("\n------------------------");              
             printf("\nErro:");                                 
-            printf("\nUm erro indefinido ocorreu");    }
-            printf("\nSaindo...");                 } 
+            printf("\nUm erro indefinido ocorreu");    
+            printf("\nSaindo...");                  
             printf("\n");
             //sleep(2);
             exit(1);
+    }
+}
