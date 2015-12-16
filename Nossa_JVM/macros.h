@@ -25,6 +25,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 
 /** Definição dos tipo com formato u#, onde # é um número */
 typedef uint8_t u1;
