@@ -7,6 +7,7 @@
 //
 
 #include <stdio.h>
+#include <inttypes.h>
 #include "Heap.h"
 #include "Execution_Core.h"
 
@@ -2759,7 +2760,7 @@ static void func_op_invokevirtual(Frame *pFrame) {
                         break;
                 }
                 for(j = 0; j < objHeap.array_count; j++){
-                    printf("%"PRIi16,(int16_t)(array_ref +i));
+                    printf("%"PRIi16,(i2)(array_ref +i));
                 }
                 //CHAR
             } else {
@@ -2779,7 +2780,7 @@ static void func_op_invokevirtual(Frame *pFrame) {
             //Quando tem que imprimir string
         }else if(strstr(methodDesc, "Ljava/lang/String") != NULL) {
             vU8 = pop(pFrame);
-            printf("%s",pFrame->pClass->constant_pool[vU8-1].type.Utf8.bytes);
+            printf("%s",pFrame->pClass->constant_pool[vU8-1].info.CONSTANT_Utf8_info.bytes);
 
             //OBJECT
         }else if(strstr(methodDesc, "Ljava/lang/Object") != NULL) {
@@ -2796,12 +2797,12 @@ static void func_op_invokevirtual(Frame *pFrame) {
         pop(pFrame);
     } else {
         classIndex = loadClass(className);
-        class = mHeap->classes[classIndex];
+        class = mHeap.classes[classIndex];
 
         while(class != NULL && (method = getMethodByNameDesc(class, pFrame->pClass, nameTypeIndex)) == NULL) {
             className = getParentName(class);
             classIndex = loadClass(className);
-            class = mHeap->classes[classIndex];
+            class = mHeap.classes[classIndex];
         }
 
         if(class == NULL) {
@@ -2840,7 +2841,7 @@ static void func_op_invokespecial(Frame *pFrame) {
     i8 i, classIndex, classIndexTemp;
     uint16_t nameTypeIndex;
     char *className;
-    CLASS *class;
+    ClassFile *class;
     method_info *method;
     int numParams;
 
@@ -2859,12 +2860,12 @@ static void func_op_invokespecial(Frame *pFrame) {
     nameTypeIndex = pFrame->pClass->constant_pool[index-1].info.CONSTANT_FieldMethodIMethod_info.name_and_type_index;
 
     classIndex = loadClass(className);
-    class = mHeap->classes[classIndex];
+    class = mHeap.classes[classIndex];
 
     while(class != NULL && (method = getMethodByNameDesc(class, pFrame->pClass, nameTypeIndex)) == NULL) {
         className = getParentName(class);
         classIndex = loadClass(className);
-        class = mHeap->classes[classIndex];
+        class = mHeap.classes[classIndex];
     }
 
     if(class == NULL) {
@@ -2953,7 +2954,7 @@ static void func_op_invokeinterface(Frame *pFrame) {
     uint8_t low, high, args_count;
     i8 classIndex, classIndexTemp, i;
     uint16_t nameTypeIndex;
-    char *className;
+    u1 *className;
     ClassFile *class;
     method_info *method;
 
