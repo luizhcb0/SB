@@ -19,6 +19,6 @@
  * GNU General Public License as published by the Free Software Foundation.
  * =====================================================================================
  */
-void errMsgAndExit(int errorCode);
+void error(int errorCode);
 
 #endif
