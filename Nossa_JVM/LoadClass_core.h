@@ -48,7 +48,7 @@ void readNameAndType (FILE *arq, cp_info* aux);
 /*Funções de leitura, busca e criação*/
 cp_info* readConstantPool (u2 length, u2 *poolLength, FILE *arq);
 
-u1* searchConstantType (u1 tag);
+char* searchConstantType (u1 tag);
 
 cp_info* createConstantPool (u2 *poolElementsNum, u2 *poolLength, FILE *arq);
 
