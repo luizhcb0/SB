@@ -6,13 +6,13 @@
 //
 //
 
-#include "maquina.h"
+#include "Frame.h"
 
 /*!
 	Empilha um valor na pilha de operandos
  */
 
-static void push(Frame *pFrame, u8 valor) {
+void push(Frame *pFrame, u8 valor) {
     if (pFrame->operand_stack.allocated >= pFrame->max_stack) {
         error(E_STACK_OVERFLOW);
     }
@@ -27,7 +27,7 @@ static void push(Frame *pFrame, u8 valor) {
 /*!
 	desempilha um valor na pilha de operandos
  */
-static u8 pop(Frame *pFrame) {
+u8 pop(Frame *pFrame) {
     
     if (pFrame->operand_stack.topo == NULL || !pFrame->operand_stack.allocated) {
         error(E_EMPTY_STACK);
@@ -42,7 +42,7 @@ static u8 pop(Frame *pFrame) {
 /*!
 	empilha um valor na pilha de operandos
  */
-static void push2(Frame *pFrame, u8 valor) {
+void push2(Frame *pFrame, u8 valor) {
     push(pFrame, valor >> 32);
     push(pFrame, valor & 0xffffffff);
 }
@@ -50,7 +50,7 @@ static void push2(Frame *pFrame, u8 valor) {
 /*!
 	desempilha um valor na pilha de operandos 64 bits
  */
-static u8 pop2(Frame *pFrame) {
+u8 pop2(Frame *pFrame) {
     
     u8 var1,var2;
     u8 toReturn = 0;
@@ -69,7 +69,7 @@ static u8 pop2(Frame *pFrame) {
 	incicia e alococa um frame na memoria
  */
 Frame *initFrame(ClassFile *Class, method_info *method, u2 codeIndex) {
-    //Frame *pFrame = (Frame *) malloc(sizeof(Frame));
+    Frame *pFrame = (Frame *) malloc(sizeof(Frame));
     
     pFrame->code_length = method->attribute[codeIndex].info.Code_attribute.code_length;
     pFrame->code = method->attribute[codeIndex].info.Code_attribute.code;

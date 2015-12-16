@@ -20,7 +20,7 @@
 typedef struct {
     // estrutura
     struct _object {
-        ClassFile *pClass;
+        ClassFile *class;
         struct _object *super;
             u8* fields;
         }** objects;
