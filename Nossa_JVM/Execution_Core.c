@@ -12,6 +12,7 @@
 #include "Heap.h"
 #include "Frame.h"
 #include "Execution_Core.h"
+#include "JVM_core.h"
 
 /**
  *  Description
@@ -28,7 +29,7 @@ ClassFile *ClassHeap;
 Frame *stackFrame;
 Heap objHeap;
 
-u4 Execute () {
+void Execute () {
 
     Frame *pFrame = &stackFrame[dmSize.stkHeap_size - 1];
     u2 classHeapLength = dmSize.clsHeap_size;
@@ -44,7 +45,7 @@ u4 Execute () {
 
 void initialize(int class_index) {
     ClassFile *class = mHeap.classes[class_index];
-    struct method_info *clinit = getclinit(class);
+    method_info *clinit = getclinit(class);
 
     if (clinit == NULL) return; // classe abstrata ou interface
 
@@ -110,7 +111,7 @@ int loadClass(u1 *name) {
         return -1;
     }
 
-    if (strchr(name, '$')) {
+    if (strchr((char*)name, '$')) {
         //error(E_DOLAR_NOT_SUPPORTED);
     }
 
@@ -135,24 +136,24 @@ int loadClass(u1 *name) {
 /*!
 	retorna a concatenacao do nome qualificado da classe com base_path e com .class
  */
-char* getClassPath(char* base_path, char* class_name) {
-    char* path = (char*)malloc(strlen(base_path)+strlen(class_name) + 8);
-    if (strstr(class_name,".class") != NULL) {
-        if (strlen(base_path)==0)
-            sprintf(path, "%s%s", base_path, class_name);
+u1* getClassPath(u1* base_path, u1* class_name) {
+    u1* path = (u1*)malloc(strlen((char*)base_path)+strlen((char*)class_name) + 8);
+    if (strstr((char*)class_name,".class") != NULL) {
+        if (strlen((char*)base_path)==0)
+            sprintf((char*)path, "%s%s", (char*)base_path, (char*)class_name);
         else
-            sprintf(path, "%s/%s", base_path, class_name);
+            sprintf((char*)path, "%s/%s", (char*)base_path, (char*)class_name);
         return path;
     }
-    else if (!strcmp(class_name,"java/lang/Object")
-             || !strcmp(class_name,"java/lang/System")
-             || !strcmp(class_name,"java/io/PrintStream")
-             || !strcmp(class_name,"java/lang/String")) {
+    else if (!strcmp((char*)class_name,"java/lang/Object")
+             || !strcmp((char*)class_name,"java/lang/System")
+             || !strcmp((char*)class_name,"java/io/PrintStream")
+             || !strcmp((char*)class_name,"java/lang/String")) {
 
-        sprintf(path, "%s.class", class_name);
+        sprintf((char*)path, "%s.class", (char*)class_name);
         return path;
     } else {
-        sprintf(path, "%s/%s.class", base_path, class_name);
+        sprintf((char*)path, "%s/%s.class", (char*)base_path, (char*)class_name);
         return path;
     }
 }
@@ -162,13 +163,13 @@ int getClassIndex(u1 *class_name) {
     if (mHeap.classes == NULL) {
         return -3;
     }
-    if (class_name == NULL || !strcmp(class_name, "")) {
+    if (class_name == NULL || !strcmp((char*)class_name, "")) {
         return -2;
     }
 
     for(int i=0; i < mHeap.classes_count; i++){
         u1 *aux = getClassNameUtf8(mHeap.classes[i], mHeap.classes[i]->this_class);
-        if(!strcmp(class_name,aux)){
+        if(!strcmp((char*)class_name,(char*)aux)){
             return i;
         }
     }
@@ -176,13 +177,13 @@ int getClassIndex(u1 *class_name) {
 }
 
 /// retorna um index para o array de interfaces da area de metodos
-int getInterfaceIndex(char* interface_name) {
+int getInterfaceIndex(u1* interface_name) {
     if (mHeap.classes == NULL) return -1;
-    if (interface_name == NULL || !strcmp(interface_name, "")) return -2;
+    if (interface_name == NULL || !strcmp((char*)interface_name, "")) return -2;
 
     for(int i=0; i < mHeap.interfaces_count; i++){
-        char *aux = getClassNameUtf8(mHeap.interfaces[i], mHeap.interfaces[i]->this_class);
-        if(!strcmp(interface_name,aux)){
+        u1 *aux = getClassNameUtf8(mHeap.interfaces[i], mHeap.interfaces[i]->this_class);
+        if(!strcmp((char*)interface_name,(char*)aux)){
             return i;
         }
     }
@@ -228,7 +229,7 @@ method_info* getclinit(ClassFile *class) {
         u1 *name = getUtf8String(class->constant_pool, class->methods[i].name_index);
         u1 *desc = getUtf8String(class->constant_pool, class->methods[i].descriptor_index);
         
-        if (!strcmp(name, "<clinit>") && !strcmp(desc, "()V")) {
+        if (!strcmp((char*)name, "<clinit>") && !strcmp((char*)desc, "()V")) {
             return &(class->methods[i]);
         }
     }
@@ -240,7 +241,7 @@ method_info* getclinit(ClassFile *class) {
  */
 method_info* getMainMethod() {
     ClassFile *main_class;
-    char *name, *desc;
+    u1 *name, *desc;
     
     main_class = mHeap.classes[0];
     
@@ -249,7 +250,7 @@ method_info* getMainMethod() {
         name = getUtf8String(main_class->constant_pool, main_class->methods[i].name_index);
         desc = getUtf8String(main_class->constant_pool, main_class->methods[i].descriptor_index);
         
-        if ((strcmp("main", name) == 0) && (strcmp("([Ljava/lang/String;)V", desc) == 0))
+        if ((strcmp("main", (char*)name) == 0) && (strcmp("([Ljava/lang/String;)V", (char*)desc) == 0))
             return &(main_class->methods[i]);
     }
     
@@ -295,7 +296,7 @@ Field_Value *getFieldValue(u1 *name, Field_Value *pField, u2 static_values_size)
     u2 found = 0;
 
     while (count < static_values_size && found == 0) {
-        if (strcmp(pField[count].field_name, name) == 0) {
+        if (strcmp((char*)pField[count].field_name, (char*)name) == 0) {
             found = 1;
         }
         else {
@@ -370,16 +371,16 @@ method_info *getMethodByNameDesc(ClassFile *main_class, ClassFile *name_type_cla
     u2 name_len, desc_len;
 
     name = getUtf8String(name_type_class->constant_pool, name_type_class->constant_pool[name_type_index - 1].info.CONSTANT_NameAndType_info.name_index);
-    name_len = strlen(name);
+    name_len = strlen((char*)name);
     desc = getUtf8String(name_type_class->constant_pool, name_type_class->constant_pool[name_type_index - 1].info.CONSTANT_NameAndType_info.descriptor_index);
-    desc_len = strlen(desc);
+    desc_len = strlen((char*)desc);
 
     for(i = 0; i < main_class->methods_count; i++) {
 
         m_name = main_class->constant_pool[(main_class->methods[i].name_index - 1)].info.CONSTANT_Utf8_info.bytes;
-        m_name_len = strlen(main_class->constant_pool[(main_class->methods[i].name_index - 1)].info.CONSTANT_Utf8_info.bytes);
+        m_name_len = main_class->constant_pool[(main_class->methods[i].name_index - 1)].info.CONSTANT_Utf8_info.length;
         m_desc = main_class->constant_pool[(main_class->methods[i].descriptor_index - 1)].info.CONSTANT_Utf8_info.bytes;
-        m_desc_len = strlen(main_class->constant_pool[(main_class->methods[i].descriptor_index - 1)].info.CONSTANT_Utf8_info.bytes);
+        m_desc_len = main_class->constant_pool[(main_class->methods[i].descriptor_index - 1)].info.CONSTANT_Utf8_info.length;
 
         if(name_len != m_name_len) {
             continue;
@@ -387,7 +388,7 @@ method_info *getMethodByNameDesc(ClassFile *main_class, ClassFile *name_type_cla
         if(desc_len != m_desc_len) {
             continue;
         }
-        if((strncmp((char *)name,(char *)m_name , m_name_len) == 0) &&(strncmp((char *)desc,(char *)m_desc , m_desc_len) == 0)) {
+        if((strncmp((char*)name,(char*)m_name , m_name_len) == 0) &&(strncmp((char*)desc,(char*)m_desc , m_desc_len) == 0)) {
             return &(main_class->methods[i]);
         }
 
@@ -402,7 +403,7 @@ i4 getNumParameters(ClassFile *class, method_info *method) {
     u1 *bytes;
 
     bytes = class->constant_pool[(method->descriptor_index - 1)].info.CONSTANT_Utf8_info.bytes;
-    length = strlen(class->constant_pool[(method->descriptor_index - 1)].info.CONSTANT_Utf8_info.bytes);
+    length = class->constant_pool[(method->descriptor_index - 1)].info.CONSTANT_Utf8_info.length;
     for(i = 0; i < length && bytes[i] != ')'; i++) {
         if(bytes[i] == 'L') {
             while(bytes[i] != ';') {
@@ -442,7 +443,7 @@ ClassFile *getClassByName(u1 *classname){
 }
 
 
-u4 getFieldIndex(char *className, char *name, u2 nameLen, char *desc, u2 descLen) {
+u4 getFieldIndex(u1 *className, u1 *name, u2 nameLen, u1 *desc, u2 descLen) {
 
     u4 i;
     ClassFile *main_class;
@@ -458,7 +459,7 @@ u4 getFieldIndex(char *className, char *name, u2 nameLen, char *desc, u2 descLen
         getName = main_class->constant_pool[(main_class->fields[i].name_index - 1)].info.CONSTANT_Utf8_info.bytes;
         getDesc = main_class->constant_pool[(main_class->fields[i].descriptor_index - 1)].info.CONSTANT_Utf8_info.bytes;
 
-        if ((strcmp((char *)name, (char *)getName) == 0) && (strcmp((char *)desc, (char *)getDesc) == 0)) {
+        if ((strcmp((char*)name, (char*)getName) == 0) && (strcmp((char*)desc, (char*)getDesc) == 0)) {
             return i;
         }
     }
@@ -481,15 +482,15 @@ void setStaticFieldVal(u4 class_index, u4 field_index, u8 value){
 /*!
 	pesquisa um valor de field de uma classe do method_area
  */
-u4 searchStaticFieldVal(u4 class_index, char* name,char* desc){
+u4 searchStaticFieldVal(u4 class_index, u1* name,u1* desc){
 
     for(int i =0; i < mHeap.classes[class_index]->fields_count; i++){
 
         field_info *var = &(mHeap.classes[class_index]->fields[i]);
-        char* fieldName = getUtf8String(mHeap.classes[class_index]->constant_pool, var->name_index);
-        char* fieldDesc = getUtf8String(mHeap.classes[class_index]->constant_pool, var->descriptor_index);
+        u1* fieldName = getUtf8String(mHeap.classes[class_index]->constant_pool, var->name_index);
+        u1* fieldDesc = getUtf8String(mHeap.classes[class_index]->constant_pool, var->descriptor_index);
 
-        if ((strcmp(name,fieldName) == 0) && (strcmp(desc,fieldDesc) == 0)) {
+        if ((strcmp((char*)name,(char*)fieldName) == 0) && (strcmp((char*)desc,(char*)fieldDesc) == 0)) {
             return i;
         }
 

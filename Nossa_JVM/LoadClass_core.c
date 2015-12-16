@@ -20,12 +20,12 @@ Heap objHeap;
  * 		rafaelgpenna@gmail.com
  * 
  */
-ClassFile *fetchClass(char *strClassName) {
+ClassFile *fetchClass(u1 *strClassName) {
     u2 i = 0;
     u2 found = 0;
     
     while (i < dmSize.clsHeap_size && found == 0) {
-        if (strcmp(strClassName, (char*)classHeap[i].className) == 0) {
+        if (strcmp(strClassName, (u1*)classHeap[i].className) == 0) {
             found = 1;
         }
         else {
@@ -143,8 +143,8 @@ void readUtf8 (u2 *poolLength, FILE *arq, cp_info* aux) {
 	u2 length;
 	u2 counter;
 	u1 byte;
-	char *string = "";
-	char *auxString = "";
+	u1 *string = "";
+	u1 *auxString = "";
 	size_t size;
 	
 	fread(&length, sizeof(u2), 1, arq);
@@ -154,10 +154,10 @@ void readUtf8 (u2 *poolLength, FILE *arq, cp_info* aux) {
 	size = 0;
 	while (counter++ < length) {
 		auxString = string;
-		string = (char*) malloc ((size + 2) * sizeof(char));
+		string = (u1*) malloc ((size + 2) * sizeof(u1));
 		strcpy(string, auxString);
 		fread(&byte, sizeof(u1), 1, arq);
-		string[size] = (char) byte;
+		string[size] = (u1) byte;
 		string[size+1] = '\0';
 		size = strlen(string);
 	}
@@ -285,7 +285,7 @@ cp_info* readConstantPool (u2 length, u2 *poolLength, FILE *arq) {
 }
 
 // Função para retornar o tipo de constante
-char* searchConstantType (u1 tag) {
+u1* searchConstantType (u1 tag) {
 	switch (tag) {
 		case 1:
 			return "Utf8";
@@ -450,7 +450,7 @@ field_info *field_func(FILE *class_f, unsigned int offset, unsigned int *bytes_p
         u4* att_len_ptr; //Indica a qtd de byte, excluindo os 6 primeiros, de um atributo.
         //elemento da pool de constantes apontado pelo att_nameidx
         u2 str_len;
-        char* utf8_str;
+        u1* utf8_str;
         //parte de um atributo específico
         //ConstantValue
         u2* c_valueidx_ptr;
@@ -524,7 +524,7 @@ field_info *field_func(FILE *class_f, unsigned int offset, unsigned int *bytes_p
                     switch ( pool_array[idx - 1].tag ){
                         case CONSTANT_UTF8:
                             str_len = pool_array[idx - 1].info.CONSTANT_Utf8_info.length;
-                            utf8_str = (char*) malloc( (str_len + 1)*sizeof(char) );
+                            utf8_str = (u1*) malloc( (str_len + 1)*sizeof(u1) );
                             utf8_str[str_len] = '\0';
                             for(int k = 0; k < str_len; k++)
                                 utf8_str[k] = pool_array[idx - 1].info.CONSTANT_Utf8_info.bytes[k];
