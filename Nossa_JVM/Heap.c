@@ -5,7 +5,7 @@
 //  Created by Luiz Henrique Campos Barboza on 15/12/15.
 //
 //
-
+#include "Execution_Core.h"
 #include "Heap.h"
 
 /*!
@@ -98,7 +98,7 @@ struct _array* newArray(uint32_t count, uint32_t tipo) {
 struct _array* newRefArray(uint32_t count, char* className) {
     struct _array* newArr = newArray(count, tREFERENCIA);
     
-    maquina.loadClass(className);
+    loadClass(className);
     
     return newArr;
 }
