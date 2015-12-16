@@ -21,7 +21,7 @@
 #ifndef MACROS_H
 #define MACROS_H
 #include <stdint.h>
-#include "exceptions.h"
+#include "Exceptions.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -63,7 +63,7 @@ f4 getf4(char *p);
 
 
 /** Definição de códigos de retorno */
-#define SEEK_NOTFOUND 65535 // -1 se usar inteiro sinalizado, mas estamos usando u2 
+#define SEEK_NOTFOUND 65535 // -1 se usar inteiro sinalizado, mas estamos usando u2
 
 /** Definição dos nomes dos atributos */
 #define CONSTANTVALUE_STR "ConstantValue"
@@ -71,7 +71,7 @@ f4 getf4(char *p);
 #define DEPRECATED_STR "Deprecates"
 
 /** Definição das versões suportadas */
-#define SUPPORTED_VERSION12 46 
+#define SUPPORTED_VERSION12 46
 
 
 /** Definição de flags de acesso da estrutura .class */
@@ -117,7 +117,7 @@ f4 getf4(char *p);
 #define DEPRECATED 9
 /** Definição dos OPCODES */
 #define op_nop  0
-#define op_aconst_null 1 
+#define op_aconst_null 1
 #define op_iconst_m1  2
 #define op_iconst_0  3
 #define op_iconst_1  4
@@ -319,10 +319,10 @@ f4 getf4(char *p);
 #define op_goto_w  200
 #define op_jsr_w  201
 #define op_breakpoint  202
- 
+
 /** Definição do array com os nomes dos opcodes */
 extern char *opcodes_str_names[];
- 
+
 /** Definição dos códigos numéricos para os atributos */
 //#define SOURCEFILE 0x436
 //#define CONSTANTVALUE
@@ -340,12 +340,12 @@ extern char *opcodes_str_names[];
 #define INCORRECTVERSION_ERR 1
 #define E_SUCCESS  0
 #define E_INVALID_NUM_ARGS  -1
-#define E_ARGV1_FILE_NOT_EXISTENT  -2 
+#define E_ARGV1_FILE_NOT_EXISTENT  -2
 #define E_CAFEBABE  -3
 #define E_VERSION  -4
-#define W_NAOLIDOINTEIRO  -5 
+#define W_NAOLIDOINTEIRO  -5
 #define E_OPCAO_NAO_EXISTENTE  -6
-#define E_DOLAR_NOT_SUPPORTED  -7 
+#define E_DOLAR_NOT_SUPPORTED  -7
 #define E_EMPTY_FRAME_STACK  -8
 #define E_STACK_OVERFLOW  -9
 #define E_NO_MAIN_FOUND  -10
@@ -354,12 +354,12 @@ extern char *opcodes_str_names[];
 #define E_NOTVALID_CP_INDEX  -13
 #define E_NEG_ARR_SIZE  -14
 #define E_NULL_POINTER  -15
-#define E_ARR_NOT_FOUND  -16 
+#define E_ARR_NOT_FOUND  -16
 #define E_NOT_VALID_MARRAY_INFO  -17
 #define E_NOT_SUPPORTED_ARRAY_TYPE  -18
 #define E_DISTINCT_MARRAY_DIMENSIONS  -19
 #define E_NOT_SUPPORTED_INSTRUCTION  -20
-#define E_BAD_INPUT  -21 
+#define E_BAD_INPUT  -21
 #define E_NEGATIVE_ARRAY_SIZE  -22
 
 
@@ -415,14 +415,14 @@ typedef struct{
 		struct{
 			u2 name_index;
 			u2 descriptor_index;
-		}CONSTANT_NameAndType_info;	
+		}CONSTANT_NameAndType_info;
 		struct{
 			u2 length;
 			u1 *bytes; //Tamanho especificado por length
 		}CONSTANT_Utf8_info;
-	}info; //Anonymous unions isn't part of c99	
+	}info; //Anonymous unions isn't part of c99
 }cp_info;
-	
+
 /**Definição das estrutura das interfaces na tabela de interface*/
 typedef struct {
 	u2 name_index;
@@ -508,7 +508,7 @@ typedef struct attribute_info_e{
 		struct{
 		//	u2 attribute_name_index;
 		//	u4 attribute_length; //Valor em bytes do atributo excluindo os 6bytes inic.
-			u2 line_number_table_length; 
+			u2 line_number_table_length;
 			LineNumberForLNumber *line_number_table;
 		}LineNumberTable_attribute;
 		struct{
@@ -516,14 +516,14 @@ typedef struct attribute_info_e{
 		//	u4 attribute_length;
 			u2 local_variable_length;
 			LocalVariableForVariable *local_variable_table; //Tabela de variáveis locais
-		}LocalVariableTable_attribute; 
+		}LocalVariableTable_attribute;
 		struct{
 		//	u2 attribute_name_index;
 		//	u4 attribute_length;
 		}Deprecated_attribute;
 	}info; //Um tipo específico de atributo
 }attribute_info;
-	
+
 /** Definição da estrutura method */
 typedef struct{
 	u2 access_flags;
@@ -557,7 +557,7 @@ union {
     u4 intValue;
     u1 *variable_name;
     //f4 floatValue;
-    
+
     //LONG_PTR ptrValue;
     Object object;
 } Variable;
@@ -599,19 +599,19 @@ typedef struct {
 	method_info *methods;
 	u2 attributes_count;
 	attribute_info *attributes;
-    
+
     //Variable *variable;
     //field_info *static_fields;
-    
+
     u2 object_fields_size;
     field_info *object_fields;
-    
+
     u2 static_values_size;
     Field_Value *static_values;
-    
+
     u1 *className;
-    
-    
+
+
 }ClassFile;
 
 extern ClassFile globClass;

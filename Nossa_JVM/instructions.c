@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <inttypes.h>
 #include "Heap.h"
+#include "Exceptions.h"
 #include "Execution_Core.h"
 
 uint8_t wide = 0;
