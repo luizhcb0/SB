@@ -16,7 +16,7 @@ void push(Frame *pFrame, u8 valor) {
     if (pFrame->operand_stack.allocated >= pFrame->max_stack) {
         error(E_STACK_OVERFLOW);
     }
-    struct _u4pilha* ref = maquina.current_frame->operand_stack.topo; // armazena referencia ao antigo topo
+    struct _u4pilha* ref = pFrame->operand_stack.topo; // armazena referencia ao antigo topo
     
     pFrame->operand_stack.topo = (struct _u4pilha*)malloc(sizeof(struct _u4pilha));
     pFrame->operand_stack.topo->next = ref; // guarda referencia para o proximo topo

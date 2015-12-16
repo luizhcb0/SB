@@ -19,7 +19,7 @@ typedef struct _instruction {
 } Instruction;
 
 extern const Instruction instructions[];
-extern char *basePath;
+extern u1 *basePath;
 
 typedef struct {
     ClassFile **classes;
@@ -32,15 +32,15 @@ MethodHeap *initMethodHeap();
 
 extern MethodHeap mHeap;
 
-u4 Execute ();
+void Execute ();
 int getClassIndex(u1 *class_name);
 void initialize(int class_index);
 void prepare(u4 index);
 int loadParentClasses();
 int loadInterfaces(ClassFile *class);
 int loadClass(u1 *name);
-char* getClassPath(char* base_path, char* class_name);
-int getInterfaceIndex(char* interface_name);
+u1* getClassPath(u1* base_path, u1* class_name);
+int getInterfaceIndex(u1* interface_name);
 int checkIfFieldIsStatic(uint16_t access_flags);
 void expandClassArray();
 void expandInterfaceArray();
@@ -60,9 +60,9 @@ i4 getNumParameters(ClassFile *class, method_info *method);
 u8 getObjectField(struct _object *object, uint32_t field_index);
 void setObjectField(struct _object *object, u4 field_index, u8 value);
 ClassFile *getClassByName(u1 *classname);
-u4 getFieldIndex(char *className, char *name, u2 nameLen, char *desc, u2 descLen);
+u4 getFieldIndex(u1 *className, u1 *name, u2 nameLen, u1 *desc, u2 descLen);
 u8 getStaticFieldVal(u4 class_index, u4 field_index);
 void setStaticFieldVal(u4 class_index, u4 field_index, u8 value);
-u4 searchStaticFieldVal(u4 class_index, char* name,char* desc);
+u4 searchStaticFieldVal(u4 class_index, u1* name,u1* desc);
 
 #endif /* Execution_Core_h */
