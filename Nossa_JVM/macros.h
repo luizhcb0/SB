@@ -366,18 +366,7 @@ extern char *opcodes_str_names[];
 
 
 
-
-
-
-
-
-
-
-
-
-typedef struct attribute_info_e attribute_info; //foward declaration
-typedef union Variable_t Variable; //foward declaration
-typedef struct Array_t Array; //foward declaration
+//typedef struct attribute_info_e attribute_info; //foward declaration
 
 /** Definição das estruturas relacionadas as áreas de memória da JVM (Heap, stack) */
 typedef struct{
@@ -482,7 +471,7 @@ typedef struct attribute_info_e{
 			u2 exception_table_length; //Número de entradas e não de bytes da exception_table
 			ExceptionForCode *exception_table; //A qtd de elementos é indicada pela variável acima.
 			u2 attribute_count; //Número de atributos dentro desse atributo
-			attribute_info* attribute; //Vetor de atributos
+			struct attribute_info_e* attribute; //Vetor de atributos
 		}Code_attribute;
 		struct{
 		//	u2 attribute_name_index;

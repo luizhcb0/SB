@@ -17,7 +17,7 @@ ClassFile *classHeap;
 Frame *stackFrame;
 Heap objHeap;
 
-ClassFile *classLoader(u1 *classPathStr) {
+ClassFile *classLoader(char *classPathStr) {
 	ClassFile *classHeap_ptr;
 
     FILE *classPathF_ptr = fopen(classPathStr, "rb");

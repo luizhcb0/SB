@@ -2,7 +2,7 @@
 #define HEADER_JVM_CORE
 #include "macros.h"
 
-void jvmStartup(u1 *classPathStr, int flag);
+void jvmStartup(char *classPathStr, int flag);
 
 void initializeClass(ClassFile *class_ptr);
 

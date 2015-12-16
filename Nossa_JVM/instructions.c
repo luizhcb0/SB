@@ -13,6 +13,7 @@
 #include "Execution_Core.h"
 #include "JVM_core.h"
 #include "macros.h"
+#include "LoadClass_core.h"
 
 uint8_t wide = 0;
 Heap objHeap;
@@ -2727,7 +2728,7 @@ static void func_op_invokevirtual(Frame *pFrame) {
     methodDesc = getUtf8String(pFrame->pClass->constant_pool, methodDescriptorIndex);
     methodName = getUtf8String(pFrame->pClass->constant_pool, methodNameIndex);
 
-    if((strcmp((char*)className, "java/io/PrintStream") == 0) && ((strcmp((char*)methodName,"println") == 0) ||(strcmp(methodName,"print") == 0))){
+    if((strcmp((char*)className, "java/io/PrintStream") == 0) && ((strcmp((char*)methodName,"println") == 0) ||(strcmp((char*)methodName,"print") == 0))){
 
         //Quando tem que imprimir long
         if(strstr((char*)methodDesc, "J") != NULL){

@@ -25,7 +25,7 @@ ClassFile *fetchClass(u1 *strClassName) {
     u2 found = 0;
     
     while (i < dmSize.clsHeap_size && found == 0) {
-        if (strcmp(strClassName, (u1*)classHeap[i].className) == 0) {
+        if (strcmp((char*)strClassName, (char*)classHeap[i].className) == 0) {
             found = 1;
         }
         else {
@@ -143,8 +143,8 @@ void readUtf8 (u2 *poolLength, FILE *arq, cp_info* aux) {
 	u2 length;
 	u2 counter;
 	u1 byte;
-	u1 *string = "";
-	u1 *auxString = "";
+	char *string = "";
+	char *auxString = "";
 	size_t size;
 	
 	fread(&length, sizeof(u2), 1, arq);
@@ -154,7 +154,7 @@ void readUtf8 (u2 *poolLength, FILE *arq, cp_info* aux) {
 	size = 0;
 	while (counter++ < length) {
 		auxString = string;
-		string = (u1*) malloc ((size + 2) * sizeof(u1));
+		string = (char*) malloc ((size + 2) * sizeof(char));
 		strcpy(string, auxString);
 		fread(&byte, sizeof(u1), 1, arq);
 		string[size] = (u1) byte;
@@ -531,7 +531,7 @@ field_info *field_func(FILE *class_f, unsigned int offset, unsigned int *bytes_p
                             printf("\n%s\n", utf8_str);
                             
                             //A partir desse momento já se conhece o atributo
-                            if( !strcmp(utf8_str, CONSTANTVALUE_STR) ){
+                            if( !strcmp((char*)utf8_str, CONSTANTVALUE_STR) ){
                                 if(*att_len_ptr != 2){
                                     printf("\nfield.c: ConstantValue length != 2");
                                     exit(1);
@@ -545,13 +545,13 @@ field_info *field_func(FILE *class_f, unsigned int offset, unsigned int *bytes_p
                                 *bytes_ptr += 2;
                                 
                             }
-                            else if( !strcmp(utf8_str, SYNTHETIC_STR ) ){
+                            else if( !strcmp((char*)utf8_str, SYNTHETIC_STR ) ){
                                 if(*att_len_ptr != 0){
                                     printf("\nfield.c: deprecated length != 0");
                                     exit(1);
                                 }	
                             }
-                            else if( !strcmp(utf8_str, DEPRECATED_STR) ){
+                            else if( !strcmp((char*)utf8_str, DEPRECATED_STR) ){
                                 if(*att_len_ptr != 0){
                                     printf("\nfield.c: deprecated length != 0");
                                     exit(1);

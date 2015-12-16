@@ -10,7 +10,7 @@
 #include <inttypes.h>
 
 
-ClassFile *classLoader(u1 *classPathStr);
+ClassFile *classLoader(char *classPathStr);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Constant Pool    -   inicio
@@ -86,5 +86,9 @@ void fillStaticFields(ClassFile *clsFile_ptr);
 
 //Extras
 u2 buildCPindex(u1 byte1, u2 byte2);
+
+
+double getDouble(u4 highBytes, u4 lowBytes);
+long getLong(u4 highBytes, u4 lowBytes);
 
 #endif

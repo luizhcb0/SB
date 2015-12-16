@@ -20,7 +20,7 @@ ClassFile *classHeap;
 Frame *stackFrame;
 Heap objHeap;
 
-void jvmStartup(u1 *classPathStr, int flag){
+void jvmStartup(char *classPathStr, int flag){
     classHeap = malloc( CLSHEAP_MAX*sizeof( ClassFile ) );
     //objectHeap = malloc( OBJHEAP_MAX*sizeof( Object_t ) );
     stackFrame = malloc( STKFRAME_MAX*sizeof( Frame ) );
@@ -161,7 +161,7 @@ int findClass(char* ClassName){
 
     for(int i=0; i < clsHeapSize; i++) {
         index = classHeap[i].this_class;
-        if(strcmp(classHeap[i].constant_pool[index-1].info.CONSTANT_Utf8_info.bytes, ClassName) == 0) {
+        if(strcmp((char*)classHeap[i].constant_pool[index-1].info.CONSTANT_Utf8_info.bytes, ClassName) == 0) {
             return i;
         }
     }

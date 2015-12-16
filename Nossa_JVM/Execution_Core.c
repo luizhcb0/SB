@@ -73,7 +73,7 @@ int loadParentClasses() {
         if (getClassIndex(parentName) == -1) {
 
         expandClassArray();
-        mHeap.classes[mHeap.classes_count++] = classLoader(getClassPath(basePath, parentName));
+        mHeap.classes[mHeap.classes_count++] = classLoader((char*)getClassPath(basePath, parentName));
 
         prepare(mHeap.classes_count - 1);
         initialize(mHeap.classes_count - 1);
@@ -95,7 +95,7 @@ int loadInterfaces(ClassFile *class) {
 
         if (getInterfaceIndex(name) == -1) {
             expandInterfaceArray();
-            mHeap.interfaces[mHeap.interfaces_count++] = classLoader(getClassPath(basePath, name));
+            mHeap.interfaces[mHeap.interfaces_count++] = classLoader((char*)getClassPath(basePath, name));
         }
 
     }
@@ -120,7 +120,7 @@ int loadClass(u1 *name) {
 
         toReturn = mHeap.classes_count;
         expandClassArray();
-        mHeap.classes[mHeap.classes_count++] = classLoader(getClassPath(basePath, name));
+        mHeap.classes[mHeap.classes_count++] = classLoader((char*)getClassPath(basePath, name));
 
         prepare(mHeap.classes_count - 1);
         initialize(mHeap.classes_count-1);
