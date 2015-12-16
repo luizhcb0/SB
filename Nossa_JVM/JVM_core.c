@@ -32,7 +32,7 @@ void jvmStartup(char *classPathStr, int flag){
 
     //Carrega a classe inicial
     //OK!
-    classLoader(classPathStr);
+    //classLoader(classPathStr);
     
 	for(int i = 0; i < classHeap->static_values_size; i++)
 		printf("\nname %s", classHeap->static_values[i].field_name);
@@ -44,10 +44,14 @@ void jvmStartup(char *classPathStr, int flag){
         exit(1);
     }
     loadClass(classPathStr);
+    printf("numero de classes %d",mHeap.classes_count);
+    getchar();
+    getchar();
 
     method_info* _main = getMainMethod();
-    if (_main == NULL)
+    if (_main == NULL) {
         printf("nao tem main\n");
+    }
     getchar();
     getchar();
     //error(E_NO_MAIN_FOUND);
@@ -207,16 +211,10 @@ void createFrame(method_info *method, ClassFile *Class) {
     u2 i = dmSize.stkHeap_size;
     u2 codeIndex = 0;
     codeIndex = findCode(method);
-    printf("clinit %d\n", method->name_index);
-    getchar();
-    getchar();
 
     if (i < STKFRAME_MAX - 1) {
         //OCUPADO
         stackFrame[i] = initFrame(Class, method, codeIndex);
-        printf("stack %d\n", stackFrame[i].code_length);
-        getchar();
-        getchar();
 
         /*
         frame_ptr[i].pClass = Class;

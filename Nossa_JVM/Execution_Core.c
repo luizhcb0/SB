@@ -35,7 +35,11 @@ void Execute () {
 
     Frame *pFrame = &stackFrame[dmSize.stkHeap_size - 1];
     
-    printf("stack dentro do pframe%d\n", pFrame->code_length);
+    printf("stack dentro do pframe = %d\n", pFrame->code_length);
+    getchar();
+    getchar();
+    getchar();
+    getchar();
     getchar();
     getchar();
     u2 classHeapLength = dmSize.clsHeap_size;
@@ -53,9 +57,6 @@ void initialize(int class_index) {
     ClassFile *class = mHeap.classes[class_index];
     method_info *clinit = getclinit(class);
     if (clinit == NULL) return; // classe abstrata ou interface
-    printf("clinit %d\n", clinit->name_index);
-    getchar();
-    getchar();
     createFrame(clinit, class);
     Execute();
 
