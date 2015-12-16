@@ -228,7 +228,7 @@ method_info* getclinit(ClassFile *class) {
     for (int i = 0; i < class->methods_count; i++) {
         u1 *name = getUtf8String(class->constant_pool, class->methods[i].name_index);
         u1 *desc = getUtf8String(class->constant_pool, class->methods[i].descriptor_index);
-        
+
         if (!strcmp((char*)name, "<clinit>") && !strcmp((char*)desc, "()V")) {
             return &(class->methods[i]);
         }
@@ -242,18 +242,18 @@ method_info* getclinit(ClassFile *class) {
 method_info* getMainMethod() {
     ClassFile *main_class;
     u1 *name, *desc;
-    
+
     main_class = mHeap.classes[0];
-    
+
     /* procura por método main ([LJava/lang/String;)V */
     for (int i = 0; i < main_class->methods_count; i++){
         name = getUtf8String(main_class->constant_pool, main_class->methods[i].name_index);
         desc = getUtf8String(main_class->constant_pool, main_class->methods[i].descriptor_index);
-        
+
         if ((strcmp("main", (char*)name) == 0) && (strcmp("([Ljava/lang/String;)V", (char*)desc) == 0))
             return &(main_class->methods[i]);
     }
-    
+
     return NULL;
 }
 
@@ -343,13 +343,13 @@ u1 *getFieldName(u2 index, cp_info *pool) { //3
     return string;
 }
 
-MethodHeap *initMethodHeap() {
-    MethodHeap *mHeap = (MethodHeap *) malloc(sizeof(MethodHeap));
+MethodHeap initMethodHeap() {
+    MethodHeap mHeap; // = (MethodHeap *) malloc(sizeof(MethodHeap));
 
-    mHeap->classes = (ClassFile **) malloc(sizeof(ClassFile*));
-    mHeap->interfaces = (ClassFile **) malloc(sizeof(ClassFile*));
-    mHeap->classes_count = 0;
-    mHeap->interfaces_count = 0;
+    mHeap.classes = (ClassFile **) malloc(sizeof(ClassFile*));
+    mHeap.interfaces = (ClassFile **) malloc(sizeof(ClassFile*));
+    mHeap.classes_count = 0;
+    mHeap.interfaces_count = 0;
 
     return mHeap;
 }

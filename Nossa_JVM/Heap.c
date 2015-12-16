@@ -1,6 +1,6 @@
 //
 //  Heap.c
-//  
+//
 //
 //  Created by Luiz Henrique Campos Barboza on 15/12/15.
 //
@@ -31,20 +31,20 @@ struct _array* addArray(struct _array* arr) {
  */
 struct _object* newObject(ClassFile *class) {
     if (!class) return NULL;
-    
+
     struct _object* newObj = (struct _object*)malloc(sizeof(struct _object));
     newObj->class = class;
     newObj->fields = (uint64_t*)malloc(class->fields_count*sizeof(uint64_t));
-    
+
     int index = loadClass(getParentName(class));
-    
+
     if(index > -1 ){
         ClassFile *parentClass = mHeap.classes[index];
         newObj->super = newObject(parentClass);
     }else{
         return NULL;
     }
-    
+
     return addObject(newObj);
 }
 
@@ -53,7 +53,7 @@ struct _object* newObject(ClassFile *class) {
  */
 struct _array* newArray(uint32_t count, uint32_t tipo) {
     struct _array* newArr = (struct _array*)malloc(sizeof(struct _array));
-    
+
     newArr->quantidade = count;
     newArr->tipo = tipo;
     switch(tipo) {
@@ -88,7 +88,7 @@ struct _array* newArray(uint32_t count, uint32_t tipo) {
             break;
     }
     newArr->values = calloc(count, newArr->element_size);
-    
+
     return addArray(newArr);
 }
 
@@ -97,9 +97,9 @@ struct _array* newArray(uint32_t count, uint32_t tipo) {
  */
 struct _array* newRefArray(uint32_t count, char* className) {
     struct _array* newArr = newArray(count, tREFERENCIA);
-    
+
     loadClass(className);
-    
+
     return newArr;
 }
 
@@ -131,13 +131,13 @@ struct _array* newMultiArray(int dimension, int dimensionCount, int* qtdByDimens
 /*!
 	incicia e aloca o heap inicial na memoria
  */
-Heap *initHeap() {
-    Heap *toReturn = (Heap*)malloc(sizeof(Heap));
-    
+Heap initHeap() {
+    Heap toReturn; // = (Heap*)malloc(sizeof(Heap));
+
     // campos
-    toReturn->object_count = 0;
-    toReturn->array_count = 0;
-    toReturn->objects = (struct _object**)malloc(sizeof(struct _object*));
-    toReturn->arrays = (struct _array**)malloc(sizeof(struct _array*));
+    toReturn.object_count = 0;
+    toReturn.array_count = 0;
+    toReturn.objects = (struct _object**)malloc(sizeof(struct _object*));
+    toReturn.arrays = (struct _array**)malloc(sizeof(struct _array*));
     return toReturn;
 }

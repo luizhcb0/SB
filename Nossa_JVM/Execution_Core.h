@@ -28,7 +28,7 @@ typedef struct {
     u4 interfaces_count;
 } MethodHeap;
 
-MethodHeap *initMethodHeap();
+MethodHeap initMethodHeap();
 
 extern MethodHeap mHeap;
 

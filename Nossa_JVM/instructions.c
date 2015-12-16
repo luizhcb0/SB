@@ -11,6 +11,7 @@
 #include "Heap.h"
 #include "Exceptions.h"
 #include "Execution_Core.h"
+#include "JVM_core.h"
 
 uint8_t wide = 0;
 Heap objHeap;

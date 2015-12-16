@@ -24,13 +24,13 @@ void jvmStartup(u1 *classPathStr, int flag){
     classHeap = malloc( CLSHEAP_MAX*sizeof( ClassFile ) );
     objectHeap = malloc( OBJHEAP_MAX*sizeof( Object_t ) );
     stackFrame = malloc( STKFRAME_MAX*sizeof( Frame ) );
-    
+
     dmSize.clsHeap_size = 0;
     dmSize.objHeap_size = 0;
     dmSize.stkHeap_size = 0;
-    
+
     //Carrega a classe inicial
-    //OK! 
+    //OK!
     classLoader(classPathStr);
    	printf("\nstatic_values_size %d", classHeap->static_values_size);
 	for(int i = 0; i < classHeap->static_values_size; i++)
@@ -42,15 +42,15 @@ void jvmStartup(u1 *classPathStr, int flag){
         print_ClassFile(classHeap);
         exit(1);
     }
-    
+
     //Fecha o arquivo do primeiro class file aberto
-    fclose(classPathF_ptr);
+    //fclose(classPathF_ptr);
     //Inicializa a classe inicial, roda clinit
 
 	//OCUPADO
     //initializeClass(classHeap_ptr, stackFrame_ptr, dmSize_ptr, classHeap_ptr);
     //initializeClass(classHeap_ptr, stackFrame_ptr, &dmSize_ptr->stkHeap_size); //Sei que o primeiro elemento da classHeap é a classe inicial
-	
+
     //OCUPADO
 	//Chamo o método main
 	//callMethod(classHeap_ptr, stackFrame_ptr, dmSize_ptr, classHeap_ptr, "main", "([Ljava/lang/String;)V");
@@ -70,20 +70,20 @@ void initializeClass(ClassFile *class_ptr){
     u2 method_idx = seekMethodInClass( class_ptr, "<clinit>", "()V" );
     method_info *method_ptr = &class_ptr->methods[method_idx];
     //Quem cria deleta.
-    
+
     createFrame(method_ptr, class_ptr);//Cria o frame para o método <clinit> da classe.
-    
+
     u2 aux_idx = dmSize.stkHeap_size - 1; // o stkFrameTop_ptr na verdade é o stack frame size, que indica a qtd de frames na stkframe.
-    
+
     //Teste
     Execute();
-    
+
     //Deleta o frame.
     deleteFrame();
 }
 
 /**
-* @brief 
+* @brief
 *
 * @param class_ptr
 * @param stkFrame_ptr
@@ -100,12 +100,12 @@ void callMethod(ClassFile *class_ptr, char *mth_name, char *mth_descriptor){
 	}
     method_info *method_ptr = &class_ptr->methods[method_idx];
     //Quem cria deleta.
-    
+
     createFrame(method_ptr, class_ptr);//Cria o frame para o método <clinit> da classe.
-    
+
     //Teste
     Execute();
-    
+
     //Deleta o frame.
     deleteFrame();
 }
@@ -128,14 +128,14 @@ u2 seekMethodInClass(ClassFile *class_ptr, char *methName_str, char *methDescrip
         //str_size = class_ptr->constant_pool[class_ptr->methods[i].name_inex - 1].info.CONSTANT_Utf8_info.length;
         //methodN = malloc( (str_size + 1)*sizeof(char) );
         //bytes = class_ptr->constant_pool[class_ptr->methods[i].name_index - 1].info.CONSTANT_Utf8_info_bytes;
-        
+
         methodN = (char*)class_ptr->constant_pool[class_ptr->methods[i].name_index - 1].info.CONSTANT_Utf8_info.bytes;
         methodD = (char*)class_ptr->constant_pool[class_ptr->methods[i].descriptor_index - 1].info.CONSTANT_Utf8_info.bytes;
         if( !strcmp(methodN, methName_str) && !strcmp(methodD, methDescriptor_str) ){
             return i;
-            
+
         }
-        
+
         /*for(int j = 0; j < str_size; j++){
          methodN[j] = bytes[j];
          }
@@ -155,10 +155,10 @@ u2 seekMethodInClass(ClassFile *class_ptr, char *methName_str, char *methDescrip
  *  @return <#return value description#>
  */
 int findClass(char* ClassName){
-    
+
     u2 clsHeapSize = dmSize.stkHeap_size;
     u2 index;
-    
+
     for(int i=0; i < clsHeapSize; i++) {
         index = classHeap[i].this_class;
         if(strcmp(classHeap[i].constant_pool[index-1].info.CONSTANT_Utf8_info.bytes, ClassName) == 0) {
@@ -169,11 +169,11 @@ int findClass(char* ClassName){
 }
 
 u2 findCode(method_info *method) {
-    
+
     u2 i = 0;
     while(method->attribute[i].tag != 1){
         i++;
-        
+
     }
     return i;
 }
@@ -191,47 +191,47 @@ u2 findCode(method_info *method) {
  */
 //Lembrar de enviar o dataMSize->stkHeap_size para o numFrames
 void createFrame(method_info *method, ClassFile *Class) {
-    
+
     u2 i = dmSize.stkHeap_size;
     u2 codeIndex = 0;
     codeIndex = findCode(method);
-    
+
     if (i < STKFRAME_MAX - 1) {
         //OCUPADO
         stackFrame[i] = initFrame(Class, method, codeIndex);
-        
+
         /*
         frame_ptr[i].pClass = Class;
         frame_ptr[i].pMethod = method;
         frame_ptr[i].code_length = method->attribute[codeIndex].info.Code_attribute.code_length;
         frame_ptr[i].code = method->attribute[codeIndex].info.Code_attribute.code;
-        
+
         frame_ptr[i].pc = 0;
         frame_ptr[i].sp = 0;
-        
+
         frame_ptr[i].stack_size = method->attribute[codeIndex].info.Code_attribute.max_stack;
         frame_ptr[i].local_size = method->attribute[codeIndex].info.Code_attribute.max_locals;
         frame_ptr[i].stack = malloc(frame_ptr[i].stack_size * sizeof(u4));
         frame_ptr[i].local = malloc(frame_ptr[i].local_size * sizeof(u4));
         */
-        
-        
+
+
         /*TESTE*/
         /*
         frame_ptr[i - 1].pClass = Class;
             frame_ptr[i -1].pMethod = method;
             frame_ptr[i -1].code_length = Class->methods->attribute[codeIndex].info.Code_attribute.code_length;
             frame_ptr[i - 1].code = malloc(frame_ptr[i].code_length * sizeof(u1));
-        
+
             frame_ptr[i - 1].pc = 0;
             frame_ptr[i - 1].sp = 0;
-        
+
             frame_ptr[i - 1].stack_size = Class->methods->attribute[codeIndex].info.Code_attribute.max_stack;
             frame_ptr[i - 1].local_size = Class->methods->attribute[codeIndex].info.Code_attribute.max_locals;
             frame_ptr[i - 1].stack = malloc(frame_ptr[i].max_stack * sizeof(u4));
             frame_ptr[i - 1].local = malloc(frame_ptr[i].local_size * sizeof(u4));
         */
-        
+
         dmSize.stkHeap_size++;
     } else {
         printf("Frame não pode ser alocado, tamanho máximo atingido");
@@ -241,9 +241,9 @@ void createFrame(method_info *method, ClassFile *Class) {
 
 //Lembrar de enviar o dataMSize->stkHeap_size para o numFrames
 void deleteFrame(Frame *frame_ptr, u2 *numFrames) {
-    
+
     dmSize.stkHeap_size--;
-    
+
 }
 
 /*SAMUEL - FIM*/

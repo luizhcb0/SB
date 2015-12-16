@@ -1,3 +1,5 @@
+#ifndef HEADER_JVM_CORE
+#define HEADER_JVM_CORE
 #include "macros.h"
 
 void jvmStartup(u1 *classPathStr, int flag);
@@ -16,3 +18,4 @@ void deleteFrame();
 
 void callMethod(ClassFile *class_ptr, char *mth_name, char *mth_descriptor);
 
+#endif
