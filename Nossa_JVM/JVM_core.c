@@ -22,7 +22,7 @@ Heap objHeap;
 
 void jvmStartup(u1 *classPathStr, int flag){
     classHeap = malloc( CLSHEAP_MAX*sizeof( ClassFile ) );
-    objectHeap = malloc( OBJHEAP_MAX*sizeof( Object_t ) );
+    //objectHeap = malloc( OBJHEAP_MAX*sizeof( Object_t ) );
     stackFrame = malloc( STKFRAME_MAX*sizeof( Frame ) );
 
     dmSize.clsHeap_size = 0;

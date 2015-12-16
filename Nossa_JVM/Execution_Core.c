@@ -344,7 +344,7 @@ u1 *getFieldName(u2 index, cp_info *pool) { //3
 }
 
 MethodHeap initMethodHeap() {
-    MethodHeap mHeap; // = (MethodHeap *) malloc(sizeof(MethodHeap));
+    //MethodHeap mHeap; // = (MethodHeap *) malloc(sizeof(MethodHeap));
 
     mHeap.classes = (ClassFile **) malloc(sizeof(ClassFile*));
     mHeap.interfaces = (ClassFile **) malloc(sizeof(ClassFile*));

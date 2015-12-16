@@ -19,13 +19,13 @@
 
 typedef struct {
     // campos
-    
+
     ClassFile *pClass;
     method_info *pMethod;
-    
+
     u4 code_length; //Número de bytes do array abaixo
     u1 *code; //Vetor com a qtd de byte indicada acima
-    
+
     u2 max_stack;
     struct _operand_stack {
         u4 allocated;
@@ -35,11 +35,11 @@ typedef struct {
         } *topo;
     } operand_stack;
     u4 pc;
-    
+
     u2 max_locals;
     u8* local;
     u2 retornou;
-    
+
     // funcoes
 } Frame;
 
@@ -48,6 +48,6 @@ u8 pop (Frame *);
 void push2(Frame *,u8);
 u8 pop2 (Frame *);
 
-Frame *initFrame(ClassFile *Class, method_info *method, u2 codeIndex);
+Frame initFrame(ClassFile *Class, method_info *method, u2 codeIndex);
 
 #endif
