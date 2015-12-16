@@ -338,29 +338,29 @@ extern char *opcodes_str_names[];
 /**Definição dos códigos para o módulo de mensagens de erro  */
 #define NOTACLASS_ERR 2
 #define INCORRECTVERSION_ERR 1
-#define E_SUCCESS = 0
-#define E_INVALID_NUM_ARGS = -1
-#define E_ARGV1_FILE_NOT_EXISTENT = -2 
-#define E_CAFEBABE = -3
-#define E_VERSION = -4
-#define W_NAOLIDOINTEIRO = -5 
-#define E_OPCAO_NAO_EXISTENTE = -6
-#define E_DOLAR_NOT_SUPPORTED = -7 
-#define E_EMPTY_FRAME_STACK = -8
-#define E_STACK_OVERFLOW = -9
-#define E_NO_MAIN_FOUND = -10
-#define E_EMPTY_STACK = -11
-#define E_NOTSUPPORTED_VERSION = -12
-#define E_NOTVALID_CP_INDEX = -13
-#define E_NEG_ARR_SIZE = -14
-#define E_NULL_POINTER = -15
-#define E_ARR_NOT_FOUND = -16 
-#define E_NOT_VALID_MARRAY_INFO = -17
-#define E_NOT_SUPPORTED_ARRAY_TYPE = -18
-#define E_DISTINCT_MARRAY_DIMENSIONS = -19
-#define E_NOT_SUPPORTED_INSTRUCTION = -20
-#define E_BAD_INPUT = -21 
-#define E_NEGATIVE_ARRAY_SIZE = -22
+#define E_SUCCESS  0
+#define E_INVALID_NUM_ARGS  -1
+#define E_ARGV1_FILE_NOT_EXISTENT  -2 
+#define E_CAFEBABE  -3
+#define E_VERSION  -4
+#define W_NAOLIDOINTEIRO  -5 
+#define E_OPCAO_NAO_EXISTENTE  -6
+#define E_DOLAR_NOT_SUPPORTED  -7 
+#define E_EMPTY_FRAME_STACK  -8
+#define E_STACK_OVERFLOW  -9
+#define E_NO_MAIN_FOUND  -10
+#define E_EMPTY_STACK  -11
+#define E_NOTSUPPORTED_VERSION  -12
+#define E_NOTVALID_CP_INDEX  -13
+#define E_NEG_ARR_SIZE  -14
+#define E_NULL_POINTER  -15
+#define E_ARR_NOT_FOUND  -16 
+#define E_NOT_VALID_MARRAY_INFO  -17
+#define E_NOT_SUPPORTED_ARRAY_TYPE  -18
+#define E_DISTINCT_MARRAY_DIMENSIONS  -19
+#define E_NOT_SUPPORTED_INSTRUCTION  -20
+#define E_BAD_INPUT  -21 
+#define E_NEGATIVE_ARRAY_SIZE  -22
 
 
 
