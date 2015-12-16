@@ -198,7 +198,7 @@ static void func_op_ldc(Frame *pFrame) {
 
     pFrame->pc++;
     index = pFrame->code[pFrame->pc];
-    type = pFrame->pClass->constant_pool->constants[index - 1].tag;
+    type = pFrame->pClass->constant_pool[index - 1].tag;
 
     switch (type) {
         case CONSTANT_INTEGER:
@@ -2525,21 +2525,21 @@ static void func_op_getstatic(Frame *pFrame) {
     u8 classIndexTemp;
     int32_t classIndex, field_index;
     u8 valor;
-    char *className, *name, *type;
+    u1 *className, *name, *type;
 
     index_1 = (uint8_t) pFrame->code[++(pFrame->pc)];
     index_2 = (uint8_t) pFrame->code[++(pFrame->pc)];
     index = ((uint16_t)index_1 << 8) |(uint16_t)index_2;
 
     classIndex = pFrame->pClass->constant_pool[index-1].info.CONSTANT_FieldMethodIMethod_info.class_index;
-    className = getUtf8String(pFrame->pCLass->constant_pool, pFrame->pClass->constant_pool[classIndex-1].info.CONSTANT_Class_info.name_index);
+    className = getUtf8String(pFrame->pClass->constant_pool, pFrame->pClass->constant_pool[classIndex-1].info.CONSTANT_Class_info.name_index);
 
     nameTypeIndex = pFrame->pClass->constant_pool[index-1].info.CONSTANT_FieldMethodIMethod_info.name_and_type_index;
     name = getUtf8String(pFrame->pClass->constant_pool, pFrame->pClass->constant_pool[nameTypeIndex-1].info.CONSTANT_NameAndType_info.name_index);
-    type = getUtf8String(pFrame->pClass->constant_pool, pFrame->pClass->constant_pool[nameTypeIndex-1].info.CONSTANT_NameAndType_info.name_index.descriptor_index);
+    type = getUtf8String(pFrame->pClass->constant_pool, pFrame->pClass->constant_pool[nameTypeIndex-1].info.CONSTANT_NameAndType_info.descriptor_index);
 
 
-    while((field_index = getFieldIndex(className, name, strlen(name), type, strlen(type))) == -1) {
+    while((field_index = getFieldIndex(className, name, strlen((char*)name), type, strlen((char*)type))) == -1) {
         className = getParentName(getClassByName(className));
     }
 
@@ -2566,7 +2566,7 @@ static void func_op_putstatic(Frame *pFrame) {
     u8 classIndexTemp;
     int32_t classIndex, field_index;
     u8 valor,valor2;
-    char *className, *name, *type;
+    u1 *className, *name, *type;
 
     index_1 = (uint8_t) pFrame->code[++(pFrame->pc)];
     index_2 = (uint8_t) pFrame->code[++(pFrame->pc)];
@@ -2579,9 +2579,9 @@ static void func_op_putstatic(Frame *pFrame) {
 
     nameTypeIndex = pFrame->pClass->constant_pool[index-1].info.CONSTANT_FieldMethodIMethod_info.name_and_type_index;
     name = getUtf8String(pFrame->pClass->constant_pool, pFrame->pClass->constant_pool[nameTypeIndex-1].info.CONSTANT_NameAndType_info.name_index);
-    type = getUtf8String(pFrame->pClass->constant_pool, pFrame->pClass->constant_pool[nameTypeIndex-1].info.CONSTANT_NameAndType_info.name_index.descriptor_index);
+    type = getUtf8String(pFrame->pClass->constant_pool, pFrame->pClass->constant_pool[nameTypeIndex-1].info.CONSTANT_NameAndType_info.descriptor_index);
 
-    while((field_index = getFieldIndex(className, name, strlen(name), type, strlen(type))) == -1) {
+    while((field_index = getFieldIndex(className, name, strlen((char*)name), type, strlen((char*)type))) == -1) {
         className = getParentName(getClassByName(className));
     }
 
@@ -2619,15 +2619,15 @@ static void func_op_getfield(Frame *pFrame) {
     if (!index) error(E_NOTVALID_CP_INDEX);
 
     classIndex = pFrame->pClass->constant_pool[index-1].info.CONSTANT_FieldMethodIMethod_info.class_index;
-    className = getUtf8String(pFrame->pCLass->constant_pool, pFrame->pClass->constant_pool[classIndex-1].info.CONSTANT_Class_info.name_index);
+    className = getUtf8String(pFrame->pClass->constant_pool, pFrame->pClass->constant_pool[classIndex-1].info.CONSTANT_Class_info.name_index);
 
 
     nameTypeIndex = pFrame->pClass->constant_pool[index-1].info.CONSTANT_FieldMethodIMethod_info.name_and_type_index;
     name = getUtf8String(pFrame->pClass->constant_pool, pFrame->pClass->constant_pool[nameTypeIndex-1].info.CONSTANT_NameAndType_info.name_index);
-    type = getUtf8String(pFrame->pClass->constant_pool, pFrame->pClass->constant_pool[nameTypeIndex-1].info.CONSTANT_NameAndType_info.name_index.descriptor_index);
+    type = getUtf8String(pFrame->pClass->constant_pool, pFrame->pClass->constant_pool[nameTypeIndex-1].info.CONSTANT_NameAndType_info.descriptor_index);
 
 
-    while((field_index = getFieldIndex(className, name, strlen(name), type, strlen(type))) == -1) {
+    while((field_index = getFieldIndex(className, name, strlen((char*)name), type, strlen((char*)type))) == -1) {
         className = getParentName(getClassByName(className));
     }
 
@@ -2651,7 +2651,7 @@ static void func_op_putfield(Frame *pFrame) {
     u8 index,aux;
     i8 classIndex, field_index, val_1;
     uint16_t nameTypeIndex;
-    char *className, *name, *type;
+    u1 *className, *name, *type;
     struct _object *objeto = NULL;
     u8 valor,valor2;
 
@@ -2665,13 +2665,13 @@ static void func_op_putfield(Frame *pFrame) {
     if (!index) error(E_NOTVALID_CP_INDEX);
 
     classIndex = pFrame->pClass->constant_pool[index-1].info.CONSTANT_FieldMethodIMethod_info.class_index;
-    className = getUtf8String(pFrame->pCLass->constant_pool, pFrame->pClass->constant_pool[classIndex-1].info.CONSTANT_Class_info.name_index);
+    className = getUtf8String(pFrame->pClass->constant_pool, pFrame->pClass->constant_pool[classIndex-1].info.CONSTANT_Class_info.name_index);
 
     nameTypeIndex = pFrame->pClass->constant_pool[index-1].info.CONSTANT_FieldMethodIMethod_info.name_and_type_index;
     name = getUtf8String(pFrame->pClass->constant_pool, pFrame->pClass->constant_pool[nameTypeIndex-1].info.CONSTANT_NameAndType_info.name_index);
     type = getUtf8String(pFrame->pClass->constant_pool, pFrame->pClass->constant_pool[nameTypeIndex-1].info.CONSTANT_NameAndType_info.descriptor_index);
 
-    while((field_index = getFieldIndex(className, name, strlen(name), type, strlen(type))) == -1) {
+    while((field_index = getFieldIndex(className, name, strlen((char*)name), type, strlen((char*)type))) == -1) {
         className = getParentName(getClassByName(className));
     }
 
@@ -2701,7 +2701,7 @@ static void func_op_invokevirtual(Frame *pFrame) {
     i8 numParams = 0, i = 0, j = 0;
     i8 classIndex = 0, classIndexTemp = 0;
     uint16_t nameTypeIndex = 0, methodNameIndex = 0, methodDescriptorIndex = 0;
-    char *className = NULL, *methodName = NULL, *methodDesc = NULL;
+    u1 *className = NULL, *methodName = NULL, *methodDesc = NULL;
     u8 *fieldsTemp = NULL;
     float vfloat = 0;
     ClassFile *class = NULL;
@@ -2725,24 +2725,24 @@ static void func_op_invokevirtual(Frame *pFrame) {
     methodDesc = getUtf8String(pFrame->pClass->constant_pool, methodDescriptorIndex);
     methodName = getUtf8String(pFrame->pClass->constant_pool, methodNameIndex);
 
-    if((strcmp(className, "java/io/PrintStream") == 0) && ((strcmp(methodName,"println") == 0) ||(strcmp(methodName,"print") == 0))){
+    if((strcmp((char*)className, "java/io/PrintStream") == 0) && ((strcmp((char*)methodName,"println") == 0) ||(strcmp(methodName,"print") == 0))){
 
         //Quando tem que imprimir long
-        if(strstr(methodDesc, "J") != NULL){
+        if(strstr((char*)methodDesc, "J") != NULL){
             valorLow = pop(pFrame);
             valorHigh = pop(pFrame);
 
             printf("%ld",(long)getLong(valorHigh,valorLow));
 
             //Quando tem que imprimir double
-        } else if(strstr(methodDesc, "D") != NULL) {
+        } else if(strstr((char*)methodDesc, "D") != NULL) {
             valorLow = pop(pFrame);
             valorHigh = pop(pFrame);
 
             printf("%f", (double)getDouble(valorHigh,valorLow));
 
             //Quando tem que imprimir boolean
-        } else if(strstr(methodDesc, "Z") != NULL) {
+        } else if(strstr((char*)methodDesc, "Z") != NULL) {
 
             if(!pop(pFrame)) {
                 printf("false");
@@ -2751,10 +2751,10 @@ static void func_op_invokevirtual(Frame *pFrame) {
             }
 
             //Quando tem que imprimir char
-        } else if(strstr(methodDesc, "C") != NULL) {
+        } else if(strstr((char*)methodDesc, "C") != NULL) {
 
             //array
-            if(strstr(methodDesc, "[C") != NULL){
+            if(strstr((char*)methodDesc, "[C") != NULL){
                 array_ref = pop(pFrame);
                 for(i = 0; i < objHeap.array_count; i++){
                     if(!memcmp(&objHeap.arrays[i], &array_ref, sizeof(u8)))
@@ -2769,29 +2769,29 @@ static void func_op_invokevirtual(Frame *pFrame) {
             }
 
             //Quando tem que imprimir inteiro
-        }else if(strstr(methodDesc, "I") != NULL) {
+        }else if(strstr((char*)methodDesc, "I") != NULL) {
             printf("%d",(int)pop(pFrame));
 
             //Quando tem que imprimir float
-        }else if(strstr(methodDesc, "F") != NULL) {
+        }else if(strstr((char*)methodDesc, "F") != NULL) {
             vU8 = pop(pFrame);
             memcpy(&vfloat, &vU8, sizeof(uint32_t));
             printf("%f", vfloat);
 
             //Quando tem que imprimir string
-        }else if(strstr(methodDesc, "Ljava/lang/String") != NULL) {
+        }else if(strstr((char*)methodDesc, "Ljava/lang/String") != NULL) {
             vU8 = pop(pFrame);
             printf("%s",pFrame->pClass->constant_pool[vU8-1].info.CONSTANT_Utf8_info.bytes);
 
             //OBJECT
-        }else if(strstr(methodDesc, "Ljava/lang/Object") != NULL) {
+        }else if(strstr((char*)methodDesc, "Ljava/lang/Object") != NULL) {
             void* aux = NULL;
             vU8 = pop(pFrame);
             memcpy(&aux, &vU8, sizeof(u8));
             printf("%p",aux);
         }
 
-        if(strcmp(methodName,"println") == 0) {
+        if(strcmp((char*)methodName,"println") == 0) {
             printf("\n");
         }
 
@@ -2817,7 +2817,7 @@ static void func_op_invokevirtual(Frame *pFrame) {
             fieldsTemp[i] = pop(pFrame);
         }
 
-        if(((method->access_flags) & 0x0100) || strcmp("println", getUtf8String(class->constant_pool, method->name_index)) == 0) {
+        if(((method->access_flags) & 0x0100) || strcmp("println", (char*)getUtf8String(class->constant_pool, method->name_index)) == 0) {
             pop(pFrame);
 
             // implementar aqui codigo para lidar com metodos nativos
@@ -2841,7 +2841,7 @@ static void func_op_invokespecial(Frame *pFrame) {
     uint8_t low, high;
     i8 i, classIndex, classIndexTemp;
     uint16_t nameTypeIndex;
-    char *className;
+    u1 *className;
     ClassFile *class;
     method_info *method;
     int numParams;
@@ -2907,7 +2907,7 @@ static void func_op_invokestatic(Frame *pFrame) {
     uint8_t low, high;
     i8 numParams, i, classIndex, classIndexTemp;
     uint16_t nameTypeIndex;
-    char *className;
+    u1 *className;
     ClassFile *class;
     method_info *method;
 
@@ -3012,7 +3012,7 @@ static void func_op_new(Frame *pFrame) {
     // printf("\n\t\t\tentrou _new");
     u1 low, high;
     u8 index;
-    char *className;
+    u1 *className;
     i8 classIndex;
 
     ClassFile *pClass;
@@ -3110,7 +3110,7 @@ static void func_op_checkcast(Frame *pFrame) {
     if(reference == NULL) {
         printf("Erro: Null Reference\n");
     }
-    if(strcmp(className1, className2) == 0) {
+    if(strcmp((char*)className1, (char*)className2) == 0) {
         printf(" Erro: Wrong Typt Object\n");
     }
     push(pFrame,(u8)(intptr_t)reference);
@@ -3137,7 +3137,7 @@ static void func_op_instanceof(Frame *pFrame) {
     u1 *className1 = getClassNameUtf8(pFrame->pClass, pFrame->pClass->this_class);
     u1 *className2 = getClassNameUtf8(reference->pClass, index);
 
-    if(strcmp(className1, className2) == 0) {
+    if(strcmp((char*)className1, (char*)className2) == 0) {
         push(pFrame,1);
         pFrame->pc++;
         return;
@@ -3166,7 +3166,7 @@ static void func_op_multianewarray(Frame *pFrame) {
     uint16_t index = pFrame->code[++pFrame->pc];
     index = index << 8 | pFrame->code[++pFrame->pc];
     int dimensionCount = pFrame->code[++pFrame->pc];
-    char *marrayInfo = getClassNameUtf8(pFrame->pClass, index);
+    u1 *marrayInfo = getClassNameUtf8(pFrame->pClass, index);
 
     // multianewarray apenas para arrays de dimensão >= 2
     if (dimensionCount < 1 || marrayInfo == NULL || (marrayInfo[0] != '[' && marrayInfo[1] != '[')) {
@@ -3188,8 +3188,8 @@ static void func_op_multianewarray(Frame *pFrame) {
     switch(marrayInfo[dimensionCount]) {
         case 'L': // seta o tipo e carrega classe para method_area
             tipo = tREFERENCIA;
-            u1 *className = (u1*) malloc(strlen(marrayInfo)*sizeof(u1));
-            for (int i = dimensionCount + 1; i < strlen(marrayInfo); i++) {
+            u1 *className = (u1*) malloc(strlen((char*)marrayInfo)*sizeof(u1));
+            for (int i = dimensionCount + 1; i < strlen((char*)marrayInfo); i++) {
                 className[i - dimensionCount - 1] = marrayInfo[i];
                 className[i - dimensionCount] = '\0';
             }

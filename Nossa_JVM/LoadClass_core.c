@@ -285,7 +285,7 @@ cp_info* readConstantPool (u2 length, u2 *poolLength, FILE *arq) {
 }
 
 // Função para retornar o tipo de constante
-u1* searchConstantType (u1 tag) {
+char* searchConstantType (u1 tag) {
 	switch (tag) {
 		case 1:
 			return "Utf8";

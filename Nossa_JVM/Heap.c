@@ -98,7 +98,7 @@ struct _array* newArray(uint32_t count, uint32_t tipo) {
 struct _array* newRefArray(uint32_t count, char* className) {
     struct _array* newArr = newArray(count, tREFERENCIA);
     
-    loadClass(className);
+    loadClass((u1*)className);
     
     return newArr;
 }
