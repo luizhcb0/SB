@@ -12,10 +12,10 @@
 * @param dmSize
 */
 
-dataMSize_t dmSize;
-ClassFile *classHeap;
-Frame *stackFrame;
-Heap objHeap;
+extern dataMSize_t dmSize;
+extern ClassFile *classHeap;
+extern Frame *stackFrame;
+extern Heap objHeap;
 
 ClassFile *classLoader(char *classPathStr) {
 	ClassFile *classHeap_ptr;

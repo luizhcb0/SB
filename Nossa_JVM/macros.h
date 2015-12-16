@@ -603,7 +603,7 @@ typedef struct {
 
 }ClassFile;
 
-extern ClassFile globClass;
+
 
 
 

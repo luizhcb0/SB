@@ -4,10 +4,10 @@
 #include "Frame.h"
 
 
-dataMSize_t dmSize;
-ClassFile *classHeap;
-Frame *stackFrame;
-Heap objHeap;
+extern dataMSize_t dmSize;
+extern ClassFile *classHeap;
+extern Frame *stackFrame;
+extern Heap objHeap;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Constant Pool    -   inicio
