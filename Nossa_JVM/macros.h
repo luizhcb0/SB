@@ -377,7 +377,6 @@ extern char *opcodes_str_names[];
 
 typedef struct attribute_info_e attribute_info; //foward declaration
 typedef union Variable_t Variable; //foward declaration
-typedef struct Object_t Object; //foward declaration
 typedef struct Array_t Array; //foward declaration
 
 /** Definição das estruturas relacionadas as áreas de memória da JVM (Heap, stack) */
@@ -616,43 +615,6 @@ typedef struct {
 }ClassFile;
 
 extern ClassFile globClass;
-
-
-typedef struct {
-    Variable *data;
-}Array_t;
-
-typedef struct {
-    ClassFile *classRef ; ///Referencia para a classe alocada na memoria
-    field_info *fields; ///Espaco de memoria alocado para os fields do Objeto
-    Array *arrayList;
-    u2 array_lenght;
-    Field_Value *field_value;
-    u2 field_length;
-}Object_t; ///Objeto
-
-typedef struct {
-    union {
-        u1* stringValue;
-        u2 shortValue;
-        u4 intValue;
-        f4 floatValue;
-        struct {
-            u4 high;
-            u4 low;
-        } DoubleValue;
-        Object_t object;
-    }info;
-}Stack;
-
-typedef union {
-    u1 charValue;
-    u2 shortValue;
-    u4 intValue;
-    f4 floatValue;
-    u1 *sring;
-    Object_t object;
-}Variable_t;
 
 
 

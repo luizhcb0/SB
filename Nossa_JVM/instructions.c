@@ -3067,7 +3067,7 @@ static void func_op_anewarray(Frame *pFrame) {
 
     u1 *className = getClassNameUtf8(pFrame->pClass, index);
 
-    void *pointer = newRefArray(count,className);
+    void *pointer = newRefArray(count,(char*)className);
 
     push(pFrame,(u8)(intptr_t)pointer);
     pFrame->pc++;
