@@ -62,9 +62,14 @@ ClassFile *classLoader(char *classPathStr) {
 
 	//arq = fopen(classPathStr, "rb");
 	magic = read_magic(classPathF_ptr);
+    if( magic != 0xcafebabe)
+        error(NOTACLASS_ERR);//age apropriadamente
+
 	minor = read_minor_version(classPathF_ptr);
 	major = read_major_version(classPathF_ptr);
-    
+    if( major > 0x2e )
+        error(INCORRECTVERSION_ERR);//age apropriadamente
+
 	if (classPathF_ptr != NULL) {
 		pool = createConstantPool (&poolElementsNum, &poolLength, classPathF_ptr);
 	}
