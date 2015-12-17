@@ -37,7 +37,7 @@ void prepare(u4 index);
 int loadParentClasses();
 int loadInterfaces(ClassFile *class);
 int loadClass(char *name);
-u1* getClassPath(u1* base_path, u1* class_name);
+char* getClassPath(char* base_path, char* class_name);
 int getInterfaceIndex(u1* interface_name);
 int checkIfFieldIsStatic(uint16_t access_flags);
 void expandClassArray();

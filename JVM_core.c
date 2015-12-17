@@ -40,6 +40,7 @@ void jvmStartup(char *classPathStr, int flag){
     
     objHeap = initHeap();
     mHeap = initMethodHeap();
+    executionFrame = NULL;
 
     //Carrega a classe inicial
     //OK!

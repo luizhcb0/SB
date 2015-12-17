@@ -133,40 +133,27 @@ int loadClass(char *name) {
 /*!
 	retorna a concatenacao do nome qualificado da classe com base_path e com .class
  */
-u1* getClassPath(u1* base_path, u1* class_name) {
-    u1* path = (u1*)malloc(strlen((char*)base_path)+strlen((char*)class_name) + 8);
-    
-    if (strstr((char*)class_name,".class") != NULL) {
-        if (strlen((char*)base_path)==0)
-            sprintf((char*)path, "%s%s", (char*)base_path, (char*)class_name);
+char* getClassPath(char* base_path, char* class_name) {
+    char* path = (char*)malloc(strlen(base_path)+strlen(class_name) + 8);
+    if (strstr(class_name,".class") != NULL) {
+        if (strlen(base_path)==0)
+            sprintf(path, "%s%s", base_path, class_name);
         else
-            sprintf((char*)path, "%s/%s", (char*)base_path, (char*)class_name);
-            
+            sprintf(path, "%s/%s", base_path, class_name);
         return path;
     }
-    else if (!strcmp((char*)class_name,"java/lang/Object")
-             || !strcmp((char*)class_name,"java/lang/System")
-             || !strcmp((char*)class_name,"java/io/PrintStream")
-             || !strcmp((char*)class_name,"java/lang/String")) {
-             
-		
+    else if (!strcmp(class_name,"java/lang/Object")
+             || !strcmp(class_name,"java/lang/System")
+             || !strcmp(class_name,"java/io/PrintStream")
+             || !strcmp(class_name,"java/lang/String")) {
         
-        sprintf((char*)path, "%s.class", (char*)class_name);
-        
+        sprintf(path, "%s.class", class_name);
         return path;
     } else {
-        sprintf((char*)path, "%s%s.class", (char*)base_path, (char*)class_name);
-        path = strtok(path, ";");
-    	
-    	printf("\n.....%s.....\n", base_path);
-    	printf("\n.....%s.....\n", class_name);
-    	strcat(path, ".class");
-    	
-        printf("\n.....%s.....\n", path);
+        sprintf(path, "%s/%s.class", base_path, class_name);
         return path;
     }
 }
-
 /// retorna um index para o array de classes da area de metodos
 int getClassIndex(u1 *class_name) {
     if (mHeap.classes == NULL) {
