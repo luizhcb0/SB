@@ -108,7 +108,7 @@ int loadInterfaces(ClassFile *class) {
 
 
 int loadClass(char *name) {
-
+    strtok(name, ";");
     if(name == NULL){
         return -1;
     }
