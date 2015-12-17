@@ -17,20 +17,29 @@
  * @param classPathF_ptr
  */
 
-dataMSize_t dmSize;
 ClassFile *classHeap;
-Frame *stackFrame;
-extern Heap objHeap;
-extern MethodHeap mHeap;
+dataMSize_t dmSize;
+Frame **stackFrame;
+Frame *executionFrame;
+MethodHeap mHeap;
+char *basePath;
+Heap objHeap;
+int saiu;
 
 void jvmStartup(char *classPathStr, int flag){
+    
     classHeap = malloc( CLSHEAP_MAX*sizeof( ClassFile ) );
-    //objectHeap = malloc( OBJHEAP_MAX*sizeof( Object_t ) );
     stackFrame = malloc( STKFRAME_MAX*sizeof( Frame ) );
 
     dmSize.clsHeap_size = 0;
     dmSize.objHeap_size = 0;
     dmSize.stkHeap_size = 0;
+    
+    basePath = (u1*)calloc(1024,sizeof(char));
+    basePath[0] = '\0';
+    
+    objHeap = initHeap();
+    mHeap = initMethodHeap();
 
     //Carrega a classe inicial
     //OK!
@@ -48,6 +57,7 @@ void jvmStartup(char *classPathStr, int flag){
         exit(1);
     }
     printf("\n---%s---\n", classPathStr);
+    
     loadClass(classPathStr);
 
     method_info* _main = getMainMethod();
@@ -216,38 +226,7 @@ void createFrame(method_info *method, ClassFile *Class) {
     if (i < STKFRAME_MAX - 1) {
         //OCUPADO
         stackFrame[i] = initFrame(Class, method, codeIndex);
-
-        /*
-        frame_ptr[i].pClass = Class;
-        frame_ptr[i].pMethod = method;
-        frame_ptr[i].code_length = method->attribute[codeIndex].info.Code_attribute.code_length;
-        frame_ptr[i].code = method->attribute[codeIndex].info.Code_attribute.code;
-
-        frame_ptr[i].pc = 0;
-        frame_ptr[i].sp = 0;
-
-        frame_ptr[i].stack_size = method->attribute[codeIndex].info.Code_attribute.max_stack;
-        frame_ptr[i].local_size = method->attribute[codeIndex].info.Code_attribute.max_locals;
-        frame_ptr[i].stack = malloc(frame_ptr[i].stack_size * sizeof(u4));
-        frame_ptr[i].local = malloc(frame_ptr[i].local_size * sizeof(u4));
-        */
-
-
-        /*TESTE*/
-        /*
-        frame_ptr[i - 1].pClass = Class;
-            frame_ptr[i -1].pMethod = method;
-            frame_ptr[i -1].code_length = Class->methods->attribute[codeIndex].info.Code_attribute.code_length;
-            frame_ptr[i - 1].code = malloc(frame_ptr[i].code_length * sizeof(u1));
-
-            frame_ptr[i - 1].pc = 0;
-            frame_ptr[i - 1].sp = 0;
-
-            frame_ptr[i - 1].stack_size = Class->methods->attribute[codeIndex].info.Code_attribute.max_stack;
-            frame_ptr[i - 1].local_size = Class->methods->attribute[codeIndex].info.Code_attribute.max_locals;
-            frame_ptr[i - 1].stack = malloc(frame_ptr[i].max_stack * sizeof(u4));
-            frame_ptr[i - 1].local = malloc(frame_ptr[i].local_size * sizeof(u4));
-        */
+        executionFrame = stackFrame[i];
 
         dmSize.stkHeap_size++;
     } else {
@@ -260,6 +239,7 @@ void createFrame(method_info *method, ClassFile *Class) {
 void deleteFrame(Frame *frame_ptr, u2 *numFrames) {
 
     dmSize.stkHeap_size--;
+    executionFrame = stackFrame[dmSize.stkHeap_size - 1];
 
 }
 

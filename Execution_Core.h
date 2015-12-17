@@ -15,7 +15,7 @@
 typedef struct _instruction {
     uint16_t qtd_operandos;
     char *nome;
-    void (*call)(Frame*);
+    void (*call)();
 } Instruction;
 
 extern const Instruction instructions[];

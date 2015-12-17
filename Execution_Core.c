@@ -17,32 +17,26 @@
 /**
  *  Description
  *  @brief Execução da JVM
- *  @param pFrame     <#pFrame description#>
- *  @param pClassHeap <#pClassHeap description#>
- *  @param dmSize_ptr <#dmSize_ptr description#>
  *
- *  @return <#return value description#>
  */
 
-extern dataMSize_t dmSize;
 extern ClassFile *classHeap;
-extern Frame *stackFrame;
-extern Heap objHeap;
+extern dataMSize_t dmSize;
+extern Frame **stackFrame;
+extern Frame *executionFrame;
 extern MethodHeap mHeap;
 extern char *basePath;
+extern Heap objHeap;
+extern int saiu;
 
 void Execute () {
 
-    Frame *pFrame = &stackFrame[dmSize.stkHeap_size - 1];
-    
-    //u2 classHeapLength = dmSize.clsHeap_size;
-
-
-    while (pFrame->retornou == 0 && pFrame != NULL && (pFrame->pc) < pFrame->code_length) {
-        uint32_t iterator = pFrame->code[pFrame->pc];
-        instructions[iterator].call(pFrame);
+    saiu = 0;
+    while (saiu == 0 && executionFrame != NULL && (executionFrame->pc) < executionFrame->code_length) {
+        uint32_t iterator = executionFrame->code[executionFrame->pc];
+        instructions[iterator].call();
     }
-    pFrame->retornou = 0;
+    saiu = 0;
 
 }
 
